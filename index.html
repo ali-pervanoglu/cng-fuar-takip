@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CNG Expo — Fuar Pipeline Takip</title>
+<title>CNG Expo - Fuar Pipeline Takip</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0e1a;--surface:#111827;--border:rgba(255,255,255,0.07);--text:#e8eaf0;--muted:#6b7a9a;--dim:#3d4f6e;--done-bg:rgba(34,197,94,0.12);--done-t:#4ade80;--done-b:rgba(34,197,94,0.25);--prog-bg:rgba(251,146,60,0.12);--prog-t:#fb923c;--prog-b:rgba(251,146,60,0.25);--wait-bg:rgba(107,114,154,0.1);--wait-t:#6b7a9a;--wait-b:rgba(107,114,154,0.2);--accent:#3b82f6;--accent2:#818cf8}
@@ -58,14 +58,13 @@ td{padding:14px 14px;vertical-align:middle}
 </head>
 <body>
 <div class="container">
-
   <div class="header-top">
     <div>
       <div class="logo">CNG Expo</div>
       <h1>Fuar Pipeline Takip</h1>
-      <p class="subtitle">Email &amp; SMS kampanya hazirlik durumu - 2026 sezonu</p>
+      <p class="subtitle">Email ve SMS kampanya hazirlik durumu - 2026 sezonu</p>
     </div>
-    <div class="last-update">Son guncelleme<br><span id="guncelleme-tarihi">09.04.2026</span></div>
+    <div class="last-update">Son guncelleme<br><span id="tarih">09.04.2026</span></div>
   </div>
 
   <div class="stats">
@@ -82,7 +81,7 @@ td{padding:14px 14px;vertical-align:middle}
     <div class="leg-item"><div class="leg-dot" style="background:var(--wait-t)"></div>Yapilmadi</div>
   </div>
 
-  <div class="col-hint">Kolon uzerine gelin aciklama gorun &nbsp;*&nbsp; <span>Temizlik &amp; Modelleme</span> = ham veri + segmentasyon + KPI &nbsp;*&nbsp; <span>MX</span> = domain sunucu sorgusu &nbsp;*&nbsp; <span>MEV</span> = MyEmailVerifier</div>
+  <div class="col-hint">Kolon uzerine gelin aciklama gorun - <span>Temizlik ve Modelleme</span> = ham veri + segmentasyon + KPI - <span>MX</span> = domain sunucu sorgusu - <span>MEV</span> = MyEmailVerifier</div>
 
   <div class="table-wrap">
     <div class="table-header-bar">
@@ -93,13 +92,13 @@ td{padding:14px 14px;vertical-align:middle}
       <thead>
         <tr>
           <th>Fuar</th>
-          <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI cikarimi">Temizlik &amp; Modelleme</th>
+          <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI cikarimi">Temizlik ve Modelleme</th>
           <th title="PostgreSQL veritabanina yuklendi mi">DB</th>
-          <th title="Python + DNS ile email domain sunucu sorgusu">MX Sorgu</th>
+          <th title="Python DNS ile email domain sunucu sorgusu">MX Sorgu</th>
           <th title="MyEmailVerifier ile gercek posta kutusu dogrulamasi">MEV</th>
           <th title="Gonderilmeye hazir email listesi uretildi mi">Email Kamp.</th>
           <th title="SMS temiz liste hazirlanmdi mi">SMS Kamp.</th>
-          <th style="min-width:80px">Kayit</th>
+          <th style="min-width:100px">Kayit</th>
         </tr>
       </thead>
       <tbody id="tbl"></tbody>
@@ -109,71 +108,68 @@ td{padding:14px 14px;vertical-align:middle}
   <div class="progress-title">Fuar Tamamlanma Orani</div>
   <div id="pw" class="progress-items"></div>
 
-  <div class="footer">CNG Expo - Data Operations - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5a3b3633742a3f282c3b34353d362f1a39343d3f222a3574393537">[email&#160;protected]</a></div>
+  <div class="footer">CNG Expo - Data Operations - ali.pervanoglu@cngexpo.com</div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-var DONE = "done";
-var PROG = "prog";
-var WAIT = "wait";
+<script>
+var D = "done", P = "prog", W = "wait";
+var LBL = {done:"Tamamlandi", prog:"Devam ediyor", wait:"Yapilmadi"};
 
-var data = [
-  {ad:"AYSAF 2026",         alt:"Yurt Ici (TR)",  tarih:"Nis 2026", t:DONE, db:DONE, mx:DONE, mev:DONE, em:DONE, sms:PROG, kayit:"20.636", pct:86},
-  {ad:"AYSAF 2026",         alt:"Yurt Disi",       tarih:"Nis 2026", t:DONE, db:DONE, mx:DONE, mev:DONE, em:DONE, sms:WAIT, kayit:"4.574 (2.867 gonder)",  pct:71},
-  {ad:"AYSAD 2026",         alt:"Uye listesi",      tarih:"2026",     t:DONE, db:DONE, mx:DONE, mev:WAIT, em:WAIT, sms:WAIT, kayit:"481",    pct:43},
-  {ad:"PaintIstanbul 2026", alt:"Web Scraping",     tarih:"2026",     t:DONE, db:DONE, mx:WAIT, mev:WAIT, em:WAIT, sms:WAIT, kayit:"47.628", pct:29}
+var FUARLAR = [
+  {ad:"AYSAF 2026",         alt:"Yurt Ici (TR)",  tarih:"Nis 2026", t:D, db:D, mx:D, mev:D, em:D, sms:P, kayit:"20.636",        pct:86},
+  {ad:"AYSAF 2026",         alt:"Yurt Disi",       tarih:"Nis 2026", t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"4.574 (2.867)", pct:86},
+  {ad:"AYSAD 2026",         alt:"Uye listesi",      tarih:"2026",     t:D, db:D, mx:D, mev:W, em:W, sms:W, kayit:"481",           pct:43},
+  {ad:"PaintIstanbul 2026", alt:"Web Scraping",     tarih:"2026",     t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"47.628",        pct:29}
 ];
 
-var lbl = {};
-lbl[DONE] = "Tamamlandi";
-lbl[PROG] = "Devam ediyor";
-lbl[WAIT] = "Yapilmadi";
-
-function b(s) {
-  return "<span class=\"badge " + s + "\"><span class=\"bdot\"></span> " + lbl[s] + "</span>";
+function badge(s) {
+  return "<span class=\"badge " + s + "\"><span class=\"bdot\"></span> " + LBL[s] + "</span>";
 }
 
 var tbody = document.getElementById("tbl");
-var i, f, tr, html;
-for (i = 0; i < data.length; i++) {
-  f = data[i];
+var i, f, tr, h;
+for (i = 0; i < FUARLAR.length; i++) {
+  f = FUARLAR[i];
   tr = document.createElement("tr");
-  html = "";
-  html = html + "<td><div class=\"fuar-name\">" + f.ad + "</div><div class=\"fuar-date\">" + f.alt + " - " + f.tarih + "</div></td>";
-  html = html + "<td>" + b(f.t)   + "</td>";
-  html = html + "<td>" + b(f.db)  + "</td>";
-  html = html + "<td>" + b(f.mx)  + "</td>";
-  html = html + "<td>" + b(f.mev) + "</td>";
-  html = html + "<td>" + b(f.em)  + "</td>";
-  html = html + "<td>" + b(f.sms) + "</td>";
-  html = html + "<td><span class=\"kayit\">" + f.kayit + "</span></td>";
-  tr.innerHTML = html;
+  h = "";
+  h += "<td><div class=\"fuar-name\">" + f.ad + "</div><div class=\"fuar-date\">" + f.alt + " - " + f.tarih + "</div></td>";
+  h += "<td>" + badge(f.t)   + "</td>";
+  h += "<td>" + badge(f.db)  + "</td>";
+  h += "<td>" + badge(f.mx)  + "</td>";
+  h += "<td>" + badge(f.mev) + "</td>";
+  h += "<td>" + badge(f.em)  + "</td>";
+  h += "<td>" + badge(f.sms) + "</td>";
+  h += "<td><span class=\"kayit\">" + f.kayit + "</span></td>";
+  tr.innerHTML = h;
   tbody.appendChild(tr);
 }
 
 var pw = document.getElementById("pw");
-var j, f2, div, dhtml;
-for (j = 0; j < data.length; j++) {
-  f2 = data[j];
+var j, f2, div, dh;
+for (j = 0; j < FUARLAR.length; j++) {
+  f2 = FUARLAR[j];
   div = document.createElement("div");
   div.className = "prog-item";
-  dhtml = "";
-  dhtml = dhtml + "<div class=\"prog-item-name\">";
-  dhtml = dhtml + "<span>" + f2.ad + " <span style=\"opacity:0.5;font-size:10px\">" + f2.alt + "</span></span>";
-  dhtml = dhtml + "<span class=\"prog-pct\">" + f2.pct + "%</span>";
-  dhtml = dhtml + "</div>";
-  dhtml = dhtml + "<div class=\"prog-bar\"><div class=\"prog-fill\" id=\"pf" + j + "\" style=\"width:0%\"></div></div>";
-  div.innerHTML = dhtml;
+  dh = "<div class=\"prog-item-name\">";
+  dh += "<span>" + f2.ad + " <span style=\"opacity:0.5;font-size:10px\">" + f2.alt + "</span></span>";
+  dh += "<span class=\"prog-pct\">" + f2.pct + "%</span></div>";
+  dh += "<div class=\"prog-bar\"><div class=\"prog-fill\" id=\"pf" + j + "\" style=\"width:0%\"></div></div>";
+  div.innerHTML = dh;
   pw.appendChild(div);
 }
 
 setTimeout(function() {
   var k, el;
-  for (k = 0; k < data.length; k++) {
+  for (k = 0; k < FUARLAR.length; k++) {
     el = document.getElementById("pf" + k);
-    if (el) { el.style.width = data[k].pct + "%"; }
+    if (el) { el.style.width = FUARLAR[k].pct + "%"; }
+  }
+  var t = document.getElementById("tarih");
+  if (t) {
+    var d = new Date();
+    t.textContent = ("0"+d.getDate()).slice(-2) + "." + ("0"+(d.getMonth()+1)).slice(-2) + "." + d.getFullYear();
   }
 }, 200);
-
-var bugun = new Date();
-var gun = String(bugun.getDate()).pa
+</script>
+</body>
+</html>
