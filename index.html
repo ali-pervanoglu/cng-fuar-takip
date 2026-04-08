@@ -93,9 +93,9 @@ td{padding:14px 18px;vertical-align:middle}
         <tr>
           <th>Fuar</th>
           <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI çıkarımı">Temizlik &amp; Modelleme</th>
+          <th title="PostgreSQL veritabanına yüklendi mi">DB</th>
           <th title="Python + DNS ile email domain sunucu sorgusu">MX Sorgu</th>
           <th title="MyEmailVerifier ile gerçek posta kutusu doğrulaması">MEV</th>
-          <th title="PostgreSQL veritabanına yüklendi mi">DB</th>
           <th title="Gönderilmeye hazır email listesi üretildi mi">Email Kamp.</th>
           <th title="SMS temiz liste hazırlandı mı">SMS Kamp.</th>
           <th>Kayıt</th>
@@ -108,10 +108,10 @@ td{padding:14px 18px;vertical-align:middle}
   <div class="progress-title">Fuar Tamamlanma Oranı</div>
   <div id="prog-wrap" class="progress-items"></div>
 
-  <div class="footer">CNG Expo · Data Operations · ali.pervanoglu@cngexpo.com</div>
+  <div class="footer">CNG Expo · Data Operations · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cfaea3a6e1bfaabdb9aea1a0a8a3ba8faca1a8aab7bfa0e1aca0a2">[email&#160;protected]</a></div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var fuarlar = [
   {ad:"AYSAF 2026", alt:"Yurt İçi (TR)", tarih:"Nis 2026", t:"done", mx:"done", mev:"done", db:"done", em:"done", sms:"prog", kayit:"20.636", pct:86},
   {ad:"AYSAF 2026", alt:"Yurt Dışı",     tarih:"Nis 2026", t:"done", mx:"done", mev:"done", db:"prog", em:"done", sms:"wait", kayit:"4.574",  pct:71},
@@ -132,9 +132,9 @@ for (var i = 0; i < fuarlar.length; i++) {
   tr.innerHTML =
     '<td><div class="fuar-name">' + f.ad + '</div><div class="fuar-date">' + f.alt + ' · ' + f.tarih + '</div></td>' +
     '<td>' + badge(f.t)   + '</td>' +
+    '<td>' + badge(f.db)  + '</td>' +
     '<td>' + badge(f.mx)  + '</td>' +
     '<td>' + badge(f.mev) + '</td>' +
-    '<td>' + badge(f.db)  + '</td>' +
     '<td>' + badge(f.em)  + '</td>' +
     '<td>' + badge(f.sms) + '</td>' +
     '<td><span class="kayit">' + f.kayit + '</span></td>';
@@ -148,15 +148,4 @@ for (var j = 0; j < fuarlar.length; j++) {
   d.className = "prog-item";
   d.innerHTML =
     '<div class="prog-item-name"><span>' + f.ad + ' <span style="opacity:0.5;font-size:10px">' + f.alt + '</span></span><span class="prog-pct">' + f.pct + '%</span></div>' +
-    '<div class="prog-bar"><div class="prog-fill" id="pf' + j + '" style="width:0%"></div></div>';
-  pw.appendChild(d);
-}
-
-setTimeout(function() {
-  for (var k = 0; k < fuarlar.length; k++) {
-    document.getElementById("pf" + k).style.width = fuarlar[k].pct + "%";
-  }
-}, 100);
-</script>
-</body>
-</html>
+    '<div class="prog-bar"><div class="prog-fill" id="pf' + j + '" s
