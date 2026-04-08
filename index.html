@@ -65,7 +65,7 @@ td{padding:14px 14px;vertical-align:middle}
       <h1>Fuar Pipeline Takip</h1>
       <p class="subtitle">Email &amp; SMS kampanya hazirlik durumu - 2026 sezonu</p>
     </div>
-    <div class="last-update">Son guncelleme<br><span>08.04.2026</span></div>
+    <div class="last-update">Son guncelleme<br><span id="guncelleme-tarihi">09.04.2026</span></div>
   </div>
 
   <div class="stats">
@@ -174,6 +174,13 @@ setTimeout(function() {
     if (el) { el.style.width = data[k].pct + "%"; }
   }
 }, 200);
+
+var bugun = new Date();
+var gun = String(bugun.getDate()).padStart(2,"0");
+var ay = String(bugun.getMonth()+1).padStart(2,"0");
+var yil = bugun.getFullYear();
+var el = document.getElementById("guncelleme-tarihi");
+if (el) { el.textContent = gun + "." + ay + "." + yil; }
 </script>
 </body>
 </html>
