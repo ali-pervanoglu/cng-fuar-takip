@@ -127,7 +127,10 @@ var FUARLAR = [
 ];
 
 function badge(s) {
-  return "<span class=\"badge " + s + "\"><span class=\"bdot\"></span> " + LBL[s] + "</span>";
+  var el = document.createElement('span');
+  el.className = 'badge ' + s;
+  el.innerHTML = '<span class="bdot"></span> ' + LBL[s];
+  return el.outerHTML;
 }
 
 var tbody = document.getElementById("tbl");
