@@ -6,87 +6,65 @@
 <title>CNG Expo — Fuar Pipeline Takip</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0e1a;
-    --surface: #111827;
-    --border: rgba(255,255,255,0.07);
-    --text: #e8eaf0;
-    --text-muted: #6b7a9a;
-    --text-dim: #3d4f6e;
-    --done-bg: rgba(34,197,94,0.12);
-    --done-text: #4ade80;
-    --done-border: rgba(34,197,94,0.25);
-    --prog-bg: rgba(251,146,60,0.12);
-    --prog-text: #fb923c;
-    --prog-border: rgba(251,146,60,0.25);
-    --wait-bg: rgba(107,114,154,0.1);
-    --wait-text: #6b7a9a;
-    --wait-border: rgba(107,114,154,0.2);
-    --accent: #3b82f6;
-    --accent2: #818cf8;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6; min-height: 100vh; }
-  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
-  .container { max-width: 1100px; margin: 0 auto; padding: 48px 24px; position: relative; z-index: 1; }
-  .logo { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
-  .header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 40px; }
-  h1 { font-size: 28px; font-weight: 600; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; }
-  .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 6px; }
-  .last-update { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; white-space: nowrap; line-height: 1.8; }
-  .last-update span { color: var(--done-text); }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 40px; }
-  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; transition: border-color 0.2s; }
-  .stat:hover { border-color: rgba(59,130,246,0.3); }
-  .stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
-  .stat-val { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--text); }
-  .stat-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
-  .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
-  .leg-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--text-muted); }
-  .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 40px; }
-  .table-header-bar { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .table-title { font-size: 13px; font-weight: 500; color: var(--text); }
-  .table-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim); }
-  table { width: 100%; border-collapse: collapse; }
-  thead th { padding: 12px 18px; text-align: left; font-size: 11px; font-weight: 500; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); white-space: nowrap; cursor: help; }
-  thead th[title]:hover { color: var(--text-muted); }
-  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: rgba(255,255,255,0.02); }
-  td { padding: 14px 18px; vertical-align: middle; }
-  .fuar-name { font-weight: 500; font-size: 13px; color: var(--text); white-space: nowrap; }
-  .fuar-date { font-size: 11px; color: var(--text-dim); margin-top: 2px; font-family: 'DM Mono', monospace; }
-  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; white-space: nowrap; border: 1px solid transparent; }
-  .badge-done { background: var(--done-bg); color: var(--done-text); border-color: var(--done-border); }
-  .badge-prog { background: var(--prog-bg); color: var(--prog-text); border-color: var(--prog-border); }
-  .badge-wait { background: var(--wait-bg); color: var(--wait-text); border-color: var(--wait-border); }
-  .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-  .kayit { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent2); font-weight: 500; }
-  .progress-title { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
-  .progress-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 40px; }
-  .prog-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
-  .prog-item-name { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; display: flex; justify-content: space-between; }
-  .prog-item-pct { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); }
-  .prog-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
-  .prog-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 1s ease; }
-  .col-hint { font-size: 11px; color: var(--text-dim); margin-bottom: 20px; }
-  .col-hint span { color: var(--text-muted); }
-  .footer { text-align: center; font-size: 11px; color: var(--text-dim); padding-top: 24px; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; }
-  .scroll-hint { display: none; font-size: 11px; color: var(--text-dim); text-align: center; margin-bottom: 8px; }
-  @media (max-width: 768px) { h1 { font-size: 22px; } .scroll-hint { display: block; } .table-wrap { overflow-x: auto; } table { min-width: 720px; } }
+:root{--bg:#0a0e1a;--surface:#111827;--border:rgba(255,255,255,0.07);--text:#e8eaf0;--muted:#6b7a9a;--dim:#3d4f6e;--done-bg:rgba(34,197,94,0.12);--done-t:#4ade80;--done-b:rgba(34,197,94,0.25);--prog-bg:rgba(251,146,60,0.12);--prog-t:#fb923c;--prog-b:rgba(251,146,60,0.25);--wait-bg:rgba(107,114,154,0.1);--wait-t:#6b7a9a;--wait-b:rgba(107,114,154,0.2);--accent:#3b82f6;--accent2:#818cf8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(59,130,246,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+.container{max-width:1100px;margin:0 auto;padding:48px 24px;position:relative;z-index:1}
+.logo{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:40px}
+h1{font-size:28px;font-weight:600;letter-spacing:-0.02em;line-height:1.2}
+.subtitle{color:var(--muted);font-size:14px;margin-top:6px}
+.last-update{font-family:'DM Mono',monospace;font-size:11px;color:var(--dim);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 14px;white-space:nowrap;line-height:1.8}
+.last-update span{color:var(--done-t)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:40px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
+.stat-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500}
+.stat-sub{font-size:11px;color:var(--dim);margin-top:2px}
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.leg-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.leg-dot{width:8px;height:8px;border-radius:50%}
+.col-hint{font-size:11px;color:var(--dim);margin-bottom:20px}
+.col-hint span{color:var(--muted)}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:40px}
+.table-header-bar{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.table-title{font-size:13px;font-weight:500}
+.table-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--dim)}
+table{width:100%;border-collapse:collapse}
+thead th{padding:12px 18px;text-align:left;font-size:11px;font-weight:500;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02);white-space:nowrap;cursor:help}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,0.02)}
+td{padding:14px 18px;vertical-align:middle}
+.fuar-name{font-weight:500;font-size:13px;white-space:nowrap}
+.fuar-date{font-size:11px;color:var(--dim);margin-top:2px;font-family:'DM Mono',monospace}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap;border:1px solid transparent}
+.done{background:var(--done-bg);color:var(--done-t);border-color:var(--done-b)}
+.prog{background:var(--prog-bg);color:var(--prog-t);border-color:var(--prog-b)}
+.wait{background:var(--wait-bg);color:var(--wait-t);border-color:var(--wait-b)}
+.bdot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.kayit{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);font-weight:500}
+.progress-title{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px}
+.progress-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:40px}
+.prog-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.prog-item-name{font-size:12px;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between}
+.prog-pct{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)}
+.prog-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1s ease}
+.footer{text-align:center;font-size:11px;color:var(--dim);padding-top:24px;border-top:1px solid var(--border);font-family:'DM Mono',monospace}
+@media(max-width:768px){h1{font-size:22px}.table-wrap{overflow-x:auto}table{min-width:720px}}
 </style>
 </head>
 <body>
 <div class="container">
-
   <div class="header-top">
     <div>
       <div class="logo">CNG Expo</div>
       <h1>Fuar Pipeline Takip</h1>
       <p class="subtitle">Email &amp; SMS kampanya hazırlık durumu — 2026 sezonu</p>
     </div>
-    <div class="last-update">Son güncelleme<br><span id="update-date">08.04.2026</span></div>
+    <div class="last-update">Son güncelleme<br><span>08.04.2026</span></div>
   </div>
 
   <div class="stats">
@@ -98,14 +76,13 @@
   </div>
 
   <div class="legend">
-    <div class="leg-item"><div class="leg-dot" style="background:var(--done-text)"></div>Tamamlandı</div>
-    <div class="leg-item"><div class="leg-dot" style="background:var(--prog-text)"></div>Devam ediyor</div>
-    <div class="leg-item"><div class="leg-dot" style="background:var(--wait-text)"></div>Yapılmadı</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--done-t)"></div>Tamamlandı</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--prog-t)"></div>Devam ediyor</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--wait-t)"></div>Yapılmadı</div>
   </div>
 
   <div class="col-hint">Kolon üzerine gelin açıklama görün &nbsp;·&nbsp; <span>Temizlik &amp; Modelleme</span> = ham veri temizleme + segmentasyon + KPI &nbsp;·&nbsp; <span>MX</span> = domain sunucu sorgusu &nbsp;·&nbsp; <span>MEV</span> = MyEmailVerifier</div>
 
-  <div class="scroll-hint">→ Sağa kaydırın</div>
   <div class="table-wrap">
     <div class="table-header-bar">
       <span class="table-title">Pipeline Durumu</span>
@@ -116,62 +93,70 @@
         <tr>
           <th>Fuar</th>
           <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI çıkarımı">Temizlik &amp; Modelleme</th>
-          <th title="Python + DNS ile email domain sunucu sorgusu (MX kaydı var mı?)">MX Sorgu</th>
+          <th title="Python + DNS ile email domain sunucu sorgusu">MX Sorgu</th>
           <th title="MyEmailVerifier ile gerçek posta kutusu doğrulaması">MEV</th>
           <th title="PostgreSQL veritabanına yüklendi mi">DB</th>
           <th title="Gönderilmeye hazır email listesi üretildi mi">Email Kamp.</th>
-          <th title="SMS temiz liste hazırlandı mı (daha önce gönderilenler çıkarıldı)">SMS Kamp.</th>
+          <th title="SMS temiz liste hazırlandı mı">SMS Kamp.</th>
           <th>Kayıt</th>
         </tr>
       </thead>
-      <tbody id="pipeline-tbody"></tbody>
+      <tbody id="tbl"></tbody>
     </table>
   </div>
 
   <div class="progress-title">Fuar Tamamlanma Oranı</div>
-  <div class="progress-items" id="progress-items"></div>
+  <div id="prog-wrap" class="progress-items"></div>
 
-  <div class="footer">CNG Expo · Data Operations · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d3b2bfbafda3b6a1a5b2bdbcb4bfa693b0bdb4b6aba3bcfdb0bcbe">[email&#160;protected]</a></div>
-
+  <div class="footer">CNG Expo · Data Operations · ali.pervanoglu@cngexpo.com</div>
 </div>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-const D='done', P='prog', W='wait';
-const label = { done:'Tamamlandı', prog:'Devam ediyor', wait:'Yapılmadı' };
 
-const fuarlar = [
-  { ad:'AYSAF 2026', alt:'Yurt İçi (TR)', tarih:'Nis 2026', temizlik:D, mx:D, mev:D, email:D, sms:P, db:D, kayit:'20.636', pct:86 },
-  { ad:'AYSAF 2026', alt:'Yurt Dışı',     tarih:'Nis 2026', temizlik:D, mx:D, mev:D, email:D, sms:W, db:P, kayit:'4.574',  pct:71 },
-  { ad:'AYSAD 2026', alt:'Üye listesi',   tarih:'2026',     temizlik:D, mx:D, mev:D, email:W, sms:W, db:D, kayit:'474',    pct:57 },
-  { ad:'PaintIstanbul 2026', alt:'VIP Protokol', tarih:'2026', temizlik:D, mx:W, mev:W, email:W, sms:W, db:D, kayit:'117', pct:29 },
+<script>
+var fuarlar = [
+  {ad:"AYSAF 2026", alt:"Yurt İçi (TR)", tarih:"Nis 2026", t:"done", mx:"done", mev:"done", db:"done", em:"done", sms:"prog", kayit:"20.636", pct:86},
+  {ad:"AYSAF 2026", alt:"Yurt Dışı",     tarih:"Nis 2026", t:"done", mx:"done", mev:"done", db:"prog", em:"done", sms:"wait", kayit:"4.574",  pct:71},
+  {ad:"AYSAD 2026", alt:"Üye listesi",   tarih:"2026",     t:"done", mx:"done", mev:"done", db:"done", em:"wait", sms:"wait", kayit:"474",    pct:57},
+  {ad:"PaintIstanbul 2026", alt:"VIP Protokol", tarih:"2026", t:"done", mx:"wait", mev:"wait", db:"done", em:"wait", sms:"wait", kayit:"117", pct:29}
 ];
 
+var lbl = {done:"Tamamlandı", prog:"Devam ediyor", wait:"Yapılmadı"};
+
 function badge(s) {
-  return `<span class="badge badge-${s}"><span class="badge-dot"></span>${label[s]}</span>`;
+  return '<span class="badge ' + s + '"><span class="bdot"></span>' + lbl[s] + '</span>';
 }
 
-const tbody = document.getElementById('pipeline-tbody');
-fuarlar.forEach(f => {
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td><div class="fuar-name">${f.ad}</div><div class="fuar-date">${f.alt} · ${f.tarih}</div></td>
-    <td>${badge(f.temizlik)}</td>
-    <td>${badge(f.mx)}</td>
-    <td>${badge(f.mev)}</td>
-    <td>${badge(f.db)}</td>
-    <td>${badge(f.email)}</td>
-    <td>${badge(f.sms)}</td>
-    <td><span class="kayit">${f.kayit}</span></td>
-  `;
+var tbody = document.getElementById("tbl");
+for (var i = 0; i < fuarlar.length; i++) {
+  var f = fuarlar[i];
+  var tr = document.createElement("tr");
+  tr.innerHTML =
+    '<td><div class="fuar-name">' + f.ad + '</div><div class="fuar-date">' + f.alt + ' · ' + f.tarih + '</div></td>' +
+    '<td>' + badge(f.t)   + '</td>' +
+    '<td>' + badge(f.mx)  + '</td>' +
+    '<td>' + badge(f.mev) + '</td>' +
+    '<td>' + badge(f.db)  + '</td>' +
+    '<td>' + badge(f.em)  + '</td>' +
+    '<td>' + badge(f.sms) + '</td>' +
+    '<td><span class="kayit">' + f.kayit + '</span></td>';
   tbody.appendChild(tr);
-});
+}
 
-const progWrap = document.getElementById('progress-items');
-fuarlar.forEach(f => {
-  const div = document.createElement('div');
-  div.className = 'prog-item';
-  div.innerHTML = `
-    <div class="prog-item-name">
-      <span>${f.ad} <span style="opacity:0.5;font-size:10px">${f.alt}</span></span>
-      <span class="prog-item-pct">${f.pct}%</span>
-    </div>
-    <div class="prog-bar"><div class="prog-fill
+var pw = document.getElementById("prog-wrap");
+for (var j = 0; j < fuarlar.length; j++) {
+  var f = fuarlar[j];
+  var d = document.createElement("div");
+  d.className = "prog-item";
+  d.innerHTML =
+    '<div class="prog-item-name"><span>' + f.ad + ' <span style="opacity:0.5;font-size:10px">' + f.alt + '</span></span><span class="prog-pct">' + f.pct + '%</span></div>' +
+    '<div class="prog-bar"><div class="prog-fill" id="pf' + j + '" style="width:0%"></div></div>';
+  pw.appendChild(d);
+}
+
+setTimeout(function() {
+  for (var k = 0; k < fuarlar.length; k++) {
+    document.getElementById("pf" + k).style.width = fuarlar[k].pct + "%";
+  }
+}, 100);
+</script>
+</body>
+</html>
