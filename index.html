@@ -118,9 +118,9 @@
           <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI çıkarımı">Temizlik &amp; Modelleme</th>
           <th title="Python + DNS ile email domain sunucu sorgusu (MX kaydı var mı?)">MX Sorgu</th>
           <th title="MyEmailVerifier ile gerçek posta kutusu doğrulaması">MEV</th>
+          <th title="PostgreSQL veritabanına yüklendi mi">DB</th>
           <th title="Gönderilmeye hazır email listesi üretildi mi">Email Kamp.</th>
           <th title="SMS temiz liste hazırlandı mı (daha önce gönderilenler çıkarıldı)">SMS Kamp.</th>
-          <th title="PostgreSQL veritabanına yüklendi mi">DB</th>
           <th>Kayıt</th>
         </tr>
       </thead>
@@ -131,10 +131,10 @@
   <div class="progress-title">Fuar Tamamlanma Oranı</div>
   <div class="progress-items" id="progress-items"></div>
 
-  <div class="footer">CNG Expo · Data Operations · ali.pervanoglu@cngexpo.com</div>
+  <div class="footer">CNG Expo · Data Operations · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d3b2bfbafda3b6a1a5b2bdbcb4bfa693b0bdb4b6aba3bcfdb0bcbe">[email&#160;protected]</a></div>
 
 </div>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const D='done', P='prog', W='wait';
 const label = { done:'Tamamlandı', prog:'Devam ediyor', wait:'Yapılmadı' };
 
@@ -157,9 +157,9 @@ fuarlar.forEach(f => {
     <td>${badge(f.temizlik)}</td>
     <td>${badge(f.mx)}</td>
     <td>${badge(f.mev)}</td>
+    <td>${badge(f.db)}</td>
     <td>${badge(f.email)}</td>
     <td>${badge(f.sms)}</td>
-    <td>${badge(f.db)}</td>
     <td><span class="kayit">${f.kayit}</span></td>
   `;
   tbody.appendChild(tr);
@@ -174,14 +174,4 @@ fuarlar.forEach(f => {
       <span>${f.ad} <span style="opacity:0.5;font-size:10px">${f.alt}</span></span>
       <span class="prog-item-pct">${f.pct}%</span>
     </div>
-    <div class="prog-bar"><div class="prog-fill" style="width:0%" data-w="${f.pct}%"></div></div>
-  `;
-  progWrap.appendChild(div);
-});
-
-setTimeout(() => {
-  document.querySelectorAll('.prog-fill').forEach(el => { el.style.width = el.dataset.w; });
-}, 100);
-</script>
-</body>
-</html>
+    <div class="prog-bar"><div class="prog-fill
