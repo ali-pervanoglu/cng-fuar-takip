@@ -71,7 +71,7 @@ td{padding:14px 14px;vertical-align:middle}
   <div class="stats">
     <div class="stat"><div class="stat-label">Aktif Fuar</div><div class="stat-val">4</div><div class="stat-sub">2026 sezonu</div></div>
     <div class="stat"><div class="stat-label">Toplam Kisi</div><div class="stat-val">69.674</div><div class="stat-sub">tum listeler</div></div>
-    <div class="stat"><div class="stat-label">Email Hazir</div><div class="stat-val">14.292</div><div class="stat-sub">AYSAF gonder listesi</div></div>
+    <div class="stat"><div class="stat-label">Email Hazir</div><div class="stat-val">14.005</div><div class="stat-sub">AYSAF gonder listesi</div></div>
     <div class="stat"><div class="stat-label">SMS Hazir</div><div class="stat-val">18.398</div><div class="stat-sub">TR + Yurt Disi</div></div>
     <div class="stat"><div class="stat-label">DB Kayit</div><div class="stat-val">68.745</div><div class="stat-sub">PostgreSQL toplam</div></div>
   </div>
@@ -109,17 +109,17 @@ td{padding:14px 14px;vertical-align:middle}
   <div class="progress-title">Fuar Tamamlanma Orani</div>
   <div id="pw" class="progress-items"></div>
 
-  <div class="footer">CNG Expo - Data Operations - ali.pervanoglu@cngexpo.com</div>
+  <div class="footer">CNG Expo - Data Operations - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5a3b3633742a3f282c3b34353d362f1a39343d3f222a3574393537">[email&#160;protected]</a></div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var DONE = "done";
 var PROG = "prog";
 var WAIT = "wait";
 
 var data = [
   {ad:"AYSAF 2026",         alt:"Yurt Ici (TR)",  tarih:"Nis 2026", t:DONE, db:DONE, mx:DONE, mev:DONE, em:DONE, sms:PROG, kayit:"20.636", pct:86},
-  {ad:"AYSAF 2026",         alt:"Yurt Disi",       tarih:"Nis 2026", t:DONE, db:DONE, mx:DONE, mev:DONE, em:DONE, sms:WAIT, kayit:"4.574",  pct:71},
+  {ad:"AYSAF 2026",         alt:"Yurt Disi",       tarih:"Nis 2026", t:DONE, db:DONE, mx:DONE, mev:DONE, em:DONE, sms:WAIT, kayit:"4.574 (2.867 gonder)",  pct:71},
   {ad:"AYSAD 2026",         alt:"Uye listesi",      tarih:"2026",     t:DONE, db:DONE, mx:DONE, mev:WAIT, em:WAIT, sms:WAIT, kayit:"481",    pct:43},
   {ad:"PaintIstanbul 2026", alt:"Web Scraping",     tarih:"2026",     t:DONE, db:DONE, mx:WAIT, mev:WAIT, em:WAIT, sms:WAIT, kayit:"47.628", pct:29}
 ];
@@ -176,11 +176,4 @@ setTimeout(function() {
 }, 200);
 
 var bugun = new Date();
-var gun = String(bugun.getDate()).padStart(2,"0");
-var ay = String(bugun.getMonth()+1).padStart(2,"0");
-var yil = bugun.getFullYear();
-var el = document.getElementById("guncelleme-tarihi");
-if (el) { el.textContent = gun + "." + ay + "." + yil; }
-</script>
-</body>
-</html>
+var gun = String(bugun.getDate()).pa
