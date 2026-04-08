@@ -63,81 +63,82 @@ td{padding:14px 14px;vertical-align:middle}
     <div>
       <div class="logo">CNG Expo</div>
       <h1>Fuar Pipeline Takip</h1>
-      <p class="subtitle">Email &amp; SMS kampanya hazırlık durumu — 2026 sezonu</p>
+      <p class="subtitle">Email &amp; SMS kampanya hazirlik durumu - 2026 sezonu</p>
     </div>
-    <div class="last-update">Son güncelleme<br><span>08.04.2026</span></div>
+    <div class="last-update">Son guncelleme<br><span>09.04.2026</span></div>
   </div>
 
   <div class="stats">
     <div class="stat"><div class="stat-label">Aktif Fuar</div><div class="stat-val">4</div><div class="stat-sub">2026 sezonu</div></div>
-    <div class="stat"><div class="stat-label">Toplam Kişi</div><div class="stat-val">25.801</div><div class="stat-sub">tüm listeler</div></div>
-    <div class="stat"><div class="stat-label">Email Hazır</div><div class="stat-val">14.292</div><div class="stat-sub">AYSAF gönder listesi</div></div>
-    <div class="stat"><div class="stat-label">SMS Hazır</div><div class="stat-val">18.398</div><div class="stat-sub">TR + Yurt Dışı</div></div>
-    <div class="stat"><div class="stat-label">DB Kayıt</div><div class="stat-val">21.765</div><div class="stat-sub">PostgreSQL toplam</div></div>
+    <div class="stat"><div class="stat-label">Toplam Kisi</div><div class="stat-val">69.674</div><div class="stat-sub">tum listeler</div></div>
+    <div class="stat"><div class="stat-label">Email Hazir</div><div class="stat-val">14.292</div><div class="stat-sub">AYSAF gonder listesi</div></div>
+    <div class="stat"><div class="stat-label">SMS Hazir</div><div class="stat-val">18.398</div><div class="stat-sub">TR + Yurt Disi</div></div>
+    <div class="stat"><div class="stat-label">DB Kayit</div><div class="stat-val">68.745</div><div class="stat-sub">PostgreSQL toplam</div></div>
   </div>
 
   <div class="legend">
-    <div class="leg-item"><div class="leg-dot" style="background:var(--done-t)"></div>Tamamlandı</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--done-t)"></div>Tamamlandi</div>
     <div class="leg-item"><div class="leg-dot" style="background:var(--prog-t)"></div>Devam ediyor</div>
-    <div class="leg-item"><div class="leg-dot" style="background:var(--wait-t)"></div>Yapılmadı</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--wait-t)"></div>Yapilmadi</div>
   </div>
 
-  <div class="col-hint">Kolon üzerine gelin açıklama görün &nbsp;·&nbsp;
-    <span>Temizlik &amp; Modelleme</span> = ham veri + segmentasyon + KPI &nbsp;·&nbsp;
-    <span>MX</span> = domain sunucu sorgusu &nbsp;·&nbsp;
-    <span>MEV</span> = MyEmailVerifier
-  </div>
+  <div class="col-hint">Kolon uzerine gelin aciklama gorun &nbsp;*&nbsp; <span>Temizlik &amp; Modelleme</span> = ham veri + segmentasyon + KPI &nbsp;*&nbsp; <span>MX</span> = domain sunucu sorgusu &nbsp;*&nbsp; <span>MEV</span> = MyEmailVerifier</div>
 
   <div class="table-wrap">
     <div class="table-header-bar">
       <span class="table-title">Pipeline Durumu</span>
-      <span class="table-meta">4 fuar · 2026</span>
+      <span class="table-meta">4 fuar - 2026</span>
     </div>
     <table>
       <thead>
         <tr>
           <th>Fuar</th>
-          <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI çıkarımı">Temizlik &amp; Modelleme</th>
-          <th title="PostgreSQL veritabanına yüklendi mi">DB</th>
+          <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI cikarimi">Temizlik &amp; Modelleme</th>
+          <th title="PostgreSQL veritabanina yuklendi mi">DB</th>
           <th title="Python + DNS ile email domain sunucu sorgusu">MX Sorgu</th>
-          <th title="MyEmailVerifier ile gerçek posta kutusu doğrulaması">MEV</th>
-          <th title="Gönderilmeye hazır email listesi üretildi mi">Email Kamp.</th>
-          <th title="SMS temiz liste hazırlandı mı">SMS Kamp.</th>
-          <th style="min-width:80px">Kayıt</th>
+          <th title="MyEmailVerifier ile gercek posta kutusu dogrulamasi">MEV</th>
+          <th title="Gonderilmeye hazir email listesi uretildi mi">Email Kamp.</th>
+          <th title="SMS temiz liste hazirlanmdi mi">SMS Kamp.</th>
+          <th style="min-width:80px">Kayit</th>
         </tr>
       </thead>
       <tbody id="tbl"></tbody>
     </table>
   </div>
 
-  <div class="progress-title">Fuar Tamamlanma Oranı</div>
+  <div class="progress-title">Fuar Tamamlanma Orani</div>
   <div id="pw" class="progress-items"></div>
 
-  <div class="footer">CNG Expo · Data Operations · ali.pervanoglu@cngexpo.com</div>
+  <div class="footer">CNG Expo - Data Operations - ali.pervanoglu@cngexpo.com</div>
 </div>
 
 <script>
+var DONE = "done";
+var PROG = "prog";
+var WAIT = "wait";
+
 var data = [
-  {ad:"AYSAF 2026",         alt:"Yurt Ici (TR)",  tarih:"Nis 2026", t:"done", db:"done", mx:"done", mev:"done", em:"done", sms:"prog", kayit:"20.636", pct:86},
-  {ad:"AYSAF 2026",         alt:"Yurt Disi",       tarih:"Nis 2026", t:"done", db:"prog", mx:"done", mev:"done", em:"done", sms:"wait", kayit:"4.574",  pct:71},
-  {ad:"AYSAD 2026",         alt:"Uye listesi",      tarih:"2026",     t:"done", db:"done", mx:"done", mev:"done", em:"wait", sms:"wait", kayit:"474",    pct:57},
-  {ad:"PaintIstanbul 2026", alt:"VIP Protokol",     tarih:"2026",     t:"done", db:"done", mx:"wait", mev:"wait", em:"wait", sms:"wait", kayit:"117",    pct:29}
+  {ad:"AYSAF 2026",         alt:"Yurt Ici (TR)",  tarih:"Nis 2026", t:DONE, db:DONE, mx:DONE, mev:DONE, em:DONE, sms:PROG, kayit:"20.636", pct:86},
+  {ad:"AYSAF 2026",         alt:"Yurt Disi",       tarih:"Nis 2026", t:DONE, db:PROG, mx:DONE, mev:DONE, em:DONE, sms:WAIT, kayit:"4.574",  pct:71},
+  {ad:"AYSAD 2026",         alt:"Uye listesi",      tarih:"2026",     t:DONE, db:DONE, mx:DONE, mev:WAIT, em:WAIT, sms:WAIT, kayit:"481",    pct:43},
+  {ad:"PaintIstanbul 2026", alt:"Web Scraping",     tarih:"2026",     t:DONE, db:DONE, mx:WAIT, mev:WAIT, em:WAIT, sms:WAIT, kayit:"47.628", pct:29}
 ];
 
 var lbl = {};
-lbl["done"] = "Tamamlandi";
-lbl["prog"] = "Devam ediyor";
-lbl["wait"] = "Yapilmadi";
+lbl[DONE] = "Tamamlandi";
+lbl[PROG] = "Devam ediyor";
+lbl[WAIT] = "Yapilmadi";
 
 function b(s) {
   return "<span class=\"badge " + s + "\"><span class=\"bdot\"></span> " + lbl[s] + "</span>";
 }
 
 var tbody = document.getElementById("tbl");
-for (var i = 0; i < data.length; i++) {
-  var f = data[i];
-  var tr = document.createElement("tr");
-  var html = "";
+var i, f, tr, html;
+for (i = 0; i < data.length; i++) {
+  f = data[i];
+  tr = document.createElement("tr");
+  html = "";
   html = html + "<td><div class=\"fuar-name\">" + f.ad + "</div><div class=\"fuar-date\">" + f.alt + " - " + f.tarih + "</div></td>";
   html = html + "<td>" + b(f.t)   + "</td>";
   html = html + "<td>" + b(f.db)  + "</td>";
@@ -151,11 +152,12 @@ for (var i = 0; i < data.length; i++) {
 }
 
 var pw = document.getElementById("pw");
-for (var j = 0; j < data.length; j++) {
-  var f2 = data[j];
-  var div = document.createElement("div");
+var j, f2, div, dhtml;
+for (j = 0; j < data.length; j++) {
+  f2 = data[j];
+  div = document.createElement("div");
   div.className = "prog-item";
-  var dhtml = "";
+  dhtml = "";
   dhtml = dhtml + "<div class=\"prog-item-name\">";
   dhtml = dhtml + "<span>" + f2.ad + " <span style=\"opacity:0.5;font-size:10px\">" + f2.alt + "</span></span>";
   dhtml = dhtml + "<span class=\"prog-pct\">" + f2.pct + "%</span>";
@@ -166,8 +168,9 @@ for (var j = 0; j < data.length; j++) {
 }
 
 setTimeout(function() {
-  for (var k = 0; k < data.length; k++) {
-    var el = document.getElementById("pf" + k);
+  var k, el;
+  for (k = 0; k < data.length; k++) {
+    el = document.getElementById("pf" + k);
     if (el) { el.style.width = data[k].pct + "%"; }
   }
 }, 200);
