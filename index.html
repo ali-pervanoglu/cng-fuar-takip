@@ -45,6 +45,7 @@ td{padding:14px 14px;vertical-align:middle}
 .wait{background:var(--wait-bg);color:var(--wait-t);border-color:var(--wait-b)}
 .bdot{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block;vertical-align:middle}
 .kayit{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);font-weight:500;white-space:nowrap}
+.kayit-alt{font-size:10px;color:var(--dim);display:block;margin-top:2px}
 .progress-title{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px}
 .progress-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:40px}
 .prog-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
@@ -62,26 +63,26 @@ td{padding:14px 14px;vertical-align:middle}
     <div>
       <div class="logo">CNG Expo</div>
       <h1>Fuar Pipeline Takip</h1>
-      <p class="subtitle">Email ve SMS kampanya hazirlik durumu - 2026 sezonu</p>
+      <p class="subtitle">Email ve SMS kampanya haz&#x131;rl&#x131;k durumu - 2026 sezonu</p>
     </div>
-    <div class="last-update">Son guncelleme<br><span id="tarih">09.04.2026</span></div>
+    <div class="last-update">Son g&#xFC;ncelleme<br><span id="tarih">09.04.2026</span></div>
   </div>
 
   <div class="stats">
     <div class="stat"><div class="stat-label">Aktif Fuar</div><div class="stat-val">4</div><div class="stat-sub">2026 sezonu</div></div>
-    <div class="stat"><div class="stat-label">Toplam Kisi</div><div class="stat-val">69.674</div><div class="stat-sub">tum listeler</div></div>
-    <div class="stat"><div class="stat-label">Email Hazir</div><div class="stat-val">14.005</div><div class="stat-sub">AYSAF gonder listesi</div></div>
-    <div class="stat"><div class="stat-label">SMS Hazir</div><div class="stat-val">18.398</div><div class="stat-sub">TR + Yurt Disi</div></div>
-    <div class="stat"><div class="stat-label">DB Kayit</div><div class="stat-val">68.745</div><div class="stat-sub">PostgreSQL toplam</div></div>
+    <div class="stat"><div class="stat-label">Toplam Ki&#x15F;i</div><div class="stat-val">69.674</div><div class="stat-sub">t&#xFC;m listeler</div></div>
+    <div class="stat"><div class="stat-label">Email Haz&#x131;r</div><div class="stat-val">14.005</div><div class="stat-sub">AYSAF g&#xF6;nder listesi</div></div>
+    <div class="stat"><div class="stat-label">SMS Haz&#x131;r</div><div class="stat-val">18.398</div><div class="stat-sub">TR + Yurt D&#x131;&#x15F;&#x131;</div></div>
+    <div class="stat"><div class="stat-label">DB Kay&#x131;t</div><div class="stat-val">68.745</div><div class="stat-sub">PostgreSQL toplam</div></div>
   </div>
 
   <div class="legend">
-    <div class="leg-item"><div class="leg-dot" style="background:var(--done-t)"></div>Tamamlandi</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--done-t)"></div>Tamamland&#x131;</div>
     <div class="leg-item"><div class="leg-dot" style="background:var(--prog-t)"></div>Devam ediyor</div>
-    <div class="leg-item"><div class="leg-dot" style="background:var(--wait-t)"></div>Yapilmadi</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--wait-t)"></div>Yap&#x131;lmad&#x131;</div>
   </div>
 
-  <div class="col-hint">Kolon uzerine gelin aciklama gorun - <span>Temizlik ve Modelleme</span> = ham veri + segmentasyon + KPI - <span>MX</span> = domain sunucu sorgusu - <span>MEV</span> = MyEmailVerifier</div>
+  <div class="col-hint">Kolon &#xFC;zerine gelin a&#xE7;&#x131;klama g&#xF6;r&#xFC;n - <span>Temizlik ve Modelleme</span> = ham veri + segmentasyon + KPI - <span>MX</span> = domain sunucu sorgusu - <span>MEV</span> = MyEmailVerifier</div>
 
   <div class="table-wrap">
     <div class="table-header-bar">
@@ -92,20 +93,20 @@ td{padding:14px 14px;vertical-align:middle}
       <thead>
         <tr>
           <th>Fuar</th>
-          <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI cikarimi">Temizlik ve Modelleme</th>
+          <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI">Temizlik &amp; Modelleme</th>
           <th title="PostgreSQL veritabanina yuklendi mi">DB</th>
           <th title="Python DNS ile email domain sunucu sorgusu">MX Sorgu</th>
-          <th title="MyEmailVerifier ile gercek posta kutusu dogrulamasi">MEV</th>
+          <th title="MyEmailVerifier ile posta kutusu dogrulamasi">MEV</th>
           <th title="Gonderilmeye hazir email listesi uretildi mi">Email Kamp.</th>
           <th title="SMS temiz liste hazirlanmdi mi">SMS Kamp.</th>
-          <th style="min-width:100px">Kayit</th>
+          <th style="min-width:110px">Kay&#x131;t</th>
         </tr>
       </thead>
       <tbody id="tbl"></tbody>
     </table>
   </div>
 
-  <div class="progress-title">Fuar Tamamlanma Orani</div>
+  <div class="progress-title">Fuar Tamamlanma Oran&#x131;</div>
   <div id="pw" class="progress-items"></div>
 
   <div class="footer">CNG Expo - Data Operations - ali.pervanoglu@cngexpo.com</div>
@@ -113,13 +114,16 @@ td{padding:14px 14px;vertical-align:middle}
 
 <script>
 var D = "done", P = "prog", W = "wait";
-var LBL = {done:"Tamamlandi", prog:"Devam ediyor", wait:"Yapilmadi"};
+var LBL = {};
+LBL["done"] = "Tamamlandı";
+LBL["prog"] = "Devam ediyor";
+LBL["wait"] = "Yapılmadı";
 
 var FUARLAR = [
-  {ad:"AYSAF 2026",         alt:"Yurt Ici (TR)",  tarih:"Nis 2026", t:D, db:D, mx:D, mev:D, em:D, sms:P, kayit:"20.636", gonder:"11.138 gonder", pct:86},
-  {ad:"AYSAF 2026",         alt:"Yurt Disi",       tarih:"Nis 2026", t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"4.574", gonder:"2.867 gonder", pct:86},
-  {ad:"AYSAD 2026",         alt:"Uye listesi",      tarih:"2026",     t:D, db:D, mx:D, mev:W, em:W, sms:W, kayit:"481", gonder:"MEV bekleniyor", pct:43},
-  {ad:"PaintIstanbul 2026", alt:"Web Scraping",     tarih:"2026",     t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"47.628", gonder:"MX + MEV bekleniyor", pct:29}
+  {ad:"AYSAF 2026", alt:"Yurt İçi (TR)", tarih:"Nis 2026", t:D, db:D, mx:D, mev:D, em:D, sms:P, kayit:"20.636", gonder:"11.138 gönder", pct:86},
+  {ad:"AYSAF 2026", alt:"Yurt Dışı",    tarih:"Nis 2026", t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"4.574",  gonder:"2.867 gönder",  pct:86},
+  {ad:"AYSAD 2026", alt:"Üye listesi",   tarih:"2026",     t:D, db:D, mx:D, mev:W, em:W, sms:W, kayit:"481",    gonder:"MEV bekleniyor", pct:43},
+  {ad:"PaintIstanbul 2026", alt:"Web Scraping", tarih:"2026", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"47.628", gonder:"MX + MEV bekleniyor", pct:29}
 ];
 
 function badge(s) {
@@ -139,7 +143,7 @@ for (i = 0; i < FUARLAR.length; i++) {
   h += "<td>" + badge(f.mev) + "</td>";
   h += "<td>" + badge(f.em)  + "</td>";
   h += "<td>" + badge(f.sms) + "</td>";
-  h += "<td><span class=\"kayit\">" + f.kayit + "</span><br><span style=\"font-size:10px;color:var(--dim)\">" + f.gonder + "</span></td>";
+  h += "<td><span class=\"kayit\">" + f.kayit + "</span><span class=\"kayit-alt\">" + f.gonder + "</span></td>";
   tr.innerHTML = h;
   tbody.appendChild(tr);
 }
