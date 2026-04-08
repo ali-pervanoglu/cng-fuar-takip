@@ -44,7 +44,7 @@ td{padding:14px 18px;vertical-align:middle}
 .prog{background:var(--prog-bg);color:var(--prog-t);border-color:var(--prog-b)}
 .wait{background:var(--wait-bg);color:var(--wait-t);border-color:var(--wait-b)}
 .bdot{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block;vertical-align:middle}
-.kayit{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);font-weight:500}
+.kayit{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);font-weight:500;white-space:nowrap}
 .progress-title{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px}
 .progress-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:40px}
 .prog-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
@@ -103,7 +103,7 @@ td{padding:14px 18px;vertical-align:middle}
           <th title="MyEmailVerifier ile gerçek posta kutusu doğrulaması">MEV</th>
           <th title="Gönderilmeye hazır email listesi üretildi mi">Email Kamp.</th>
           <th title="SMS temiz liste hazırlandı mı">SMS Kamp.</th>
-          <th>Kayıt</th>
+          <th style="min-width:80px">Kayıt</th>
         </tr>
       </thead>
       <tbody id="tbl"></tbody>
