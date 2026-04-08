@@ -43,7 +43,7 @@ td{padding:14px 18px;vertical-align:middle}
 .done{background:var(--done-bg);color:var(--done-t);border-color:var(--done-b)}
 .prog{background:var(--prog-bg);color:var(--prog-t);border-color:var(--prog-b)}
 .wait{background:var(--wait-bg);color:var(--wait-t);border-color:var(--wait-b)}
-.bdot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.bdot{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block;vertical-align:middle}
 .kayit{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);font-weight:500}
 .progress-title{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px}
 .progress-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:40px}
@@ -58,6 +58,7 @@ td{padding:14px 18px;vertical-align:middle}
 </head>
 <body>
 <div class="container">
+
   <div class="header-top">
     <div>
       <div class="logo">CNG Expo</div>
@@ -81,7 +82,11 @@ td{padding:14px 18px;vertical-align:middle}
     <div class="leg-item"><div class="leg-dot" style="background:var(--wait-t)"></div>Yapılmadı</div>
   </div>
 
-  <div class="col-hint">Kolon üzerine gelin açıklama görün &nbsp;·&nbsp; <span>Temizlik &amp; Modelleme</span> = ham veri temizleme + segmentasyon + KPI &nbsp;·&nbsp; <span>MX</span> = domain sunucu sorgusu &nbsp;·&nbsp; <span>MEV</span> = MyEmailVerifier</div>
+  <div class="col-hint">Kolon üzerine gelin açıklama görün &nbsp;·&nbsp;
+    <span>Temizlik &amp; Modelleme</span> = ham veri + segmentasyon + KPI &nbsp;·&nbsp;
+    <span>MX</span> = domain sunucu sorgusu &nbsp;·&nbsp;
+    <span>MEV</span> = MyEmailVerifier
+  </div>
 
   <div class="table-wrap">
     <div class="table-header-bar">
@@ -106,46 +111,66 @@ td{padding:14px 18px;vertical-align:middle}
   </div>
 
   <div class="progress-title">Fuar Tamamlanma Oranı</div>
-  <div id="prog-wrap" class="progress-items"></div>
+  <div id="pw" class="progress-items"></div>
 
-  <div class="footer">CNG Expo · Data Operations · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cfaea3a6e1bfaabdb9aea1a0a8a3ba8faca1a8aab7bfa0e1aca0a2">[email&#160;protected]</a></div>
+  <div class="footer">CNG Expo · Data Operations · ali.pervanoglu@cngexpo.com</div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-var fuarlar = [
-  {ad:"AYSAF 2026", alt:"Yurt İçi (TR)", tarih:"Nis 2026", t:"done", mx:"done", mev:"done", db:"done", em:"done", sms:"prog", kayit:"20.636", pct:86},
-  {ad:"AYSAF 2026", alt:"Yurt Dışı",     tarih:"Nis 2026", t:"done", mx:"done", mev:"done", db:"prog", em:"done", sms:"wait", kayit:"4.574",  pct:71},
-  {ad:"AYSAD 2026", alt:"Üye listesi",   tarih:"2026",     t:"done", mx:"done", mev:"done", db:"done", em:"wait", sms:"wait", kayit:"474",    pct:57},
-  {ad:"PaintIstanbul 2026", alt:"VIP Protokol", tarih:"2026", t:"done", mx:"wait", mev:"wait", db:"done", em:"wait", sms:"wait", kayit:"117", pct:29}
+<script>
+var data = [
+  {ad:"AYSAF 2026",         alt:"Yurt Ici (TR)",  tarih:"Nis 2026", t:"done", db:"done", mx:"done", mev:"done", em:"done", sms:"prog", kayit:"20.636", pct:86},
+  {ad:"AYSAF 2026",         alt:"Yurt Disi",       tarih:"Nis 2026", t:"done", db:"prog", mx:"done", mev:"done", em:"done", sms:"wait", kayit:"4.574",  pct:71},
+  {ad:"AYSAD 2026",         alt:"Uye listesi",      tarih:"2026",     t:"done", db:"done", mx:"done", mev:"done", em:"wait", sms:"wait", kayit:"474",    pct:57},
+  {ad:"PaintIstanbul 2026", alt:"VIP Protokol",     tarih:"2026",     t:"done", db:"done", mx:"wait", mev:"wait", em:"wait", sms:"wait", kayit:"117",    pct:29}
 ];
 
-var lbl = {done:"Tamamlandı", prog:"Devam ediyor", wait:"Yapılmadı"};
+var lbl = {};
+lbl["done"] = "Tamamlandi";
+lbl["prog"] = "Devam ediyor";
+lbl["wait"] = "Yapilmadi";
 
-function badge(s) {
-  return '<span class="badge ' + s + '"><span class="bdot"></span>' + lbl[s] + '</span>';
+function b(s) {
+  return "<span class=\"badge " + s + "\"><span class=\"bdot\"></span> " + lbl[s] + "</span>";
 }
 
 var tbody = document.getElementById("tbl");
-for (var i = 0; i < fuarlar.length; i++) {
-  var f = fuarlar[i];
+for (var i = 0; i < data.length; i++) {
+  var f = data[i];
   var tr = document.createElement("tr");
-  tr.innerHTML =
-    '<td><div class="fuar-name">' + f.ad + '</div><div class="fuar-date">' + f.alt + ' · ' + f.tarih + '</div></td>' +
-    '<td>' + badge(f.t)   + '</td>' +
-    '<td>' + badge(f.db)  + '</td>' +
-    '<td>' + badge(f.mx)  + '</td>' +
-    '<td>' + badge(f.mev) + '</td>' +
-    '<td>' + badge(f.em)  + '</td>' +
-    '<td>' + badge(f.sms) + '</td>' +
-    '<td><span class="kayit">' + f.kayit + '</span></td>';
+  var html = "";
+  html = html + "<td><div class=\"fuar-name\">" + f.ad + "</div><div class=\"fuar-date\">" + f.alt + " - " + f.tarih + "</div></td>";
+  html = html + "<td>" + b(f.t)   + "</td>";
+  html = html + "<td>" + b(f.db)  + "</td>";
+  html = html + "<td>" + b(f.mx)  + "</td>";
+  html = html + "<td>" + b(f.mev) + "</td>";
+  html = html + "<td>" + b(f.em)  + "</td>";
+  html = html + "<td>" + b(f.sms) + "</td>";
+  html = html + "<td><span class=\"kayit\">" + f.kayit + "</span></td>";
+  tr.innerHTML = html;
   tbody.appendChild(tr);
 }
 
-var pw = document.getElementById("prog-wrap");
-for (var j = 0; j < fuarlar.length; j++) {
-  var f = fuarlar[j];
-  var d = document.createElement("div");
-  d.className = "prog-item";
-  d.innerHTML =
-    '<div class="prog-item-name"><span>' + f.ad + ' <span style="opacity:0.5;font-size:10px">' + f.alt + '</span></span><span class="prog-pct">' + f.pct + '%</span></div>' +
-    '<div class="prog-bar"><div class="prog-fill" id="pf' + j + '" s
+var pw = document.getElementById("pw");
+for (var j = 0; j < data.length; j++) {
+  var f2 = data[j];
+  var div = document.createElement("div");
+  div.className = "prog-item";
+  var dhtml = "";
+  dhtml = dhtml + "<div class=\"prog-item-name\">";
+  dhtml = dhtml + "<span>" + f2.ad + " <span style=\"opacity:0.5;font-size:10px\">" + f2.alt + "</span></span>";
+  dhtml = dhtml + "<span class=\"prog-pct\">" + f2.pct + "%</span>";
+  dhtml = dhtml + "</div>";
+  dhtml = dhtml + "<div class=\"prog-bar\"><div class=\"prog-fill\" id=\"pf" + j + "\" style=\"width:0%\"></div></div>";
+  div.innerHTML = dhtml;
+  pw.appendChild(div);
+}
+
+setTimeout(function() {
+  for (var k = 0; k < data.length; k++) {
+    var el = document.getElementById("pf" + k);
+    if (el) { el.style.width = data[k].pct + "%"; }
+  }
+}, 200);
+</script>
+</body>
+</html>
