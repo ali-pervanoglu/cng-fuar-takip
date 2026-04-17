@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-04-17T13:57:20.586819+00:00"
+    "uretim_ts": "2026-04-17T14:08:11.219472+00:00"
   },
   "kpi": {
     "aktif_fuar": 7,
@@ -45,13 +45,13 @@
       "tarih": "2026",
       "t": "D",
       "db": "D",
-      "mx": "D",
+      "mx": "W",
       "mev": "W",
       "em": "W",
       "sms": "W",
       "kayit": "481",
       "gonder": "MEV bekleniyor",
-      "pct": 50
+      "pct": 33
     },
     {
       "ad": "PaintIstanbul 2026 — YDZ",
