@@ -1,0 +1,194 @@
+# CNG Expo — Pipeline Güncelleme Rehberi
+# Hazırlayan: Data & CRM Operations — ali.pervanoglu@cngexpo.com
+# Versiyon: 1.0 · Nisan 2026
+# ============================================================
+# Bu dosyayı referans olarak kullan.
+# Her adımı sırayla yap, bir sonrakine geçmeden önce kontrol et.
+# ============================================================
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SENARYO A: Bir aşama tamamlandığında dashboard'u güncelle
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ADIM 1 — DBeaver'da SQL çalıştır
+──────────────────────────────────
+Hangi fuar, hangi aşama bittiyse aşağıdaki şablonu doldur:
+
+  UPDATE pipeline_durum
+  SET [ASAMA_ADI] = 'D',
+      guncelleyen = 'ali'
+  WHERE fuar_id = (
+    SELECT fuar_id FROM pipeline_fuar_meta
+    WHERE fuar_kod = '[FUAR_KODU]'
+  );
+
+Aşama adları:
+  temizlik_durum   → Temizlik & Modelleme tamamlandı
+  db_durum         → DB'ye yükleme tamamlandı
+  mx_durum         → MX Sorgu tamamlandı
+  mev_durum        → MEV Doğrulama tamamlandı
+  email_durum      → Email listesi hazır
+  sms_durum        → SMS listesi hazır
+
+Fuar kodları:
+  aysaf_2026_tr         → AYSAF 2026 Yurt İçi
+  aysaf_2026_yd         → AYSAF 2026 Yurt Dışı
+  aysad_2026_uye        → AYSAD 2026 Üye listesi
+  paintist_2026_ydz     → PaintIstanbul 2026 YDZ
+  turkkompozt_2026_ydk  → Turkkompozt 2026 YDK
+  paintist_2026_ydk     → PaintIstanbul 2026 YDK
+  puexpo_2026_ydk       → Puexpo 2026 YDK
+
+Örnek — AYSAD MX sorgusu bitti:
+  UPDATE pipeline_durum
+  SET mx_durum = 'D', guncelleyen = 'ali'
+  WHERE fuar_id = (
+    SELECT fuar_id FROM pipeline_fuar_meta
+    WHERE fuar_kod = 'aysad_2026_uye'
+  );
+
+✅ Kontrol: Kaç satır güncellendi? "1 row affected" yazmalı.
+
+
+ADIM 2 — CMD'de ETL çalıştır
+──────────────────────────────────
+Windows tuşu → "cmd" yaz → Enter
+
+Klasöre git:
+  cd "C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi"
+
+ETL'i çalıştır:
+  python etl_pipeline.py --no-count
+
+✅ Kontrol: Son satırda şunu görmelisin:
+  INFO  data.json yazıldı → ... (X byte)
+  INFO  index.html yazıldı → ...
+  INFO  ETL başarıyla tamamlandı
+
+❌ "index.html bulunamadı" yazarsa:
+  copy index_v2.html index.html
+  python etl_pipeline.py --no-count
+
+
+ADIM 3 — GitHub'a yükle
+──────────────────────────────────
+1. https://github.com/ali-pervanoglu/cng-fuar-takip adresine git
+2. "Add file" → "Upload files" tıkla
+3. Klasördeki "data.json" dosyasını sürükle-bırak
+4. "Commit changes" butonuna bas
+
+✅ Kontrol: Repo'da data.json'ın "just now" veya "X minutes ago" yazmalı.
+
+
+ADIM 4 — Dashboard'u kontrol et
+──────────────────────────────────
+Tarayıcıda aç:
+  https://ali-pervanoglu.github.io/cng-fuar-takip/
+
+Sayfayı yenile (Ctrl+F5 — cache temizleyerek yenile)
+
+✅ Kontrol: Güncellenen aşama yeşil yanıyor mu?
+   Tamamlanma yüzdesi değişti mi?
+
+⏱ Not: GitHub Pages bazen 1-2 dakika gecikebilir.
+   Hemen görünmezse 1-2 dakika bekle, tekrar yenile.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SENARYO B: Yeni fuar ekle
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ADIM 1 — DBeaver'da yeni fuar kaydı oluştur
+──────────────────────────────────
+  INSERT INTO pipeline_fuar_meta
+    (fuar_kod, fuar_ad, fuar_alt, fuar_tarih, kaynak_tablo, sira)
+  VALUES
+    ('yenifuar_2026_tr', 'Yeni Fuar 2026', 'Yurt İçi', 'Haz 2026', 'yenifuar_ziyaretci', 8);
+
+  INSERT INTO pipeline_durum (fuar_id)
+  SELECT fuar_id FROM pipeline_fuar_meta
+  WHERE fuar_kod = 'yenifuar_2026_tr';
+
+✅ Kontrol:
+  SELECT * FROM v_pipeline_ozet;
+  → Yeni satır görünmeli, tüm aşamalar W.
+
+
+ADIM 2–4: Senaryo A ile aynı
+(ETL çalıştır → GitHub'a yükle → dashboard kontrol)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SENARYO C: Birden fazla aşama aynı anda tamamlandı
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  UPDATE pipeline_durum
+  SET temizlik_durum = 'D',
+      db_durum       = 'D',
+      mx_durum       = 'D',
+      guncelleme_ts  = NOW(),
+      guncelleyen    = 'ali'
+  WHERE fuar_id = (
+    SELECT fuar_id FROM pipeline_fuar_meta
+    WHERE fuar_kod = 'paintist_2026_ydz'
+  );
+
+Sonra Senaryo A Adım 2–4.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ANLIK DURUM KONTROLÜ (istediğin zaman)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DBeaver'da çalıştır:
+  SELECT fuar_ad, fuar_alt,
+         temizlik_durum, db_durum, mx_durum,
+         mev_durum, email_durum, sms_durum,
+         kayit_sayisi, tamamlanma_pct
+  FROM v_pipeline_ozet;
+
+ETL geçmişine bak:
+  SELECT * FROM pipeline_etl_log ORDER BY calisma_ts DESC LIMIT 10;
+
+Sadece hataları gör:
+  SELECT * FROM pipeline_etl_log WHERE durum = 'HATA' ORDER BY calisma_ts DESC;
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HATA ÇÖZÜM REHBERİ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HATA: "DB bağlantı hatası"
+  → .env dosyasını aç (Notepad ile)
+  → DB_HOST, DB_USER, DB_PASSWORD doğru mu?
+  → PostgreSQL servisi çalışıyor mu?
+
+HATA: "index.html bulunamadı"
+  → CMD'de şunu çalıştır:
+    copy index_v2.html index.html
+  → ETL'i tekrar çalıştır
+
+HATA: "FUARLAR array bulunamadı"
+  → index.html bozulmuş olabilir
+  → copy index_v2.html index.html yapıp yeniden çalıştır
+
+Dashboard güncellenmiyor:
+  → Ctrl+F5 ile cache temizleyerek yenile
+  → 1-2 dk bekle (GitHub Pages gecikmesi)
+  → data.json'ın GitHub'a doğru yüklendiğini teyit et
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BU SÜREÇ OTOMATİK HALİNE GELEBİLİR Mİ?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Şu an 3 manuel adım var:
+  1. SQL UPDATE (DBeaver)       → her zaman manuel kalmalı (karar senin)
+  2. ETL çalıştır (CMD)         → Windows Task Scheduler ile otomatik yapılabilir
+  3. GitHub'a yükle             → GitHub Actions ile otomatik yapılabilir
+
+Yani ileride yapılabilecek iyileştirme:
+  SQL UPDATE yaptıktan sonra ETL + GitHub push otomatik çalışır.
+  Sen sadece DBeaver'da D yazarsın, 2 dakika sonra dashboard güncellenir.
+  Bu bir sonraki aşama olarak planlanabilir.

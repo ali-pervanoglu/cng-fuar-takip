@@ -1,0 +1,179 @@
+2026-04-17 10:06:14  INFO      ============================================================
+2026-04-17 10:06:14  INFO      CNG Expo Pipeline ETL başladı
+2026-04-17 10:06:14  INFO        dry_run  : True
+2026-04-17 10:06:14  INFO        no_count : False
+2026-04-17 10:06:14  INFO      ============================================================
+2026-04-17 10:06:14  ERROR     DB bağlantı hatası: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "ali"
+
+2026-04-17 10:06:14  INFO      Toplam süre: 75 ms
+2026-04-17 10:06:14  INFO      ============================================================
+2026-04-17 10:08:50  INFO      ============================================================
+2026-04-17 10:08:50  INFO      CNG Expo Pipeline ETL başladı
+2026-04-17 10:08:50  INFO        dry_run  : True
+2026-04-17 10:08:50  INFO        no_count : False
+2026-04-17 10:08:50  INFO      ============================================================
+2026-04-17 10:08:50  ERROR     DB bağlantı hatası: connection to server at "localhost" (::1), port 5432 failed: FATAL:  database "cngexpo" does not exist
+
+2026-04-17 10:08:50  INFO      Toplam süre: 94 ms
+2026-04-17 10:08:50  INFO      ============================================================
+2026-04-17 10:10:57  INFO      ============================================================
+2026-04-17 10:10:57  INFO      CNG Expo Pipeline ETL başladı
+2026-04-17 10:10:57  INFO        dry_run  : True
+2026-04-17 10:10:57  INFO        no_count : False
+2026-04-17 10:10:57  INFO      ============================================================
+2026-04-17 10:10:57  INFO      PostgreSQL bağlantısı başarılı
+2026-04-17 10:10:57  ERROR     Beklenmeyen hata: UnicodeDecodeError: 'ascii' codec can't decode byte 0xc4 in position 5: ordinal not in range(128)
+Traceback (most recent call last):
+  File "C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\etl_pipeline.py", line 349, in main
+    rows = fetch_pipeline_rows(conn)
+  File "C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\etl_pipeline.py", line 113, in fetch_pipeline_rows
+    rows = [dict(r) for r in cur.fetchall()]
+                             ~~~~~~~~~~~~^^
+  File "C:\Users\ali.pervanoglu\AppData\Local\anaconda3\Lib\site-packages\psycopg2\extras.py", line 104, in fetchall
+    res = super().fetchall()
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xc4 in position 5: ordinal not in range(128)
+2026-04-17 10:10:57  INFO      DB bağlantısı kapatıldı
+2026-04-17 10:10:57  INFO      Toplam süre: 214 ms
+2026-04-17 10:10:57  INFO      ============================================================
+2026-04-17 10:20:07  INFO      ============================================================
+2026-04-17 10:20:07  INFO      CNG Expo Pipeline ETL başladı
+2026-04-17 10:20:07  INFO        dry_run  : True
+2026-04-17 10:20:07  INFO        no_count : False
+2026-04-17 10:20:07  INFO      ============================================================
+2026-04-17 10:20:07  INFO      PostgreSQL bağlantısı başarılı
+2026-04-17 10:20:07  INFO      v_pipeline_ozet: 7 fuar satırı okundu
+2026-04-17 10:20:07  WARNING     aysaf_2026_tr: COUNT sorgusu başarısız — relation "aysaf_ziyaretci" does not exist
+LINE 1: SELECT COUNT(*) FROM aysaf_ziyaretci WHERE segment = 'TR'
+                             ^
+
+2026-04-17 10:20:07  WARNING     aysaf_2026_yd: COUNT sorgusu başarısız — relation "aysaf_yurtdisi" does not exist
+LINE 1: SELECT COUNT(*) FROM aysaf_yurtdisi
+                             ^
+
+2026-04-17 10:20:07  WARNING     aysad_2026_uye: COUNT sorgusu başarısız — relation "aysad_uye" does not exist
+LINE 1: SELECT COUNT(*) FROM aysad_uye
+                             ^
+
+2026-04-17 10:20:07  WARNING     paintist_2026_ydz: COUNT sorgusu başarısız — relation "paintistanbul_ziyaretci" does not exist
+LINE 1: SELECT COUNT(*) FROM paintistanbul_ziyaretci
+                             ^
+
+2026-04-17 10:20:07  WARNING     turkkompozt_2026_ydk: COUNT sorgusu başarısız — relation "fuar_katilimci" does not exist
+LINE 1: SELECT COUNT(*) FROM fuar_katilimci WHERE fuar_kod = 'JEC'
+                             ^
+
+2026-04-17 10:20:07  WARNING     paintist_2026_ydk: COUNT sorgusu başarısız — relation "fuar_katilimci" does not exist
+LINE 1: SELECT COUNT(*) FROM fuar_katilimci WHERE fuar_kod = 'PIND'
+                             ^
+
+2026-04-17 10:20:07  WARNING     puexpo_2026_ydk: COUNT sorgusu başarısız — relation "fuar_katilimci" does not exist
+LINE 1: SELECT COUNT(*) FROM fuar_katilimci WHERE fuar_kod = 'UTEC'
+                             ^
+
+2026-04-17 10:20:07  INFO      refresh_counts tamamlandı: 0 tablo güncellendi
+2026-04-17 10:20:07  INFO      KPI → aktif_fuar=7  toplam_kisi=73,979  email_hazir=14,005  sms_hazir=18,398  db_kayit=73,979
+2026-04-17 10:20:07  INFO      [DRY-RUN] data.json yazılmadı (C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\data.json)
+2026-04-17 10:20:07  WARNING   index.html bulunamadı: C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\index.html, güncelleme atlandı
+2026-04-17 10:20:07  INFO      ETL başarıyla tamamlandı
+2026-04-17 10:20:07  INFO      DB bağlantısı kapatıldı
+2026-04-17 10:20:07  INFO      Toplam süre: 112 ms
+2026-04-17 10:20:07  INFO      ============================================================
+2026-04-17 11:33:28  INFO      ============================================================
+2026-04-17 11:33:28  INFO      CNG Expo Pipeline ETL başladı
+2026-04-17 11:33:28  INFO        dry_run  : False
+2026-04-17 11:33:28  INFO        no_count : True
+2026-04-17 11:33:28  INFO      ============================================================
+2026-04-17 11:33:28  INFO      PostgreSQL bağlantısı başarılı
+2026-04-17 11:33:28  INFO      v_pipeline_ozet: 7 fuar satırı okundu
+2026-04-17 11:33:28  INFO      --no-count: COUNT sorguları atlandı
+2026-04-17 11:33:28  INFO      KPI → aktif_fuar=7  toplam_kisi=73,979  email_hazir=14,005  sms_hazir=18,398  db_kayit=73,979
+2026-04-17 11:33:28  INFO      data.json yazıldı → C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\data.json  (2,301 byte)
+2026-04-17 11:33:28  WARNING   index.html bulunamadı: C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\index.html, güncelleme atlandı
+2026-04-17 11:33:28  INFO      ETL başarıyla tamamlandı
+2026-04-17 11:33:28  INFO      ETL log kaydedildi: BASARILI / 94 ms
+2026-04-17 11:33:28  INFO      DB bağlantısı kapatıldı
+2026-04-17 11:33:28  INFO      Toplam süre: 94 ms
+2026-04-17 11:33:28  INFO      ============================================================
+2026-04-17 11:37:00  INFO      ============================================================
+2026-04-17 11:37:00  INFO      CNG Expo Pipeline ETL başladı
+2026-04-17 11:37:00  INFO        dry_run  : False
+2026-04-17 11:37:00  INFO        no_count : True
+2026-04-17 11:37:00  INFO      ============================================================
+2026-04-17 11:37:00  INFO      PostgreSQL bağlantısı başarılı
+2026-04-17 11:37:00  INFO      v_pipeline_ozet: 7 fuar satırı okundu
+2026-04-17 11:37:00  INFO      --no-count: COUNT sorguları atlandı
+2026-04-17 11:37:00  INFO      KPI → aktif_fuar=7  toplam_kisi=73,979  email_hazir=14,005  sms_hazir=18,398  db_kayit=73,979
+2026-04-17 11:37:00  INFO      data.json yazıldı → C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\data.json  (2,301 byte)
+2026-04-17 11:37:00  INFO      FUARLAR array güncellendi (1 eşleşme)
+2026-04-17 11:37:00  INFO      index.html yazıldı → C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\index.html
+2026-04-17 11:37:00  INFO      ETL başarıyla tamamlandı
+2026-04-17 11:37:00  INFO      ETL log kaydedildi: BASARILI / 184 ms
+2026-04-17 11:37:00  INFO      DB bağlantısı kapatıldı
+2026-04-17 11:37:00  INFO      Toplam süre: 184 ms
+2026-04-17 11:37:00  INFO      ============================================================
+2026-04-17 12:21:09  INFO      ============================================================
+2026-04-17 12:21:09  INFO      CNG Expo Pipeline ETL başladı
+2026-04-17 12:21:09  INFO        dry_run  : False
+2026-04-17 12:21:09  INFO        no_count : True
+2026-04-17 12:21:09  INFO      ============================================================
+2026-04-17 12:21:09  INFO      PostgreSQL bağlantısı başarılı
+2026-04-17 12:21:09  INFO      v_pipeline_ozet: 7 fuar satırı okundu
+2026-04-17 12:21:09  INFO      --no-count: COUNT sorguları atlandı
+2026-04-17 12:21:09  INFO      KPI → aktif_fuar=7  toplam_kisi=73,979  email_hazir=14,005  sms_hazir=18,398  db_kayit=73,979
+2026-04-17 12:21:09  INFO      data.json yazıldı → C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\data.json  (2,317 byte)
+2026-04-17 12:21:09  WARNING   index.html bulunamadı: C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\index.html, güncelleme atlandı
+2026-04-17 12:21:09  INFO      ETL başarıyla tamamlandı
+2026-04-17 12:21:09  INFO      ETL log kaydedildi: BASARILI / 95 ms
+2026-04-17 12:21:09  INFO      DB bağlantısı kapatıldı
+2026-04-17 12:21:09  INFO      Toplam süre: 95 ms
+2026-04-17 12:21:09  INFO      ============================================================
+2026-04-17 14:45:09  INFO      ============================================================
+2026-04-17 14:45:09  INFO      CNG Expo Pipeline ETL başladı
+2026-04-17 14:45:09  INFO        dry_run  : False
+2026-04-17 14:45:09  INFO        no_count : True
+2026-04-17 14:45:09  INFO      ============================================================
+2026-04-17 14:45:09  INFO      PostgreSQL bağlantısı başarılı
+2026-04-17 14:45:09  INFO      v_pipeline_ozet: 7 fuar satırı okundu
+2026-04-17 14:45:09  INFO      --no-count: COUNT sorguları atlandı
+2026-04-17 14:45:09  INFO      KPI → aktif_fuar=7  toplam_kisi=73,979  email_hazir=14,005  sms_hazir=18,398  db_kayit=73,979
+2026-04-17 14:45:09  INFO      data.json yazıldı → C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\data.json  (2,317 byte)
+2026-04-17 14:45:09  WARNING   index.html bulunamadı: C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\index.html, güncelleme atlandı
+2026-04-17 14:45:09  INFO      ETL başarıyla tamamlandı
+2026-04-17 14:45:09  INFO      ETL log kaydedildi: BASARILI / 97 ms
+2026-04-17 14:45:09  INFO      DB bağlantısı kapatıldı
+2026-04-17 14:45:09  INFO      Toplam süre: 97 ms
+2026-04-17 14:45:09  INFO      ============================================================
+2026-04-17 14:46:07  INFO      ============================================================
+2026-04-17 14:46:07  INFO      CNG Expo Pipeline ETL başladı
+2026-04-17 14:46:07  INFO        dry_run  : False
+2026-04-17 14:46:07  INFO        no_count : True
+2026-04-17 14:46:07  INFO      ============================================================
+2026-04-17 14:46:08  INFO      PostgreSQL bağlantısı başarılı
+2026-04-17 14:46:08  INFO      v_pipeline_ozet: 7 fuar satırı okundu
+2026-04-17 14:46:08  INFO      --no-count: COUNT sorguları atlandı
+2026-04-17 14:46:08  INFO      KPI → aktif_fuar=7  toplam_kisi=73,979  email_hazir=14,005  sms_hazir=18,398  db_kayit=73,979
+2026-04-17 14:46:08  INFO      data.json yazıldı → C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\data.json  (2,317 byte)
+2026-04-17 14:46:08  INFO      FUARLAR array güncellendi (1 eşleşme)
+2026-04-17 14:46:08  INFO      index.html yazıldı → C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\index.html
+2026-04-17 14:46:08  INFO      ETL başarıyla tamamlandı
+2026-04-17 14:46:08  INFO      ETL log kaydedildi: BASARILI / 182 ms
+2026-04-17 14:46:08  INFO      DB bağlantısı kapatıldı
+2026-04-17 14:46:08  INFO      Toplam süre: 182 ms
+2026-04-17 14:46:08  INFO      ============================================================
+2026-04-17 14:57:43  INFO      ============================================================
+2026-04-17 14:57:43  INFO      CNG Expo Pipeline ETL başladı
+2026-04-17 14:57:43  INFO        dry_run  : False
+2026-04-17 14:57:43  INFO        no_count : True
+2026-04-17 14:57:43  INFO      ============================================================
+2026-04-17 14:57:43  INFO      PostgreSQL bağlantısı başarılı
+2026-04-17 14:57:43  INFO      v_pipeline_ozet: 7 fuar satırı okundu
+2026-04-17 14:57:43  INFO      --no-count: COUNT sorguları atlandı
+2026-04-17 14:57:43  INFO      KPI → aktif_fuar=7  toplam_kisi=73,979  email_hazir=14,005  sms_hazir=18,398  db_kayit=73,979
+2026-04-17 14:57:43  INFO      data.json yazıldı → C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\data.json  (2,317 byte)
+2026-04-17 14:57:43  INFO      FUARLAR array güncellendi (1 eşleşme)
+2026-04-17 14:57:43  INFO      index.html yazıldı → C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\index.html
+2026-04-17 14:57:43  INFO      ETL başarıyla tamamlandı
+2026-04-17 14:57:43  INFO      ETL log kaydedildi: BASARILI / 179 ms
+2026-04-17 14:57:43  INFO      DB bağlantısı kapatıldı
+2026-04-17 14:57:43  INFO      Toplam süre: 179 ms
+2026-04-17 14:57:43  INFO      ============================================================

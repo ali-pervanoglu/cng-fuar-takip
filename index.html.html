@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNG Expo - Fuar Pipeline Takip</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e1a;--surface:#111827;--border:rgba(255,255,255,0.07);--text:#e8eaf0;--muted:#6b7a9a;--dim:#3d4f6e;--done-bg:rgba(34,197,94,0.12);--done-t:#4ade80;--done-b:rgba(34,197,94,0.25);--prog-bg:rgba(251,146,60,0.12);--prog-t:#fb923c;--prog-b:rgba(251,146,60,0.25);--wait-bg:rgba(107,114,154,0.1);--wait-t:#6b7a9a;--wait-b:rgba(107,114,154,0.2);--accent:#3b82f6;--accent2:#818cf8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(59,130,246,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+.container{max-width:1100px;margin:0 auto;padding:48px 24px;position:relative;z-index:1}
+.logo{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:40px}
+h1{font-size:28px;font-weight:600;letter-spacing:-0.02em;line-height:1.2}
+.subtitle{color:var(--muted);font-size:14px;margin-top:6px}
+.last-update{font-family:'DM Mono',monospace;font-size:11px;color:var(--dim);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 14px;white-space:nowrap;line-height:1.8}
+.last-update span{color:var(--done-t)}
+
+/* Yükleme durumu göstergesi */
+.loading-bar{height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));position:fixed;top:0;left:0;width:0;transition:width 0.4s ease;z-index:999}
+.loading-bar.done{width:100%;opacity:0;transition:width 0.3s,opacity 0.5s 0.3s}
+.error-banner{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;border-radius:8px;padding:12px 18px;margin-bottom:24px;font-size:13px;display:none}
+.error-banner.visible{display:block}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:40px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
+.stat-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500}
+.stat-sub{font-size:11px;color:var(--dim);margin-top:2px}
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.leg-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.leg-dot{width:8px;height:8px;border-radius:50%}
+.col-hint{font-size:11px;color:var(--dim);margin-bottom:20px}
+.col-hint span{color:var(--muted)}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:40px}
+.table-header-bar{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.table-title{font-size:13px;font-weight:500}
+.table-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--dim)}
+table{width:100%;border-collapse:collapse;table-layout:auto}
+thead th{padding:12px 14px;text-align:left;font-size:11px;font-weight:500;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02);white-space:nowrap;cursor:help}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,0.02)}
+td{padding:14px 14px;vertical-align:middle}
+.fuar-name{font-weight:500;font-size:13px;white-space:nowrap}
+.fuar-date{font-size:11px;color:var(--dim);margin-top:2px;font-family:'DM Mono',monospace}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap;border:1px solid transparent}
+.done{background:var(--done-bg);color:var(--done-t);border-color:var(--done-b)}
+.prog{background:var(--prog-bg);color:var(--prog-t);border-color:var(--prog-b)}
+.wait{background:var(--wait-bg);color:var(--wait-t);border-color:var(--wait-b)}
+.bdot{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block;vertical-align:middle}
+.kayit{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);font-weight:500;white-space:nowrap}
+.kayit-alt{font-size:10px;color:var(--dim);display:block;margin-top:2px}
+.progress-title{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px}
+.progress-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:40px}
+.prog-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.prog-item-name{font-size:12px;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between}
+.prog-pct{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)}
+.prog-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1s ease}
+.skeleton{background:rgba(255,255,255,0.04);border-radius:4px;animation:shimmer 1.4s infinite}
+@keyframes shimmer{0%{opacity:0.4}50%{opacity:0.8}100%{opacity:0.4}}
+.footer{text-align:center;font-size:11px;color:var(--dim);padding-top:24px;border-top:1px solid var(--border);font-family:'DM Mono',monospace}
+@media(max-width:768px){h1{font-size:22px}.table-wrap{overflow-x:auto}table{min-width:900px}}
+</style>
+</head>
+<body>
+
+<div class="loading-bar" id="lbar"></div>
+
+<div class="container">
+  <div class="header-top">
+    <div>
+      <div class="logo">CNG Expo</div>
+      <h1>Fuar Pipeline Takip</h1>
+      <p class="subtitle">Email ve SMS kampanya hazırlık durumu - 2026 sezonu</p>
+    </div>
+    <div class="last-update">Son güncelleme<br><span id="tarih">—</span></div>
+  </div>
+
+  <div class="error-banner" id="err"></div>
+
+  <!-- KPI Kartları — data-kpi niteliği ile dinamik doldurulur -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Aktif Fuar</div>
+      <div class="stat-val" data-kpi="aktif_fuar">—</div>
+      <div class="stat-sub">2026 sezonu</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Toplam Kişi</div>
+      <div class="stat-val" data-kpi="toplam_kisi">—</div>
+      <div class="stat-sub">tüm listeler</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Email Hazır</div>
+      <div class="stat-val" data-kpi="email_hazir">—</div>
+      <div class="stat-sub">gönder listesi</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">SMS Hazır</div>
+      <div class="stat-val" data-kpi="sms_hazir">—</div>
+      <div class="stat-sub">TR + Yurt Dışı</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">DB Kayıt</div>
+      <div class="stat-val" data-kpi="db_kayit">—</div>
+      <div class="stat-sub">PostgreSQL toplam</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:var(--done-t)"></div>Tamamlandı</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--prog-t)"></div>Devam ediyor</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--wait-t)"></div>Yapılmadı</div>
+  </div>
+
+  <div class="col-hint">
+    Kolon üzerine gelin açıklama görün —
+    <span>Temizlik ve Modelleme</span> = ham veri + segmentasyon + KPI —
+    <span>MX</span> = domain sunucu sorgusu —
+    <span>MEV</span> = MyEmailVerifier
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-header-bar">
+      <span class="table-title">Pipeline Durumu</span>
+      <span class="table-meta" id="tbl-meta">yükleniyor…</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Fuar</th>
+          <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI">Temizlik &amp; Modelleme</th>
+          <th title="PostgreSQL veritabanına yüklendi mi">DB</th>
+          <th title="Python DNS ile email domain sunucu sorgusu">MX Sorgu</th>
+          <th title="MyEmailVerifier ile posta kutusu doğrulaması">MEV</th>
+          <th title="Gönderilmeye hazır email listesi üretildi mi">Email Kamp.</th>
+          <th title="SMS temiz liste hazırlandı mı">SMS Kamp.</th>
+          <th style="min-width:110px">Kayıt</th>
+        </tr>
+      </thead>
+      <tbody id="tbl"></tbody>
+    </table>
+  </div>
+
+  <div class="progress-title">Fuar Tamamlanma Oranı</div>
+  <div id="pw" class="progress-items"></div>
+
+  <div class="footer">CNG Expo - Data Operations - ali.pervanoglu@cngexpo.com</div>
+</div>
+
+<script>
+/* =========================================================
+   data.json'dan oku — fallback olarak hardcoded veri kullan
+   ========================================================= */
+
+var LBL = { D: "Tamamlandı", P: "Devam ediyor", W: "Yapılmadı" };
+
+function badge(s) {
+  return '<span class="badge ' + s.toLowerCase() + '">'
+       + '<span class="bdot"></span> ' + (LBL[s] || s)
+       + '</span>';
+}
+
+function fmtNum(n) {
+  // 14005 → "14.005"  (Türkçe binlik ayracı)
+  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function renderKPI(kpi) {
+  document.querySelectorAll("[data-kpi]").forEach(function(el) {
+    var key = el.getAttribute("data-kpi");
+    if (kpi[key] !== undefined) {
+      var val = kpi[key];
+      // Sayısal değerleri Türkçe formatla
+      if (key !== "son_guncelleme" && key !== "aktif_fuar") {
+        el.textContent = fmtNum(val);
+      } else {
+        el.textContent = val;
+      }
+    }
+  });
+
+  var tarihEl = document.getElementById("tarih");
+  if (tarihEl && kpi.son_guncelleme) tarihEl.textContent = kpi.son_guncelleme;
+}
+
+function renderTable(fuarlar) {
+  var tbody = document.getElementById("tbl");
+  var meta  = document.getElementById("tbl-meta");
+  tbody.innerHTML = "";
+
+  fuarlar.forEach(function(f) {
+    var tr = document.createElement("tr");
+    var h  = "";
+    h += '<td><div class="fuar-name">' + f.ad + '</div>'
+       + '<div class="fuar-date">' + f.alt + ' — ' + f.tarih + '</div></td>';
+    h += "<td>" + badge(f.t)   + "</td>";
+    h += "<td>" + badge(f.db)  + "</td>";
+    h += "<td>" + badge(f.mx)  + "</td>";
+    h += "<td>" + badge(f.mev) + "</td>";
+    h += "<td>" + badge(f.em)  + "</td>";
+    h += "<td>" + badge(f.sms) + "</td>";
+    h += '<td><span class="kayit">' + f.kayit + '</span>'
+       + '<span class="kayit-alt">' + (f.gonder || "") + '</span></td>';
+    tr.innerHTML = h;
+    tbody.appendChild(tr);
+  });
+
+  if (meta) meta.textContent = fuarlar.length + " fuar — 2026";
+}
+
+function renderProgress(fuarlar) {
+  var pw = document.getElementById("pw");
+  pw.innerHTML = "";
+
+  fuarlar.forEach(function(f, j) {
+    var div = document.createElement("div");
+    div.className = "prog-item";
+    div.innerHTML =
+      '<div class="prog-item-name">'
+      + '<span>' + f.ad + ' <span style="opacity:0.5;font-size:10px">' + f.alt + '</span></span>'
+      + '<span class="prog-pct">' + f.pct + '%</span></div>'
+      + '<div class="prog-bar"><div class="prog-fill" id="pf' + j + '" style="width:0%"></div></div>';
+    pw.appendChild(div);
+  });
+
+  // Bar animasyonu
+  setTimeout(function() {
+    fuarlar.forEach(function(f, k) {
+      var el = document.getElementById("pf" + k);
+      if (el) el.style.width = f.pct + "%";
+    });
+  }, 150);
+}
+
+function showError(msg) {
+  var el = document.getElementById("err");
+  if (el) { el.textContent = "⚠ " + msg; el.classList.add("visible"); }
+}
+
+function setLoading(done) {
+  var lb = document.getElementById("lbar");
+  if (!lb) return;
+  if (done) {
+    lb.style.width = "100%";
+    lb.classList.add("done");
+  } else {
+    lb.style.width = "60%";
+  }
+}
+
+/* ---- Ana yükleme mantığı ---- */
+setLoading(false);
+
+fetch("data.json?_=" + Date.now())   // cache-buster
+  .then(function(r) {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  })
+  .then(function(data) {
+    renderKPI(data.kpi || {});
+    renderTable(data.fuarlar || []);
+    renderProgress(data.fuarlar || []);
+    setLoading(true);
+  })
+  .catch(function(err) {
+    console.warn("data.json yüklenemedi, fallback kullanılıyor:", err);
+    showError("data.json okunamadı — gösterilen veriler son ETL çıktısına aittir. Hata: " + err.message);
+    useFallback();
+    setLoading(true);
+  });
+
+/* ---- Fallback: ETL çalışmadığında gösterilecek son bilinen veri ---- */
+function useFallback() {
+  var D = "D", P = "P", W = "W";
+  var FUARLAR = [
+    {ad:"AYSAF 2026", alt:"Yurt İçi (TR)", tarih:"Nis 2026", t:D, db:D, mx:D, mev:D, em:D, sms:D, kayit:"20.636", gonder:"11.138 gönder", pct:100},
+    {ad:"AYSAF 2026", alt:"Yurt Dışı",     tarih:"Nis 2026", t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"4.574",  gonder:"2.867 gönder",  pct:83},
+    {ad:"AYSAD 2026", alt:"Üye listesi",   tarih:"2026",     t:D, db:D, mx:D, mev:W, em:W, sms:W, kayit:"481",    gonder:"MEV bekleniyor", pct:50},
+    {ad:"PaintIstanbul 2026", alt:"YDZ Web Scraping", tarih:"2026", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"47.628", gonder:"MX + MEV bekleniyor", pct:33},
+    {ad:"Turkkompozt 2026",   alt:"YDK JEC World",    tarih:"2026", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"130",    gonder:"MX + MEV bekleniyor", pct:33},
+    {ad:"PaintIstanbul 2026", alt:"YDK Paintindia",   tarih:"2026", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"290",    gonder:"MX + MEV bekleniyor", pct:33},
+    {ad:"Puexpo 2026",        alt:"YDK UTECH",        tarih:"2026", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"240",    gonder:"MX + MEV bekleniyor", pct:33}
+  ];
+  var kpi = {
+    aktif_fuar:  FUARLAR.length,
+    toplam_kisi: 70598,
+    email_hazir: 14005,
+    sms_hazir:   18398,
+    db_kayit:    69669,
+    son_guncelleme: new Date().toLocaleDateString("tr-TR")
+  };
+  renderKPI(kpi);
+  renderTable(FUARLAR);
+  renderProgress(FUARLAR);
+}
+</script>
+</body>
+</html>
