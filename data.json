@@ -1,11 +1,11 @@
 {
   "meta": {
-    "uretim_ts": "2026-04-27T12:45:58.560079+00:00"
+    "uretim_ts": "2026-04-27T13:20:26.281200+00:00"
   },
   "kpi": {
     "aktif_fuar": 7,
     "toplam_kisi": 73979,
-    "email_hazir": 14005,
+    "email_hazir": 59423,
     "sms_hazir": 18398,
     "db_kayit": 73979,
     "son_guncelleme": "27.04.2026"
@@ -59,13 +59,13 @@
       "tarih": "2026",
       "t": "D",
       "db": "D",
-      "mx": "W",
+      "mx": "D",
       "mev": "W",
       "em": "W",
       "sms": "W",
       "kayit": "47.628",
-      "gonder": "MX + MEV bekleniyor",
-      "pct": 33
+      "gonder": "45.418 gönder",
+      "pct": 50
     },
     {
       "ad": "Turkkompozt 2026 — YDK",
