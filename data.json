@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-04-30T06:40:54.111969+00:00"
+    "uretim_ts": "2026-04-30T06:46:11.304666+00:00"
   },
   "kpi": {
     "aktif_fuar": 7,
@@ -64,7 +64,7 @@
       "em": "W",
       "sms": "W",
       "kayit": "47.628",
-      "gonder": "45.418 gönder",
+      "gonder": "MEV bekleniyor",
       "pct": 50
     },
     {
