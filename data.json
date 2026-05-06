@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-05-06T06:33:01.444260+00:00"
+    "uretim_ts": "2026-05-06T13:59:39.709673+00:00"
   },
   "kpi": {
-    "aktif_fuar": 7,
-    "toplam_kisi": 69546,
-    "email_hazir": 59423,
+    "aktif_fuar": 8,
+    "toplam_kisi": 69606,
+    "email_hazir": 59468,
     "sms_hazir": 18398,
-    "db_kayit": 69546,
+    "db_kayit": 69606,
     "son_guncelleme": "06.05.2026"
   },
   "fuarlar": [
@@ -108,6 +108,20 @@
       "kayit": "240",
       "gonder": "MX + MEV bekleniyor",
       "pct": 33
+    },
+    {
+      "ad": "PaintIstanbul 2026",
+      "alt": "Yurt İçi (TR) — TurkeyBuild",
+      "tarih": "May 2026",
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "W",
+      "sms": "D",
+      "kayit": "60",
+      "gonder": "Kartvizit verisi — MX/MEV uygulanmadı, 45 SMS gönderildi",
+      "pct": 83
     }
   ]
 }
