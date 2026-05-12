@@ -1,11 +1,11 @@
 {
   "meta": {
-    "uretim_ts": "2026-05-12T09:42:52.447774+00:00"
+    "uretim_ts": "2026-05-12T12:07:47.252402+00:00"
   },
   "kpi": {
     "aktif_fuar": 8,
     "toplam_kisi": 70077,
-    "email_hazir": 59906,
+    "email_hazir": 59326,
     "sms_hazir": 18398,
     "db_kayit": 70077,
     "son_guncelleme": "12.05.2026"
@@ -61,11 +61,11 @@
       "db": "D",
       "mx": "D",
       "mev": "D",
-      "em": "W",
+      "em": "D",
       "sms": "W",
       "kayit": "48.099",
-      "gonder": "45.856 gönder — MEV uygulanmadı",
-      "pct": 67
+      "gonder": "45.276 gönder — gov. domainleri ve sahte emailler temizlendi",
+      "pct": 83
     },
     {
       "ad": "Turkkompozt 2026 — YDK",
