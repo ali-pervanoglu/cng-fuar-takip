@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-10T06:30:05.410534+00:00"
+    "uretim_ts": "2026-06-10T12:19:22.307469+00:00"
   },
   "kpi": {
     "aktif_fuar": 8,
-    "toplam_kisi": 70077,
-    "email_hazir": 59326,
+    "toplam_kisi": 71620,
+    "email_hazir": 60884,
     "sms_hazir": 18398,
-    "db_kayit": 70077,
+    "db_kayit": 71620,
     "son_guncelleme": "10.06.2026"
   },
   "fuarlar": [
@@ -115,13 +115,13 @@
       "tarih": "May 2026",
       "t": "D",
       "db": "D",
-      "mx": "D",
-      "mev": "D",
-      "em": "W",
-      "sms": "D",
-      "kayit": "60",
-      "gonder": "Kartvizit verisi — MX/MEV uygulanmadı, 45 SMS gönderildi",
-      "pct": 83
+      "mx": "W",
+      "mev": "W",
+      "em": "D",
+      "sms": "W",
+      "kayit": "1.603",
+      "gonder": "Online Kayıt: 0 | Outreach (TMB/İMO/GEMİMO/BEYSAD/GİSBİR): 1603 | Form Dolduran: 0",
+      "pct": 50
     }
   ]
 }
