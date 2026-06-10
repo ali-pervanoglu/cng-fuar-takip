@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-10T12:26:08.829064+00:00"
+    "uretim_ts": "2026-06-10T12:41:47.261267+00:00"
   },
   "kpi": {
     "aktif_fuar": 8,
-    "toplam_kisi": 71620,
-    "email_hazir": 60884,
+    "toplam_kisi": 74150,
+    "email_hazir": 63414,
     "sms_hazir": 18398,
-    "db_kayit": 71620,
+    "db_kayit": 74150,
     "son_guncelleme": "10.06.2026"
   },
   "fuarlar": [
@@ -119,7 +119,7 @@
       "mev": "W",
       "em": "D",
       "sms": "D",
-      "kayit": "1.603",
+      "kayit": "4.133",
       "gonder": "Online Kayıt: 0 | Outreach (TMB/İMO/GEMİMO/BEYSAD/GİSBİR): 1603 | Form Dolduran: 0",
       "pct": 67
     }
