@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-10T12:41:47.261267+00:00"
+    "uretim_ts": "2026-06-10T12:45:48.783994+00:00"
   },
   "kpi": {
     "aktif_fuar": 8,
@@ -120,7 +120,7 @@
       "em": "D",
       "sms": "D",
       "kayit": "4.133",
-      "gonder": "Online Kayıt: 0 | Outreach (TMB/İMO/GEMİMO/BEYSAD/GİSBİR): 1603 | Form Dolduran: 0",
+      "gonder": "4.133 YİZ kaydı — Outreach + Online Kayıt + Form Dolduran",
       "pct": 67
     }
   ]
