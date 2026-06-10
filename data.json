@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-10T12:19:22.307469+00:00"
+    "uretim_ts": "2026-06-10T12:26:08.829064+00:00"
   },
   "kpi": {
     "aktif_fuar": 8,
@@ -111,17 +111,17 @@
     },
     {
       "ad": "PaintIstanbul 2026",
-      "alt": "Yurt İçi (TR) — TurkeyBuild",
+      "alt": "Yurt İçi (YİZ)",
       "tarih": "May 2026",
       "t": "D",
       "db": "D",
       "mx": "W",
       "mev": "W",
       "em": "D",
-      "sms": "W",
+      "sms": "D",
       "kayit": "1.603",
       "gonder": "Online Kayıt: 0 | Outreach (TMB/İMO/GEMİMO/BEYSAD/GİSBİR): 1603 | Form Dolduran: 0",
-      "pct": 50
+      "pct": 67
     }
   ]
 }
