@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-11T12:08:29.848525+00:00"
+    "uretim_ts": "2026-06-11T12:14:41.665175+00:00"
   },
   "kpi": {
     "aktif_fuar": 8,
-    "toplam_kisi": 75444,
-    "email_hazir": 63414,
+    "toplam_kisi": 79629,
+    "email_hazir": 63526,
     "sms_hazir": 18398,
-    "db_kayit": 75444,
+    "db_kayit": 79629,
     "son_guncelleme": "11.06.2026"
   },
   "fuarlar": [
@@ -119,7 +119,7 @@
       "mev": "W",
       "em": "D",
       "sms": "D",
-      "kayit": "60",
+      "kayit": "4.245",
       "gonder": "4.133 YİZ kaydı — Outreach + Online Kayıt + Form Dolduran",
       "pct": 67
     }
