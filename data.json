@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-11T12:14:41.665175+00:00"
+    "uretim_ts": "2026-06-11T12:23:45.335974+00:00"
   },
   "kpi": {
     "aktif_fuar": 8,
@@ -115,13 +115,13 @@
       "tarih": "May 2026",
       "t": "D",
       "db": "D",
-      "mx": "W",
-      "mev": "W",
+      "mx": "D",
+      "mev": "D",
       "em": "D",
       "sms": "D",
       "kayit": "4.245",
       "gonder": "4.133 YİZ kaydı — Outreach + Online Kayıt + Form Dolduran",
-      "pct": 67
+      "pct": 100
     }
   ]
 }
