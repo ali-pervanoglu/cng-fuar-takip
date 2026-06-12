@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-12T07:31:04.378444+00:00"
+    "uretim_ts": "2026-06-12T13:57:43.768212+00:00"
   },
   "kpi": {
     "aktif_fuar": 8,
-    "toplam_kisi": 80587,
+    "toplam_kisi": 80593,
     "email_hazir": 64690,
     "sms_hazir": 18398,
-    "db_kayit": 80587,
+    "db_kayit": 80593,
     "son_guncelleme": "12.06.2026"
   },
   "fuarlar": [
@@ -63,7 +63,7 @@
       "mev": "D",
       "em": "D",
       "sms": "W",
-      "kayit": "53.469",
+      "kayit": "53.475",
       "gonder": "45.276 gönder — gov. domainleri ve sahte emailler temizlendi",
       "pct": 83
     },
