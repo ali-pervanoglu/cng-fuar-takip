@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-15T08:00:16.728355+00:00"
+    "uretim_ts": "2026-06-15T08:03:22.172436+00:00"
   },
   "kpi": {
     "aktif_fuar": 8,
@@ -64,7 +64,7 @@
       "em": "D",
       "sms": "W",
       "kayit": "53.475",
-      "gonder": "45.276 gönder — gov. domainleri ve sahte emailler temizlendi",
+      "gonder": "Tüm kayıtlar MX tamamlandı. MEV henüz yapılmadı. 12.06.2026: Kimya/Boya YİZ 90 kayıt eklendi (Web Scrape + Hunter.io).",
       "pct": 83
     },
     {
@@ -120,7 +120,7 @@
       "em": "D",
       "sms": "D",
       "kayit": "4.516",
-      "gonder": "4.516 YİZ kaydı — 2.558 kişiye SMS + Email, 1.958 kişiye sadece Email",
+      "gonder": "4.516 YİZ kaydı — 2.558 kişiye SMS + Email, 1.958 kişiye sadece Email (GSM yok). Outreach + Online Kayıt + Form Dolduran + Kimya/Boya (90 kayıt 12.06.2026)",
       "pct": 100
     }
   ]
