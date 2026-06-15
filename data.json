@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-15T07:49:08.075516+00:00"
+    "uretim_ts": "2026-06-15T07:52:43.159061+00:00"
   },
   "kpi": {
     "aktif_fuar": 8,
-    "toplam_kisi": 79900,
+    "toplam_kisi": 79890,
     "email_hazir": 63997,
-    "sms_hazir": 20956,
-    "db_kayit": 79900,
+    "sms_hazir": 14896,
+    "db_kayit": 79890,
     "son_guncelleme": "15.06.2026"
   },
   "fuarlar": [
@@ -21,7 +21,7 @@
       "mev": "D",
       "em": "D",
       "sms": "D",
-      "kayit": "16.200",
+      "kayit": "16.190",
       "gonder": "11.138 gönder",
       "pct": 100
     },
