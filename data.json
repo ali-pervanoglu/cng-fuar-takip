@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-16T15:16:41.023459+00:00"
+    "uretim_ts": "2026-06-16T15:33:02.701081+00:00"
   },
   "kpi": {
     "aktif_fuar": 10,
-    "toplam_kisi": 86942,
+    "toplam_kisi": 86878,
     "email_hazir": 70827,
     "sms_hazir": 20373,
-    "db_kayit": 86942,
+    "db_kayit": 86878,
     "son_guncelleme": "16.06.2026"
   },
   "fuarlar": [
@@ -21,7 +21,7 @@
       "mev": "D",
       "em": "D",
       "sms": "D",
-      "kayit": "16.190",
+      "kayit": "16.137",
       "gonder": "11.138 gönder",
       "pct": 100
     },
@@ -119,7 +119,7 @@
       "mev": "D",
       "em": "D",
       "sms": "D",
-      "kayit": "4.870",
+      "kayit": "4.859",
       "gonder": "4.870 YİZ kaydı — Outreach + Online Kayıt + Form Dolduran + İKMİB Hunter.io. ulke tespiti telefon/TLD bazlı yapıldı (16.06.2026).",
       "pct": 100
     },
