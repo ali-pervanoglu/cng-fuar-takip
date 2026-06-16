@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-16T15:56:02.513738+00:00"
+    "uretim_ts": "2026-06-16T16:02:13.778179+00:00"
   },
   "kpi": {
     "aktif_fuar": 10,
-    "toplam_kisi": 86933,
+    "toplam_kisi": 86928,
     "email_hazir": 70477,
     "sms_hazir": 20373,
-    "db_kayit": 86933,
+    "db_kayit": 86928,
     "son_guncelleme": "16.06.2026"
   },
   "fuarlar": [
@@ -119,8 +119,8 @@
       "mev": "D",
       "em": "D",
       "sms": "D",
-      "kayit": "4.859",
-      "gonder": "4.870 YİZ kaydı — Outreach + Online Kayıt + Form Dolduran + İKMİB Hunter.io. ulke tespiti telefon/TLD bazlı yapıldı (16.06.2026).",
+      "kayit": "4.854",
+      "gonder": "4.859 YİZ kaydı — Outreach + Online Kayıt + Form Dolduran + İKMİB Hunter.io. ulke tespiti telefon/TLD bazlı yapıldı (16.06.2026).",
       "pct": 100
     },
     {
