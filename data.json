@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-16T15:12:16.910374+00:00"
+    "uretim_ts": "2026-06-16T15:16:41.023459+00:00"
   },
   "kpi": {
     "aktif_fuar": 10,
@@ -120,7 +120,7 @@
       "em": "D",
       "sms": "D",
       "kayit": "4.870",
-      "gonder": "4.516 YİZ kaydı — 2.558 kişiye SMS + Email, 1.958 kişiye sadece Email (GSM yok). Outreach + Online Kayıt + Form Dolduran + Kimya/Boya (90 kayıt 12.06.2026)",
+      "gonder": "4.870 YİZ kaydı — Outreach + Online Kayıt + Form Dolduran + İKMİB Hunter.io. ulke tespiti telefon/TLD bazlı yapıldı (16.06.2026).",
       "pct": 100
     },
     {
