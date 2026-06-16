@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-16T14:10:24.077260+00:00"
+    "uretim_ts": "2026-06-16T15:12:16.910374+00:00"
   },
   "kpi": {
     "aktif_fuar": 10,
-    "toplam_kisi": 87281,
+    "toplam_kisi": 86942,
     "email_hazir": 70827,
     "sms_hazir": 20373,
-    "db_kayit": 87281,
+    "db_kayit": 86942,
     "son_guncelleme": "16.06.2026"
   },
   "fuarlar": [
@@ -119,7 +119,7 @@
       "mev": "D",
       "em": "D",
       "sms": "D",
-      "kayit": "5.209",
+      "kayit": "4.870",
       "gonder": "4.516 YİZ kaydı — 2.558 kişiye SMS + Email, 1.958 kişiye sadece Email (GSM yok). Outreach + Online Kayıt + Form Dolduran + Kimya/Boya (90 kayıt 12.06.2026)",
       "pct": 100
     },
