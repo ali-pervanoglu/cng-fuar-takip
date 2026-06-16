@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-16T06:30:04.428312+00:00"
+    "uretim_ts": "2026-06-16T14:10:24.077260+00:00"
   },
   "kpi": {
-    "aktif_fuar": 8,
-    "toplam_kisi": 79890,
-    "email_hazir": 63997,
-    "sms_hazir": 14896,
-    "db_kayit": 79890,
+    "aktif_fuar": 10,
+    "toplam_kisi": 87281,
+    "email_hazir": 70827,
+    "sms_hazir": 20373,
+    "db_kayit": 87281,
     "son_guncelleme": "16.06.2026"
   },
   "fuarlar": [
@@ -49,7 +49,7 @@
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": "481",
+      "kayit": "475",
       "gonder": "MX + MEV bekleniyor",
       "pct": 33
     },
@@ -63,7 +63,7 @@
       "mev": "D",
       "em": "D",
       "sms": "W",
-      "kayit": "53.475",
+      "kayit": "53.960",
       "gonder": "45.276 gönder — gov. domainleri ve sahte emailler temizlendi",
       "pct": 83
     },
@@ -91,7 +91,7 @@
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": "290",
+      "kayit": "283",
       "gonder": "MX + MEV bekleniyor",
       "pct": 33
     },
@@ -119,9 +119,37 @@
       "mev": "D",
       "em": "D",
       "sms": "D",
-      "kayit": "4.516",
+      "kayit": "5.209",
       "gonder": "4.516 YİZ kaydı — 2.558 kişiye SMS + Email, 1.958 kişiye sadece Email (GSM yok). Outreach + Online Kayıt + Form Dolduran + Kimya/Boya (90 kayıt 12.06.2026)",
       "pct": 100
+    },
+    {
+      "ad": "Chemex 2026",
+      "alt": "YİZ",
+      "tarih": null,
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "W",
+      "em": "W",
+      "sms": "W",
+      "kayit": "6.137",
+      "gonder": "6.137 YİZ (6.083 TR + 54 Türkiye temsilcisi). SMS:5.477 / Sadece Email:660. Kampanya listesi hazır, gönderim bekleniyor.",
+      "pct": 50
+    },
+    {
+      "ad": "Chemex 2026",
+      "alt": "Belirsiz",
+      "tarih": null,
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "W",
+      "em": "W",
+      "sms": "W",
+      "kayit": "89",
+      "gonder": "89 belirsiz kayıt — Batuhan Bey onayı bekleniyor.",
+      "pct": 50
     }
   ]
 }
