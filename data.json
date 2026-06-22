@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-22T06:37:38.089356+00:00"
+    "uretim_ts": "2026-06-22T07:26:20.601332+00:00"
   },
   "kpi": {
     "aktif_fuar": 10,
-    "toplam_kisi": 86928,
+    "toplam_kisi": 79251,
     "email_hazir": 70477,
     "sms_hazir": 20373,
-    "db_kayit": 86928,
+    "db_kayit": 79251,
     "son_guncelleme": "22.06.2026"
   },
   "fuarlar": [
@@ -63,7 +63,7 @@
       "mev": "D",
       "em": "D",
       "sms": "W",
-      "kayit": "53.960",
+      "kayit": "46.283",
       "gonder": "45.276 gönder — gov. domainleri ve sahte emailler temizlendi",
       "pct": 83
     },
@@ -120,13 +120,13 @@
       "em": "D",
       "sms": "D",
       "kayit": "4.854",
-      "gonder": "4.859 YİZ kaydı — Outreach + Online Kayıt + Form Dolduran + İKMİB Hunter.io. ulke tespiti telefon/TLD bazlı yapıldı (16.06.2026).",
+      "gonder": "YİZ kaydı — Outreach + Online Kayıt + Form Dolduran + İKMİB Hunter.io. ulke tespiti telefon/TLD bazlı yapıldı (16.06.2026).",
       "pct": 100
     },
     {
       "ad": "Chemex 2026",
       "alt": "YİZ",
-      "tarih": null,
+      "tarih": "2026",
       "t": "D",
       "db": "D",
       "mx": "D",
@@ -140,7 +140,7 @@
     {
       "ad": "Chemex 2026",
       "alt": "Belirsiz",
-      "tarih": null,
+      "tarih": "2026",
       "t": "D",
       "db": "D",
       "mx": "D",
