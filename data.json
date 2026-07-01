@@ -1,14 +1,14 @@
 {
   "meta": {
-    "uretim_ts": "2026-06-30T06:30:06.393829+00:00"
+    "uretim_ts": "2026-07-01T06:30:04.108467+00:00"
   },
   "kpi": {
-    "aktif_fuar": 10,
+    "aktif_fuar": 12,
     "toplam_kisi": 79251,
     "email_hazir": 70477,
     "sms_hazir": 20373,
     "db_kayit": 79251,
-    "son_guncelleme": "30.06.2026"
+    "son_guncelleme": "01.07.2026"
   },
   "fuarlar": [
     {
@@ -150,6 +150,34 @@
       "kayit": "89",
       "gonder": "89 belirsiz kayıt — Batuhan Bey onayı bekleniyor.",
       "pct": 50
+    },
+    {
+      "ad": "PaintIstanbul 2026",
+      "alt": "YİZ Fuar Katılımcı",
+      "tarih": null,
+      "t": "W",
+      "db": "W",
+      "mx": "W",
+      "mev": "W",
+      "em": "W",
+      "sms": "W",
+      "kayit": "0",
+      "gonder": "",
+      "pct": 0
+    },
+    {
+      "ad": "PaintIstanbul 2026",
+      "alt": "YDZ Fuar Katılımcı",
+      "tarih": null,
+      "t": "W",
+      "db": "W",
+      "mx": "W",
+      "mev": "W",
+      "em": "W",
+      "sms": "W",
+      "kayit": "0",
+      "gonder": "",
+      "pct": 0
     }
   ]
 }
