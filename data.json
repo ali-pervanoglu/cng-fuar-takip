@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-03T06:30:03.912436+00:00"
+    "uretim_ts": "2026-07-03T09:06:07.134170+00:00"
   },
   "kpi": {
     "aktif_fuar": 12,
-    "toplam_kisi": 79251,
+    "toplam_kisi": 88345,
     "email_hazir": 70477,
     "sms_hazir": 20373,
-    "db_kayit": 79251,
+    "db_kayit": 88345,
     "son_guncelleme": "03.07.2026"
   },
   "fuarlar": [
@@ -155,29 +155,29 @@
       "ad": "PaintIstanbul 2026",
       "alt": "YİZ Fuar Katılımcı",
       "tarih": null,
-      "t": "W",
-      "db": "W",
+      "t": "D",
+      "db": "D",
       "mx": "W",
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": "0",
-      "gonder": "",
-      "pct": 0
+      "kayit": "8.081",
+      "gonder": "Katılım/KPI verisi — kampanyaya gönderilmeyecek, PowerBI raporlama için. VIEW: v_paintistanbul_2026_kpi",
+      "pct": 33
     },
     {
       "ad": "PaintIstanbul 2026",
       "alt": "YDZ Fuar Katılımcı",
       "tarih": null,
-      "t": "W",
-      "db": "W",
+      "t": "D",
+      "db": "D",
       "mx": "W",
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": "0",
-      "gonder": "",
-      "pct": 0
+      "kayit": "1.013",
+      "gonder": "Katılım/KPI verisi — kampanyaya gönderilmeyecek, PowerBI raporlama için. VIEW: v_paintistanbul_2026_kpi",
+      "pct": 33
     }
   ]
 }
