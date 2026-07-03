@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-03T11:55:41.368813+00:00"
+    "uretim_ts": "2026-07-03T12:10:51.908062+00:00"
   },
   "kpi": {
     "aktif_fuar": 14,
-    "toplam_kisi": 93517,
+    "toplam_kisi": 87322,
     "email_hazir": 70477,
     "sms_hazir": 20373,
-    "db_kayit": 93517,
+    "db_kayit": 87322,
     "son_guncelleme": "03.07.2026"
   },
   "fuarlar": [
@@ -133,8 +133,8 @@
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": "4.877",
-      "gonder": "Fuar sistemine kayıtlı toplam kişi sayısı — kampanyaya gönderilmeyecek. Dönüşüm oranı PowerBI/v_aysaf_2026_kpi üzerinden izlenir.",
+      "kayit": "2.063",
+      "gonder": "Fuara gerçekten gelen kişi sayısı (toplam 4.877 kayıttan). Dönüşüm oranı PowerBI/v_aysaf_2026_kpi üzerinden izlenir.",
       "pct": 33
     },
     {
@@ -147,8 +147,8 @@
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": "295",
-      "gonder": "Fuar sistemine kayıtlı toplam kişi sayısı — kampanyaya gönderilmeyecek. Dönüşüm oranı PowerBI/v_aysaf_2026_kpi üzerinden izlenir.",
+      "kayit": "125",
+      "gonder": "Fuara gerçekten gelen kişi sayısı (toplam 295 kayıttan). Dönüşüm oranı PowerBI/v_aysaf_2026_kpi üzerinden izlenir.",
       "pct": 33
     },
     {
@@ -189,8 +189,8 @@
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": "8.081",
-      "gonder": "Katılım/KPI verisi — kampanyaya gönderilmeyecek, PowerBI raporlama için. VIEW: v_paintistanbul_2026_kpi",
+      "kayit": "5.258",
+      "gonder": "Fuara gerçekten gelen kişi sayısı (toplam 8.081 kayıttan). Dönüşüm oranı PowerBI/v_paintistanbul_2026_kpi üzerinden izlenir.",
       "pct": 33
     },
     {
@@ -203,8 +203,8 @@
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": "1.013",
-      "gonder": "Katılım/KPI verisi — kampanyaya gönderilmeyecek, PowerBI raporlama için. VIEW: v_paintistanbul_2026_kpi",
+      "kayit": "625",
+      "gonder": "Fuara gerçekten gelen kişi sayısı (toplam 1.013 kayıttan). Dönüşüm oranı PowerBI/v_paintistanbul_2026_kpi üzerinden izlenir.",
       "pct": 33
     }
   ]
