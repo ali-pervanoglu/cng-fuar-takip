@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-03T09:20:44.270904+00:00"
+    "uretim_ts": "2026-07-03T11:54:38.577787+00:00"
   },
   "kpi": {
-    "aktif_fuar": 12,
-    "toplam_kisi": 88345,
+    "aktif_fuar": 14,
+    "toplam_kisi": 93517,
     "email_hazir": 70477,
     "sms_hazir": 20373,
-    "db_kayit": 88345,
+    "db_kayit": 93517,
     "son_guncelleme": "03.07.2026"
   },
   "fuarlar": [
@@ -122,6 +122,34 @@
       "kayit": "4.854",
       "gonder": "YİZ kaydı — Outreach + Online Kayıt + Form Dolduran + İKMİB Hunter.io. ulke tespiti telefon/TLD bazlı yapıldı (16.06.2026).",
       "pct": 100
+    },
+    {
+      "ad": "AYSAF 2026 Fuar",
+      "alt": "Yurt İçi — Katılım/KPI",
+      "tarih": "Nis 2026",
+      "t": "D",
+      "db": "D",
+      "mx": "W",
+      "mev": "W",
+      "em": "W",
+      "sms": "W",
+      "kayit": "4.877",
+      "gonder": "Fuar sistemine kayıtlı toplam kişi sayısı — kampanyaya gönderilmeyecek. Dönüşüm oranı PowerBI/v_aysaf_2026_kpi üzerinden izlenir.",
+      "pct": 33
+    },
+    {
+      "ad": "AYSAF 2026 Fuar",
+      "alt": "Yurt Dışı — Katılım/KPI",
+      "tarih": "Nis 2026",
+      "t": "D",
+      "db": "D",
+      "mx": "W",
+      "mev": "W",
+      "em": "W",
+      "sms": "W",
+      "kayit": "295",
+      "gonder": "Fuar sistemine kayıtlı toplam kişi sayısı — kampanyaya gönderilmeyecek. Dönüşüm oranı PowerBI/v_aysaf_2026_kpi üzerinden izlenir.",
+      "pct": 33
     },
     {
       "ad": "Chemex 2026",
