@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-14T06:32:53.983538+00:00"
+    "uretim_ts": "2026-07-14T14:50:13.877965+00:00"
   },
   "kpi": {
-    "aktif_fuar": 14,
-    "toplam_kisi": 87322,
-    "email_hazir": 70477,
+    "aktif_fuar": 16,
+    "toplam_kisi": 88900,
+    "email_hazir": 72055,
     "sms_hazir": 20373,
-    "db_kayit": 87322,
+    "db_kayit": 88900,
     "son_guncelleme": "14.07.2026"
   },
   "fuarlar": [
@@ -122,6 +122,34 @@
       "kayit": "4.854",
       "gonder": "YİZ kaydı — Outreach + Online Kayıt + Form Dolduran + İKMİB Hunter.io. ulke tespiti telefon/TLD bazlı yapıldı (16.06.2026).",
       "pct": 100
+    },
+    {
+      "ad": "Proses Sempozyumu 2026",
+      "alt": "Yurt İçi (YİZ)",
+      "tarih": "Tem 2026",
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "W",
+      "sms": "W",
+      "kayit": "635",
+      "gonder": "Eda'nın güncel listesi (PES 2026 Mailing) import edildi. 16 yeni email eklendi, 675 geçersiz/çıkarıldı. Toplam 1609 kayıt.",
+      "pct": 67
+    },
+    {
+      "ad": "Proses Sempozyumu 2026",
+      "alt": "Yurt Dışı / Belirsiz (YDZ+BEL)",
+      "tarih": "Tem 2026",
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "W",
+      "sms": "W",
+      "kayit": "943",
+      "gonder": "YDZ: ülke kolonu dolu yabancı kayıt. BEL: domain TLD tahmini. Segment_kaynagi kolonu ile izlenebilir.",
+      "pct": 67
     },
     {
       "ad": "AYSAF 2026 Fuar",
