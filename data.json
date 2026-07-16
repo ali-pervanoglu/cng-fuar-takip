@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-16T06:46:31.014043+00:00"
+    "uretim_ts": "2026-07-16T07:16:05.862543+00:00"
   },
   "kpi": {
     "aktif_fuar": 16,
-    "toplam_kisi": 88900,
-    "email_hazir": 72055,
+    "toplam_kisi": 88931,
+    "email_hazir": 72086,
     "sms_hazir": 20373,
-    "db_kayit": 88900,
+    "db_kayit": 88931,
     "son_guncelleme": "16.07.2026"
   },
   "fuarlar": [
@@ -133,8 +133,8 @@
       "mev": "D",
       "em": "W",
       "sms": "W",
-      "kayit": "635",
-      "gonder": "Eda'nın güncel listesi (PES 2026 Mailing) import edildi. 16 yeni email eklendi, 675 geçersiz/çıkarıldı. Toplam 1609 kayıt.",
+      "kayit": "1.552",
+      "gonder": "Segment düzeltmesi yapıldı (TÜRKİYE combining-dot sorunu). Eda Hanım 22 kayıt ekledi. Toplam 1610 kayıt. Gönderime hazır YİZ: 1552 kayıt.",
       "pct": 67
     },
     {
@@ -147,7 +147,7 @@
       "mev": "D",
       "em": "W",
       "sms": "W",
-      "kayit": "943",
+      "kayit": "57",
       "gonder": "YDZ: ülke kolonu dolu yabancı kayıt. BEL: domain TLD tahmini. Segment_kaynagi kolonu ile izlenebilir.",
       "pct": 67
     },
