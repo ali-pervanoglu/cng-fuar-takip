@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-17T06:50:51.212196+00:00"
+    "uretim_ts": "2026-07-17T14:29:08.249267+00:00"
   },
   "kpi": {
-    "aktif_fuar": 16,
-    "toplam_kisi": 88931,
+    "aktif_fuar": 17,
+    "toplam_kisi": 118420,
     "email_hazir": 72086,
     "sms_hazir": 20373,
-    "db_kayit": 88931,
+    "db_kayit": 118420,
     "son_guncelleme": "17.07.2026"
   },
   "fuarlar": [
@@ -206,6 +206,20 @@
       "kayit": "89",
       "gonder": "89 belirsiz kayıt — Batuhan Bey onayı bekleniyor.",
       "pct": 50
+    },
+    {
+      "ad": "TURKCOMPOSITE 2026",
+      "alt": "Yurt Dışı Ziyaretçi",
+      "tarih": "Ekim 2026",
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "W",
+      "sms": "W",
+      "kayit": "29.489",
+      "gonder": "TURKCOMPOSITE YDZ — 29,489 kayıt import edildi. MEV tamamlandı.",
+      "pct": 67
     },
     {
       "ad": "PaintIstanbul 2026",
