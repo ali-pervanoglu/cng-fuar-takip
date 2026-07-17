@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-16T07:16:05.862543+00:00"
+    "uretim_ts": "2026-07-17T06:50:51.212196+00:00"
   },
   "kpi": {
     "aktif_fuar": 16,
@@ -8,7 +8,7 @@
     "email_hazir": 72086,
     "sms_hazir": 20373,
     "db_kayit": 88931,
-    "son_guncelleme": "16.07.2026"
+    "son_guncelleme": "17.07.2026"
   },
   "fuarlar": [
     {
