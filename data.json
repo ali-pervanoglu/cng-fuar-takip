@@ -1,9 +1,9 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-17T14:29:08.249267+00:00"
+    "uretim_ts": "2026-07-17T14:44:22.162803+00:00"
   },
   "kpi": {
-    "aktif_fuar": 17,
+    "aktif_fuar": 18,
     "toplam_kisi": 118420,
     "email_hazir": 72086,
     "sms_hazir": 20373,
@@ -219,6 +219,20 @@
       "sms": "W",
       "kayit": "29.489",
       "gonder": "TURKCOMPOSITE YDZ — 29,489 kayıt import edildi. MEV tamamlandı.",
+      "pct": 67
+    },
+    {
+      "ad": "TürkComposite",
+      "alt": "2024 Fuar Listesi",
+      "tarih": null,
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "W",
+      "sms": "W",
+      "kayit": "0",
+      "gonder": "MX+MEV tamamlandı. GÖNDER:1.288 / İHTİYATLI:68 / GEÇERSİZ:289",
       "pct": 67
     },
     {
