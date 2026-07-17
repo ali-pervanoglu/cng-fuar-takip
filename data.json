@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-17T14:44:22.162803+00:00"
+    "uretim_ts": "2026-07-17T14:50:18.696629+00:00"
   },
   "kpi": {
     "aktif_fuar": 18,
-    "toplam_kisi": 118420,
+    "toplam_kisi": 122692,
     "email_hazir": 72086,
     "sms_hazir": 20373,
-    "db_kayit": 118420,
+    "db_kayit": 122692,
     "son_guncelleme": "17.07.2026"
   },
   "fuarlar": [
@@ -161,7 +161,7 @@
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": "2.063",
+      "kayit": "4.877",
       "gonder": "Fuara gerçekten gelen kişi sayısı (toplam 4.877 kayıttan). Dönüşüm oranı PowerBI/v_aysaf_2026_kpi üzerinden izlenir.",
       "pct": 33
     },
@@ -175,7 +175,7 @@
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": "125",
+      "kayit": "295",
       "gonder": "Fuara gerçekten gelen kişi sayısı (toplam 295 kayıttan). Dönüşüm oranı PowerBI/v_aysaf_2026_kpi üzerinden izlenir.",
       "pct": 33
     },
@@ -222,7 +222,7 @@
       "pct": 67
     },
     {
-      "ad": "TürkComposite",
+      "ad": "TURKCOMPOSITE 2026",
       "alt": "2024 Fuar Listesi",
       "tarih": null,
       "t": "D",
@@ -231,7 +231,7 @@
       "mev": "D",
       "em": "W",
       "sms": "W",
-      "kayit": "0",
+      "kayit": "1.288",
       "gonder": "MX+MEV tamamlandı. GÖNDER:1.288 / İHTİYATLI:68 / GEÇERSİZ:289",
       "pct": 67
     },
