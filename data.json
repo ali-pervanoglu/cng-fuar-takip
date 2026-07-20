@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-20T06:46:38.850765+00:00"
+    "uretim_ts": "2026-07-20T11:57:33.913841+00:00"
   },
   "kpi": {
-    "aktif_fuar": 18,
-    "toplam_kisi": 122692,
+    "aktif_fuar": 20,
+    "toplam_kisi": 124124,
     "email_hazir": 72086,
     "sms_hazir": 20373,
-    "db_kayit": 122692,
+    "db_kayit": 124124,
     "son_guncelleme": "20.07.2026"
   },
   "fuarlar": [
@@ -208,6 +208,20 @@
       "pct": 50
     },
     {
+      "ad": "TürkKompozit 2026",
+      "alt": "YİK Katılımcı",
+      "tarih": "Eki 2026",
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "W",
+      "sms": "W",
+      "kayit": "1.189",
+      "gonder": "Mert Pamuk YIK — MX+MEV+DB tamamlandı. GÖNDER:1189 / İHTİYATLI:388 / GÖNDERME:225.",
+      "pct": 67
+    },
+    {
       "ad": "TURKCOMPOSITE 2026",
       "alt": "Yurt Dışı Ziyaretçi",
       "tarih": "Ekim 2026",
@@ -219,6 +233,20 @@
       "sms": "W",
       "kayit": "29.489",
       "gonder": "TURKCOMPOSITE YDZ — 29,489 kayıt import edildi. MEV tamamlandı.",
+      "pct": 67
+    },
+    {
+      "ad": "TürkKompozit 2026",
+      "alt": "YDK Katılımcı",
+      "tarih": "Eki 2026",
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "W",
+      "sms": "W",
+      "kayit": "243",
+      "gonder": "Mert Pamuk YDK — MX+MEV+DB tamamlandı. GÖNDER:243 / İHTİYATLI:88 / GÖNDERME:25.",
       "pct": 67
     },
     {
