@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-22T14:55:11.667506+00:00"
+    "uretim_ts": "2026-07-22T15:01:34.832364+00:00"
   },
   "kpi": {
     "aktif_fuar": 24,
@@ -302,7 +302,7 @@
       "em": "D",
       "sms": "W",
       "kayit": "3.880",
-      "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
+      "gonder": "YİZ: 2.064 GÖNDER | Kaynak: CRM (Pu Expo İst. 2019/2023, Foam Eurasia 2021/2023)",
       "pct": 83
     },
     {
@@ -316,7 +316,7 @@
       "em": "D",
       "sms": "W",
       "kayit": "770",
-      "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
+      "gonder": "YDZ: 421 GÖNDER | Kaynak: CRM (Pu Expo İst. 2019/2023, Foam Eurasia 2021/2023)",
       "pct": 83
     },
     {
@@ -330,7 +330,7 @@
       "em": "D",
       "sms": "W",
       "kayit": "89",
-      "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
+      "gonder": "YDK: 41 GÖNDER | Kaynak: putech yabancı data (sözleşme bazlı)",
       "pct": 83
     },
     {
@@ -344,7 +344,7 @@
       "em": "D",
       "sms": "W",
       "kayit": "6.144",
-      "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
+      "gonder": "4.371 GÖNDER | Fuar ayrımı belirsiz, ayrı tablo (puexpo_foam_4lu_fuar)",
       "pct": 83
     }
   ]
