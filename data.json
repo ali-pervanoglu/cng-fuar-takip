@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-22T06:43:42.818971+00:00"
+    "uretim_ts": "2026-07-22T14:51:58.596041+00:00"
   },
   "kpi": {
-    "aktif_fuar": 20,
-    "toplam_kisi": 124124,
-    "email_hazir": 72086,
+    "aktif_fuar": 24,
+    "toplam_kisi": 143080,
+    "email_hazir": 99674,
     "sms_hazir": 20373,
-    "db_kayit": 124124,
+    "db_kayit": 143080,
     "son_guncelleme": "22.07.2026"
   },
   "fuarlar": [
@@ -290,6 +290,62 @@
       "kayit": "1.288",
       "gonder": "MX+MEV tamamlandı. GÖNDER:1.288 / İHTİYATLI:68 / GEÇERSİZ:289",
       "pct": 67
+    },
+    {
+      "ad": "PuExpo & Foam Eurasia",
+      "alt": "YİZ — Yurtiçi Ziyaretçi",
+      "tarih": "2026",
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "D",
+      "sms": "W",
+      "kayit": "4.739",
+      "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
+      "pct": 83
+    },
+    {
+      "ad": "PuExpo & Foam Eurasia",
+      "alt": "YDZ — Yurtdışı Ziyaretçi",
+      "tarih": "2026",
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "D",
+      "sms": "W",
+      "kayit": "4.739",
+      "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
+      "pct": 83
+    },
+    {
+      "ad": "PuExpo & Foam Eurasia",
+      "alt": "YDK — Yurtdışı Katılımcı",
+      "tarih": "2026",
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "D",
+      "sms": "W",
+      "kayit": "4.739",
+      "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
+      "pct": 83
+    },
+    {
+      "ad": "4'lü Fuar E-Posta Listesi",
+      "alt": "Karışık — fuar ayrımı belirsiz",
+      "tarih": "2026",
+      "t": "D",
+      "db": "D",
+      "mx": "D",
+      "mev": "D",
+      "em": "D",
+      "sms": "W",
+      "kayit": "4.739",
+      "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
+      "pct": 83
     }
   ]
 }
