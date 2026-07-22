@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-22T14:51:58.596041+00:00"
+    "uretim_ts": "2026-07-22T14:55:11.667506+00:00"
   },
   "kpi": {
     "aktif_fuar": 24,
-    "toplam_kisi": 143080,
-    "email_hazir": 99674,
+    "toplam_kisi": 135007,
+    "email_hazir": 78983,
     "sms_hazir": 20373,
-    "db_kayit": 143080,
+    "db_kayit": 135007,
     "son_guncelleme": "22.07.2026"
   },
   "fuarlar": [
@@ -301,7 +301,7 @@
       "mev": "D",
       "em": "D",
       "sms": "W",
-      "kayit": "4.739",
+      "kayit": "3.880",
       "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
       "pct": 83
     },
@@ -315,7 +315,7 @@
       "mev": "D",
       "em": "D",
       "sms": "W",
-      "kayit": "4.739",
+      "kayit": "770",
       "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
       "pct": 83
     },
@@ -329,7 +329,7 @@
       "mev": "D",
       "em": "D",
       "sms": "W",
-      "kayit": "4.739",
+      "kayit": "89",
       "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
       "pct": 83
     },
@@ -343,7 +343,7 @@
       "mev": "D",
       "em": "D",
       "sms": "W",
-      "kayit": "4.739",
+      "kayit": "6.144",
       "gonder": "puexpo_foam_ziyaretci: 2526 GÖNDER (CRM+putech) | puexpo_foam_4lu_fuar: 4371 GÖNDER (karışık liste)",
       "pct": 83
     }
