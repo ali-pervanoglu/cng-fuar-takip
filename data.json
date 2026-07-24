@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-24T06:30:04.645325+00:00"
+    "uretim_ts": "2026-07-24T08:51:04.267544+00:00"
   },
   "kpi": {
     "aktif_fuar": 24,
-    "toplam_kisi": 135007,
+    "toplam_kisi": 144505,
     "email_hazir": 78983,
     "sms_hazir": 20373,
-    "db_kayit": 135007,
+    "db_kayit": 144505,
     "son_guncelleme": "24.07.2026"
   },
   "fuarlar": [
@@ -273,8 +273,8 @@
       "mev": "D",
       "em": "W",
       "sms": "W",
-      "kayit": "29.489",
-      "gonder": "TURKCOMPOSITE YDZ — 29,489 kayıt import edildi. MEV tamamlandı.",
+      "kayit": "38.987",
+      "gonder": "Guncelleme 24.07.2026 — +9498 yeni kayit, toplam 38987",
       "pct": 67
     },
     {
