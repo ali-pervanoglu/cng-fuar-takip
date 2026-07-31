@@ -1,13 +1,13 @@
 {
   "meta": {
-    "uretim_ts": "2026-07-31T07:22:15.988610+00:00"
+    "uretim_ts": "2026-07-31T07:36:27.822658+00:00"
   },
   "kpi": {
     "aktif_fuar": 24,
-    "toplam_kisi": 144505,
+    "toplam_kisi": 144535,
     "email_hazir": 78983,
     "sms_hazir": 20373,
-    "db_kayit": 144505,
+    "db_kayit": 144535,
     "son_guncelleme": "31.07.2026"
   },
   "fuarlar": [
@@ -245,8 +245,8 @@
       "mev": "D",
       "em": "W",
       "sms": "W",
-      "kayit": "1.189",
-      "gonder": "Mert Pamuk YIK — MX+MEV+DB tamamlandı. GÖNDER:1189 / İHTİYATLI:388 / GÖNDERME:225.",
+      "kayit": "1.219",
+      "gonder": "Mert Pamuk YIK — MX+MEV+DB tamamlandı. GÖNDER:1189 / İHTİYATLI:388 / GÖNDERME:225. | Potansiyel Katilimci +30 (31.07.2026)",
       "pct": 67
     },
     {
