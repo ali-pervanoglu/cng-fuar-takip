@@ -6,80 +6,105 @@
 <title>CNG Expo - Fuar Pipeline Takip</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0e1a;--surface:#111827;--border:rgba(255,255,255,0.07);--text:#e8eaf0;--muted:#6b7a9a;--dim:#3d4f6e;--done-bg:rgba(34,197,94,0.12);--done-t:#4ade80;--done-b:rgba(34,197,94,0.25);--prog-bg:rgba(251,146,60,0.12);--prog-t:#fb923c;--prog-b:rgba(251,146,60,0.25);--wait-bg:rgba(107,114,154,0.1);--wait-t:#6b7a9a;--wait-b:rgba(107,114,154,0.2);--accent:#3b82f6;--accent2:#818cf8}
+:root{--bg:#0a0e1a;--surface:#111827;--surface2:#151d2e;--border:rgba(255,255,255,0.07);--text:#e8eaf0;--muted:#6b7a9a;--dim:#3d4f6e;--accent:#3b82f6;--accent2:#818cf8;--warn:#f87171;--warn-bg:rgba(248,113,113,0.1);--kpi-t:#c084fc;--kpi-bg:rgba(192,132,252,0.1);--kpi-b:rgba(192,132,252,0.25);--ok:#4ade80;--mid:#fb923c}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(59,130,246,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-.container{max-width:1380px;margin:0 auto;padding:48px 24px;position:relative;z-index:1}
+.container{max-width:1320px;margin:0 auto;padding:48px 24px;position:relative;z-index:1}
 .logo{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px}
-.header-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:40px}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:28px}
 h1{font-size:28px;font-weight:600;letter-spacing:-0.02em;line-height:1.2}
 .subtitle{color:var(--muted);font-size:14px;margin-top:6px}
 .last-update{font-family:'DM Mono',monospace;font-size:11px;color:var(--dim);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 14px;white-space:nowrap;line-height:1.8}
-.last-update span{color:var(--done-t)}
-
-/* Yükleme durumu göstergesi */
+.last-update span{color:var(--ok)}
 .loading-bar{height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));position:fixed;top:0;left:0;width:0;transition:width 0.4s ease;z-index:999}
 .loading-bar.done{width:100%;opacity:0;transition:width 0.3s,opacity 0.5s 0.3s}
-.error-banner{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;border-radius:8px;padding:12px 18px;margin-bottom:24px;font-size:13px;display:none}
-.error-banner.visible{display:block}
+.error-banner{display:none}
+.data-note{font-size:11.5px;color:var(--dim);margin-bottom:20px;font-family:'DM Mono',monospace}
 
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:40px}
+.upcoming-strip{display:flex;gap:12px;overflow-x:auto;margin-bottom:24px;padding-bottom:4px}
+.up-card{flex:0 0 auto;min-width:200px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;position:relative;cursor:pointer;transition:border-color 0.15s}
+.up-card:hover{border-color:rgba(59,130,246,0.3)}
+.up-card.next{border-color:rgba(59,130,246,0.35);box-shadow:0 0 0 1px rgba(59,130,246,0.15)}
+.up-days{font-family:'DM Mono',monospace;font-size:20px;color:var(--accent2)}
+.up-days small{font-size:10px;color:var(--dim);font-weight:400}
+.up-name{font-size:12.5px;font-weight:500;margin-top:6px}
+.up-date{font-size:11px;color:var(--dim);margin-top:2px;font-family:'DM Mono',monospace}
+.up-badge{position:absolute;top:12px;right:12px;font-size:9px;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);border-radius:5px;padding:2px 6px}
+
+.alert-strip{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.alert{display:flex;align-items:flex-start;gap:10px;background:var(--warn-bg);border:1px solid rgba(248,113,113,0.25);border-radius:10px;padding:11px 16px;font-size:12.5px;color:#fca5a5}
+.alert b{color:#fff;font-weight:600}
+.alert .a-dot{width:6px;height:6px;border-radius:50%;background:#f87171;margin-top:6px;flex-shrink:0;box-shadow:0 0 6px #f87171}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:28px}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px}
 .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
 .stat-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500}
 .stat-sub{font-size:11px;color:var(--dim);margin-top:2px}
-.legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
-.leg-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
-.leg-dot{width:8px;height:8px;border-radius:50%}
-.col-hint{font-size:11px;color:var(--dim);margin-bottom:20px}
-.col-hint span{color:var(--muted)}
-.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow-x:auto;margin-bottom:40px}
-.table-header-bar{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.table-title{font-size:13px;font-weight:500}
-.table-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--dim)}
-table{width:100%;border-collapse:collapse;table-layout:auto;min-width:1100px}
-thead th{padding:12px 14px;text-align:left;font-size:11px;font-weight:500;color:var(--dim);text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02);white-space:nowrap;cursor:help}
-tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s}
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:rgba(255,255,255,0.02)}
-td{padding:14px 14px;vertical-align:middle}
-.fuar-name{font-weight:500;font-size:13px;white-space:nowrap}
-.fuar-date{font-size:11px;color:var(--dim);margin-top:2px;font-family:'DM Mono',monospace}
-.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap;border:1px solid transparent;letter-spacing:0.02em;transition:box-shadow 0.2s}
-.done{
-  background:rgba(34,197,94,0.08);
-  color:#4ade80;
-  border-color:rgba(34,197,94,0.28);
-  box-shadow:0 0 14px rgba(34,197,94,0.22),0 0 5px rgba(34,197,94,0.12),inset 0 1px 0 rgba(34,197,94,0.08);
-  text-shadow:0 0 10px rgba(74,222,128,0.65)
-}
-.prog{
-  background:rgba(251,146,60,0.08);
-  color:#fb923c;
-  border-color:rgba(251,146,60,0.28);
-  box-shadow:0 0 14px rgba(251,146,60,0.22),0 0 5px rgba(251,146,60,0.12),inset 0 1px 0 rgba(251,146,60,0.08);
-  text-shadow:0 0 10px rgba(251,146,60,0.65)
-}
-.wait{
-  background:rgba(107,114,154,0.06);
-  color:#3d4f6e;
-  border-color:rgba(107,114,154,0.1)
-}
-.bdot{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block;vertical-align:middle;box-shadow:0 0 6px currentColor}
-.kayit{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);font-weight:500;white-space:nowrap}
-.kayit-alt{font-size:10px;color:var(--dim);display:block;margin-top:2px}
-.progress-title{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px}
-.progress-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:40px}
-.prog-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
-.prog-item-name{font-size:12px;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between}
-.prog-pct{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent)}
-.prog-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden}
-.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1s ease}
-.skeleton{background:rgba(255,255,255,0.04);border-radius:4px;animation:shimmer 1.4s infinite}
-@keyframes shimmer{0%{opacity:0.4}50%{opacity:0.8}100%{opacity:0.4}}
+
+.mode-toggle{display:inline-flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:18px}
+.mode-btn{font-family:'DM Sans',sans-serif;font-size:12.5px;color:var(--muted);background:transparent;border:none;padding:8px 16px;border-radius:7px;cursor:pointer;transition:all 0.15s}
+.mode-btn:hover{color:var(--text)}
+.mode-btn.active{background:rgba(59,130,246,0.12);color:var(--text);box-shadow:inset 0 0 0 1px rgba(59,130,246,0.3)}
+
+.searchbar{margin-bottom:18px}
+.fsearch{width:100%;max-width:340px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;border-radius:9px;outline:none}
+.fsearch::placeholder{color:var(--dim)}
+.fsearch:focus{border-color:var(--accent)}
+
+.section-title{font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px}
+
+/* ---- Fuar kartları (seviye 1) ---- */
+.fuar-list{display:flex;flex-direction:column;gap:10px;margin-bottom:36px}
+.fuar-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.fuar-card-head{padding:18px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.fuar-name-lg{font-size:15px;font-weight:600}
+.fuar-sub{font-size:11.5px;color:var(--dim);margin-top:3px}
+.donem-pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{font-family:'DM Mono',monospace;font-size:11.5px;padding:7px 14px;border-radius:99px;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,0.02);color:var(--muted);display:flex;align-items:center;gap:7px;transition:all 0.15s}
+.pill:hover{border-color:rgba(59,130,246,0.35);color:var(--text)}
+.pill.active{background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.4);color:var(--text)}
+.pill-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pdot-done{background:var(--ok);box-shadow:0 0 5px var(--ok)}
+.pdot-mid{background:var(--mid);box-shadow:0 0 5px var(--mid)}
+.pdot-none{background:var(--dim)}
+
+/* ---- Dönem detay paneli (seviye 2) ---- */
+.donem-panel{border-top:1px solid var(--border);background:var(--surface2);padding:22px 22px 26px}
+.dp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.dp-title{font-size:13px;font-weight:500}
+.dp-title span{color:var(--dim);font-weight:400}
+.dp-note{font-size:11.5px;color:var(--dim);max-width:520px;line-height:1.6}
+
+.mini-table{width:100%;border-collapse:collapse;margin-bottom:18px}
+.mini-table th{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:0.06em;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap}
+.mini-table td{padding:10px;vertical-align:middle;border-bottom:1px solid var(--border)}
+.mini-table tr:last-child td{border-bottom:none}
+.seg-tag{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:600;border-radius:5px;padding:2px 7px;border:1px solid;white-space:nowrap}
+.seg-YİK{color:#4ade80;background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.28)}
+.seg-YDK{color:#fb923c;background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.28)}
+.seg-YİZ{color:#60a5fa;background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.28)}
+.seg-YDZ{color:#c084fc;background:rgba(192,132,252,0.1);border-color:rgba(192,132,252,0.28)}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:99px;font-size:10.5px;font-weight:600;white-space:nowrap;border:1px solid transparent;letter-spacing:0.02em}
+.done{background:rgba(34,197,94,0.08);color:#4ade80;border-color:rgba(34,197,94,0.28)}
+.prog{background:rgba(251,146,60,0.08);color:#fb923c;border-color:rgba(251,146,60,0.28)}
+.wait{background:rgba(107,114,154,0.06);color:#3d4f6e;border-color:rgba(107,114,154,0.1)}
+.stale{box-shadow:0 0 0 1px rgba(248,113,113,0.5) inset}
+.bdot{width:5px;height:5px;border-radius:50%;background:currentColor;display:inline-block}
+.kayit{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent2);font-weight:500}
+
+.kpi-band{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px}
+.kpi-band .kv{font-family:'DM Mono',monospace;font-size:17px}
+.kpi-band .kl{font-size:10px;color:var(--dim);margin-top:2px}
+.kpi-item{min-width:90px}
+.kpi-empty{font-size:12px;color:var(--dim)}
+.reprocess-note{margin-top:14px;font-size:11.5px;color:var(--dim);line-height:1.6;border-top:1px dashed var(--border);padding-top:12px}
+.reprocess-note b{color:var(--muted)}
+
+.empty-state{padding:30px;text-align:center;color:var(--dim);font-size:13px}
 .footer{text-align:center;font-size:11px;color:var(--dim);padding-top:24px;border-top:1px solid var(--border);font-family:'DM Mono',monospace}
-@media(max-width:768px){h1{font-size:22px}}
+@media(max-width:768px){h1{font-size:22px}.fuar-card-head{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
@@ -91,250 +116,422 @@ td{padding:14px 14px;vertical-align:middle}
     <div>
       <div class="logo">CNG Expo</div>
       <h1>Fuar Pipeline Takip</h1>
-      <p class="subtitle">Email ve SMS kampanya hazırlık durumu - 2026 sezonu</p>
+      <p class="subtitle">Önce fuarı, sonra dönemi seç — pipeline durumu o dönem için ayrı tutulur</p>
     </div>
     <div class="last-update">Son güncelleme<br><span id="tarih">—</span></div>
   </div>
 
-  <div class="error-banner" id="err"></div>
+  <div class="data-note" id="dataNote" style="display:none">Örnek veri gösteriliyor — data.json henüz yayında değil.</div>
 
-  <!-- KPI Kartları — data-kpi niteliği ile dinamik doldurulur -->
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-label">Aktif Fuar</div>
-      <div class="stat-val" data-kpi="aktif_fuar">—</div>
-      <div class="stat-sub">2026 sezonu</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Toplam Kişi</div>
-      <div class="stat-val" data-kpi="toplam_kisi">—</div>
-      <div class="stat-sub">tüm listeler</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Email Hazır</div>
-      <div class="stat-val" data-kpi="email_hazir">—</div>
-      <div class="stat-sub">gönder listesi</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">SMS Hazır</div>
-      <div class="stat-val" data-kpi="sms_hazir">—</div>
-      <div class="stat-sub">TR + Yurt Dışı</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">DB Kayıt</div>
-      <div class="stat-val" data-kpi="db_kayit">—</div>
-      <div class="stat-sub">PostgreSQL toplam</div>
-    </div>
+  <div class="upcoming-strip" id="upcoming"></div>
+
+  <div class="alert-strip" id="alerts"></div>
+
+  <div class="mode-toggle" id="modeToggle">
+    <button class="mode-btn active" data-mode="marketing">Marketing</button>
+    <button class="mode-btn" data-mode="kpi">KPI Fuar Raporu</button>
   </div>
 
-  <div class="legend">
-    <div class="leg-item"><div class="leg-dot" style="background:#4ade80;box-shadow:0 0 7px rgba(74,222,128,0.8)"></div>Tamamlandı</div>
-    <div class="leg-item"><div class="leg-dot" style="background:#fb923c;box-shadow:0 0 7px rgba(251,146,60,0.8)"></div>Devam ediyor</div>
-    <div class="leg-item"><div class="leg-dot" style="background:#3d4f6e"></div>Yapılmadı</div>
+  <div class="stats" id="statsMarketing">
+    <div class="stat"><div class="stat-label">Toplam Fuar</div><div class="stat-val" data-kpi="aktif_fuar">—</div><div class="stat-sub">tüm dönemler dahil</div></div>
+    <div class="stat"><div class="stat-label">Toplam Kişi (DB)</div><div class="stat-val" data-kpi="toplam_kisi">—</div><div class="stat-sub">tüm kampanya listeleri</div></div>
+    <div class="stat"><div class="stat-label">Email Hazır</div><div class="stat-val" data-kpi="email_hazir">—</div><div class="stat-sub">gönder listesi</div></div>
+    <div class="stat"><div class="stat-label">SMS Hazır</div><div class="stat-val" data-kpi="sms_hazir">—</div><div class="stat-sub">TR + Yurt Dışı</div></div>
+    <div class="stat"><div class="stat-label">Kampanya Tamamlanma</div><div class="stat-val" data-kpi="kampanya_tamamlanma">—</div><div class="stat-sub">segment ortalaması</div></div>
   </div>
 
-  <div class="col-hint">
-    Kolon üzerine gelin açıklama görün —
-    <span>Temizlik ve Modelleme</span> = ham veri + segmentasyon + KPI —
-    <span>MX</span> = domain sunucu sorgusu —
-    <span>MEV</span> = MyEmailVerifier
+  <div class="stats" id="statsKpi" style="display:none">
+    <div class="stat"><div class="stat-label">Fuar Sayısı (KPI ölçülen)</div><div class="stat-val" data-kpi2="fuar_sayisi">—</div><div class="stat-sub">tamamlanan dönemler</div></div>
+    <div class="stat"><div class="stat-label">Toplam Ziyaretçi</div><div class="stat-val" data-kpi2="toplam_ziyaretci">—</div><div class="stat-sub">fuara fiilen gelen</div></div>
+    <div class="stat"><div class="stat-label">Toplam Katılımcı</div><div class="stat-val" data-kpi2="toplam_katilimci">—</div><div class="stat-sub">stand/katılımcı olarak gelen</div></div>
+    <div class="stat"><div class="stat-label">Toplam Sıcak Lead</div><div class="stat-val" data-kpi2="sicak_lead_toplam">—</div><div class="stat-sub">tüm fuarlar toplamı</div></div>
+    <div class="stat"><div class="stat-label">Ortalama Dönüşüm</div><div class="stat-val" data-kpi2="ort_donusum">—</div><div class="stat-sub">%, geldi/toplam kayıt</div></div>
   </div>
 
-  <div class="table-wrap">
-    <div class="table-header-bar">
-      <span class="table-title">Pipeline Durumu</span>
-      <span class="table-meta" id="tbl-meta">yükleniyor…</span>
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Fuar</th>
-          <th title="Ham veri temizleme, modelleme, segmentasyon ve KPI">Temizlik &amp; Modelleme</th>
-          <th title="PostgreSQL veritabanına yüklendi mi">DB</th>
-          <th title="Python DNS ile email domain sunucu sorgusu">MX Sorgu</th>
-          <th title="MyEmailVerifier ile posta kutusu doğrulaması">MEV</th>
-          <th title="Gönderilmeye hazır email listesi üretildi mi">Email Kamp.</th>
-          <th title="SMS temiz liste hazırlandı mı">SMS Kamp.</th>
-          <th style="min-width:110px">Kayıt</th>
-        </tr>
-      </thead>
-      <tbody id="tbl"></tbody>
-    </table>
-  </div>
+  <div class="searchbar"><input class="fsearch" id="f-search" placeholder="Fuar ara…"></div>
 
-  <div class="progress-title">Fuar Tamamlanma Oranı</div>
-  <div id="pw" class="progress-items"></div>
+  <div class="section-title">Fuarlar — dönem seçmek için altındaki tarihe tıkla</div>
+  <div class="fuar-list" id="fuarList"></div>
+  <div class="empty-state" id="empty" style="display:none">Aramayla eşleşen fuar bulunamadı.</div>
 
-  <div class="footer">CNG Expo - Data Operations - ali.pervanoglu@cngexpo.com</div>
+  <div class="footer">CNG Expo · Data Operations · ali.pervanoglu@cngexpo.com</div>
 </div>
 
 <script>
-/* =========================================================
-   data.json'dan oku — fallback olarak hardcoded veri kullan
-   ========================================================= */
-
 var LBL = { D: "Tamamlandı", P: "Devam ediyor", W: "Yapılmadı" };
 var CLS = { D: "done",       P: "prog",         W: "wait"       };
+var STALE_GUN = 10;
+var AY_ADI = ["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
+var STAGE_KEYS = ["t","db","mx","mev","em","sms"];
+var STAGE_LBL  = {t:"Temizlik", db:"DB", mx:"MX", mev:"MEV", em:"Email", sms:"SMS"};
 
-function badge(s) {
-  var cls = CLS[s] || "wait";
-  return '<span class="badge ' + cls + '">'
-       + '<span class="bdot"></span> ' + (LBL[s] || s)
-       + '</span>';
-}
-
-function fmtNum(n) {
-  // 14005 → "14.005"  (Türkçe binlik ayracı)
-  return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-function renderKPI(kpi) {
-  document.querySelectorAll("[data-kpi]").forEach(function(el) {
-    var key = el.getAttribute("data-kpi");
-    if (kpi[key] !== undefined) {
-      var val = kpi[key];
-      // Sayısal değerleri Türkçe formatla
-      if (key !== "son_guncelleme" && key !== "aktif_fuar") {
-        el.textContent = fmtNum(val);
-      } else {
-        el.textContent = val;
-      }
-    }
-  });
-
-  var tarihEl = document.getElementById("tarih");
-  if (tarihEl && kpi.son_guncelleme) tarihEl.textContent = kpi.son_guncelleme;
-}
-
-function renderTable(fuarlar) {
-  var tbody = document.getElementById("tbl");
-  var meta  = document.getElementById("tbl-meta");
-  tbody.innerHTML = "";
-
-  fuarlar.forEach(function(f) {
-    var tr = document.createElement("tr");
-    var h  = "";
-    h += '<td><div class="fuar-name">' + f.ad + '</div>'
-       + '<div class="fuar-date">' + f.alt + ' — ' + f.tarih + '</div></td>';
-    h += "<td>" + badge(f.t)   + "</td>";
-    h += "<td>" + badge(f.db)  + "</td>";
-    h += "<td>" + badge(f.mx)  + "</td>";
-    h += "<td>" + badge(f.mev) + "</td>";
-    h += "<td>" + badge(f.em)  + "</td>";
-    h += "<td>" + badge(f.sms) + "</td>";
-    h += '<td><span class="kayit">' + f.kayit + '</span>'
-       + '<span class="kayit-alt">' + (f.gonder || "") + '</span></td>';
-    tr.innerHTML = h;
-    tbody.appendChild(tr);
-  });
-
-  if (meta) meta.textContent = fuarlar.length + " fuar — 2026";
-}
-
-function renderProgress(fuarlar) {
-  var pw = document.getElementById("pw");
-  pw.innerHTML = "";
-
-  fuarlar.forEach(function(f, j) {
-    var div = document.createElement("div");
-    div.className = "prog-item";
-    div.innerHTML =
-      '<div class="prog-item-name">'
-      + '<span>' + f.ad + ' <span style="opacity:0.5;font-size:10px">' + f.alt + '</span></span>'
-      + '<span class="prog-pct">' + f.pct + '%</span></div>'
-      + '<div class="prog-bar"><div class="prog-fill" id="pf' + j + '" style="width:0%"></div></div>';
-    pw.appendChild(div);
-  });
-
-  // Bar animasyonu
-  setTimeout(function() {
-    fuarlar.forEach(function(f, k) {
-      var el = document.getElementById("pf" + k);
-      if (el) el.style.width = f.pct + "%";
-    });
-  }, 150);
-}
-
-function showError(msg) {
-  var el = document.getElementById("err");
-  if (el) { el.textContent = "⚠ " + msg; el.classList.add("visible"); }
-}
-
-function setLoading(done) {
-  var lb = document.getElementById("lbar");
-  if (!lb) return;
-  if (done) {
-    lb.style.width = "100%";
-    lb.classList.add("done");
-  } else {
-    lb.style.width = "60%";
-  }
-}
-
-/* ---- Ana yükleme mantığı ---- */
-setLoading(false);
-
-fetch("data.json?_=" + Date.now())   // cache-buster
-  .then(function(r) {
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    return r.json();
-  })
-  .then(function(data) {
-    renderKPI(data.kpi || {});
-    renderTable(data.fuarlar || []);
-    renderProgress(data.fuarlar || []);
-    setLoading(true);
-  })
-  .catch(function(err) {
-    console.warn("data.json yüklenemedi, fallback kullanılıyor:", err);
-    showError("data.json okunamadı — gösterilen veriler son ETL çıktısına aittir. Hata: " + err.message);
-    useFallback();
-    setLoading(true);
-  });
-
-/* ---- Fallback: ETL çalışmadığında gösterilecek son bilinen veri ---- */
-function useFallback() {
-  var D = "D", P = "P", W = "W";
-  var FUARLAR = [
-  {ad:"AYSAF 2026", alt:"YİZ — Yurt İçi", tarih:"Nis 2026", t:D, db:D, mx:D, mev:D, em:D, sms:D, kayit:"16.192", gonder:"11.138 gönder", pct:100},
-  {ad:"AYSAF 2026", alt:"YDZ — Yurt Dışı", tarih:"Nis 2026", t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"4.574", gonder:"2.867 gönder", pct:83},
-  {ad:"AYSAD 2026", alt:"Üye Listesi", tarih:"2026", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"475", gonder:"MX + MEV bekleniyor", pct:33},
-  {ad:"PAİNTİSTANBUL 2026", alt:"YDZ — Web Scraping", tarih:"2026", t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"46.283", gonder:"45.276 gönder — gov. domainleri ve sahte emailler temizlendi", pct:83},
-  {ad:"PAİNTİSTANBUL 2026", alt:"YİZ — Ziyaretçi", tarih:"May 2026", t:D, db:D, mx:D, mev:D, em:D, sms:D, kayit:"4.854", gonder:"YİZ kaydı — Outreach + Online Kayıt + Form Dolduran + İKMİB Hunter.io. ulke tespiti telefon/TLD bazlı yapıldı (16.06.2026).", pct:100},
-  {ad:"PAİNTİSTANBUL 2026", alt:"YDK — Paintindia", tarih:"2026", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"283", gonder:"MX + MEV bekleniyor", pct:33},
-  {ad:"PAİNTİSTANBUL 2026", alt:"KPI — YİZ Katılım", tarih:"None", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"5.258", gonder:"Fuara gerçekten gelen kişi sayısı (toplam 8.081 kayıttan). Dönüşüm oranı PowerBI/v_paintistanbul_2026_kpi üzerinden izlenir.", pct:33},
-  {ad:"PAİNTİSTANBUL 2026", alt:"KPI — YDZ Katılım", tarih:"None", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"625", gonder:"Fuara gerçekten gelen kişi sayısı (toplam 1.013 kayıttan). Dönüşüm oranı PowerBI/v_paintistanbul_2026_kpi üzerinden izlenir.", pct:33},
-  {ad:"PUEXPO 2026", alt:"YDK — UTECH", tarih:"2026", t:D, db:D, mx:D, mev:W, em:W, sms:W, kayit:"234", gonder:"MX doğrulandı — 200 GÖNDER, 1 RED (no_mx), 33 email boş", pct:50},
-  {ad:"TÜRKKOMPOZİT 2026", alt:"YDK — JEC World", tarih:"2026", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"130", gonder:"MX + MEV bekleniyor", pct:33},
-  {ad:"PROSES SEMPOZYUMU 2026", alt:"YİZ — Yurt İçi", tarih:"Tem 2026", t:D, db:D, mx:D, mev:D, em:W, sms:W, kayit:"1.552", gonder:"Segment düzeltmesi yapıldı (TÜRKİYE combining-dot sorunu). Eda Hanım 22 kayıt ekledi. Toplam 1610 kayıt. Gönderime hazır YİZ: 1552 kayıt.", pct:67},
-  {ad:"PROSES SEMPOZYUMU 2026", alt:"YDZ+BEL — Yurt Dışı", tarih:"Tem 2026", t:D, db:D, mx:D, mev:D, em:W, sms:W, kayit:"57", gonder:"YDZ: ülke kolonu dolu yabancı kayıt. BEL: domain TLD tahmini. Segment_kaynagi kolonu ile izlenebilir.", pct:67},
-  {ad:"AYSAF 2026", alt:"KPI — YİZ Katılım", tarih:"Nis 2026", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"4.877", gonder:"Fuara gerçekten gelen kişi sayısı (toplam 4.877 kayıttan). Dönüşüm oranı PowerBI/v_aysaf_2026_kpi üzerinden izlenir.", pct:33},
-  {ad:"AYSAF 2026", alt:"KPI — YDZ Katılım", tarih:"Nis 2026", t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"295", gonder:"Fuara gerçekten gelen kişi sayısı (toplam 295 kayıttan). Dönüşüm oranı PowerBI/v_aysaf_2026_kpi üzerinden izlenir.", pct:33},
-  {ad:"CHEMEX 2026", alt:"YİZ — Ziyaretçi", tarih:"2026", t:D, db:D, mx:D, mev:W, em:W, sms:W, kayit:"6.137", gonder:"6.137 YİZ (6.083 TR + 54 Türkiye temsilcisi). SMS:5.477 / Sadece Email:660. Kampanya listesi hazır, gönderim bekleniyor.", pct:50},
-  {ad:"CHEMEX 2026", alt:"BEL — Belirsiz", tarih:"2026", t:D, db:D, mx:D, mev:W, em:W, sms:W, kayit:"89", gonder:"89 belirsiz kayıt — Batuhan Bey onayı bekleniyor.", pct:50},
-  {ad:"TÜRKKOMPOZİT 2026", alt:"YİK — Katılımcı", tarih:"Eki 2026", t:D, db:D, mx:D, mev:D, em:W, sms:W, kayit:"1.633", gonder:"TürkComposite 2026 Ziyaretçi/Katılımcı verisi eklendi (10.08.2026). GÖNDER: 1633.", pct:67},
-  {ad:"TÜRKKOMPOZİT 2026", alt:"YDK — Katılımcı", tarih:"Eki 2026", t:D, db:D, mx:D, mev:D, em:W, sms:W, kayit:"278", gonder:"TürkComposite 2026 Ziyaretçi/Katılımcı verisi eklendi (10.08.2026). GÖNDER: 278.", pct:67},
-  {ad:"TÜRKKOMPOZİT 2026", alt:"YDZ — Ziyaretçi", tarih:"Ekim 2026", t:D, db:D, mx:D, mev:D, em:W, sms:W, kayit:"40.572", gonder:"Son guncelleme 10.08.2026 — toplam 40572 kayit (Almati eklendi)", pct:67},
-  {ad:"TÜRKKOMPOZİT 2026", alt:"2024 Fuar Listesi", tarih:"None", t:D, db:D, mx:D, mev:D, em:W, sms:W, kayit:"1.288", gonder:"MX+MEV tamamlandı. GÖNDER:1.288 / İHTİYATLI:68 / GEÇERSİZ:289", pct:67},
-  {ad:"PuExpo & Foam Eurasia", alt:"YİZ — Yurtiçi Ziyaretçi", tarih:"2026", t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"3.880", gonder:"YİZ: 2.064 GÖNDER | Kaynak: CRM (Pu Expo İst. 2019/2023, Foam Eurasia 2021/2023)", pct:83},
-  {ad:"PuExpo & Foam Eurasia", alt:"YDZ — Yurtdışı Ziyaretçi", tarih:"2026", t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"770", gonder:"YDZ: 421 GÖNDER | Kaynak: CRM (Pu Expo İst. 2019/2023, Foam Eurasia 2021/2023)", pct:83},
-  {ad:"PuExpo & Foam Eurasia", alt:"YDK — Yurtdışı Katılımcı", tarih:"2026", t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"89", gonder:"YDK: 41 GÖNDER | Kaynak: putech yabancı data (sözleşme bazlı)", pct:83},
-  {ad:"4'lü Fuar E-Posta Listesi", alt:"Karışık — fuar ayrımı belirsiz", tarih:"2026", t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"6.144", gonder:"4.371 GÖNDER | Fuar ayrımı belirsiz, ayrı tablo (puexpo_foam_4lu_fuar)", pct:83},
-  {ad:"TÜRKKOMPOZİT 2026", alt:"YİZ — Yurt İçi Ziyaretçi", tarih:"Eylül 2026", t:D, db:D, mx:D, mev:W, em:W, sms:W, kayit:"428", gonder:"Yaka Kartları/FORM LISTE/Manuel/M4C kaynaklı ziyaretçi verisi. MX tamamlandı, MEV bekliyor. GÖNDER: 428.", pct:50},
-  {ad:"TÜRKKOMPOZİT 2026", alt:"YDZ — Yurt Dışı Ziyaretçi", tarih:"Eylül 2026", t:D, db:D, mx:D, mev:W, em:W, sms:W, kayit:"46", gonder:"Yaka Kartları/FORM LISTE/Manuel/M4C kaynaklı ziyaretçi verisi. MX tamamlandı, MEV bekliyor. GÖNDER: 46.", pct:50},
-  {ad:"SAHA/AUTOMECHANIKA/BIG5 2026", alt:"Çapraz Pazarlama — Yurt Dışı Fuar Katılımcıları", tarih:"Ağustos 2026", t:D, db:D, mx:D, mev:D, em:W, sms:W, kayit:"4.018", gonder:"SAHA/Automechanika/Big5 çapraz pazarlama listesi. MX + Big5 için ek MEV uygulandı.", pct:67}
+/* =========================================================
+   FUAR REGISTRY — her fuarın dönemlerini tanımlar.
+   Aynı fuarın farklı dönemleri (Nisan / Kasım gibi) BAĞIMSIZ
+   pipeline durumuna sahiptir: MX/MEV her dönemde yeniden
+   çalışır, çünkü zaman geçtikçe email adresleri değişebilir
+   — aynı kaynak tablo kullanılsa bile aşama durumları sıfırdan.
+   ========================================================= */
+var FUAR_REGISTRY = [
+  { ad: "AYSAF 2026",                      kampanya_seg: ["YİZ","YDZ"],             kpi: true, donemler: [
+      { b:"2026-04-14", e:"2026-04-17" },
+      { b:"2026-11-10", e:"2026-11-12" }
+    ]},
+  { ad: "Proses Emniyeti Sempozyumu 2026", kampanya_seg: ["YİZ","YDZ"],             kpi: true, donemler: [
+      { b:"2026-09-15", e:"2026-09-16" }
+    ]},
+  { ad: "TURKCOMPOSITE 2026",              kampanya_seg: ["YİK","YDK","YİZ","YDZ"], kpi: true, donemler: [
+      { b:"2026-10-21", e:"2026-10-23" }
+    ]},
+  { ad: "ChemEx Eurasia 2027",             kampanya_seg: ["YİZ","YDZ"],             kpi: true, donemler: [
+      { b:"2027-11-03", e:"2027-11-05" }
+    ]},
+  { ad: "PaintIstanbul 2028",              kampanya_seg: ["YİZ","YDZ","YDK"],       kpi: true, donemler: [
+      { b:"2028-03-01", e:"2028-03-04" }
+    ]},
+  { ad: "AYSAD 2026",                      kampanya_seg: ["YİK"],                   kpi: false, donemler: [
+      { b:"2026-04-14", e:"2026-04-17" }
+    ]}
 ];
-  var kpi = {
-    aktif_fuar:  FUARLAR.length,
-    toplam_kisi: 70598,
-    email_hazir: 14005,
-    sms_hazir:   18398,
-    db_kayit:    69669,
+
+var STATE = { rows: [], openFuar: null, openDonem: {} };
+
+function fmtNum(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
+function daysSince(iso){ if(!iso) return null; var d=new Date(iso); if(isNaN(d)) return null; return Math.floor((Date.now()-d.getTime())/86400000); }
+function daysUntil(iso){ if(!iso) return null; var d=new Date(iso); if(isNaN(d)) return null; return Math.ceil((d.getTime()-Date.now())/86400000); }
+function donemAralik(b,e){
+  var bd=new Date(b), ed=e?new Date(e):null;
+  if(isNaN(bd)) return "—";
+  var s = bd.getDate() + (ed && !isNaN(ed) && ed.getMonth()===bd.getMonth() ? "" : " "+AY_ADI[bd.getMonth()]);
+  if(ed && !isNaN(ed) && ed.getTime()!==bd.getTime()) s += "-" + ed.getDate() + " " + AY_ADI[ed.getMonth()];
+  else s += " " + AY_ADI[bd.getMonth()];
+  return s + " " + bd.getFullYear();
+}
+function donemLabel(b){ var d=new Date(b); if(isNaN(d)) return "—"; return AY_ADI[d.getMonth()]+" "+d.getFullYear(); }
+function rowKey(ad,tip,seg,b){ return [ad,tip,seg,b].join("::"); }
+
+function badge(s, stale){
+  var cls = CLS[s]||"wait"; if(stale) cls+=" stale";
+  return '<span class="badge '+cls+'" title="'+(stale?"Bu aşama "+STALE_GUN+"+ gündür güncellenmedi":"")+'"><span class="bdot"></span> '+(LBL[s]||s)+'</span>';
+}
+
+/* ---- gerçek satırları registry ile eşleştirip eksikleri placeholder yap ---- */
+function buildIndex(realRows){
+  var idx = {};
+  realRows.forEach(function(r){
+    idx[rowKey(r.ad, r.kaynak_tipi, r.kaynak_tipi==="KPI"?"Genel":r.segment_kodu, r.fuar_tarihi_baslangic)] = r;
+  });
+  return idx;
+}
+
+function getRow(idx, ad, tip, seg, b, e){
+  var k = rowKey(ad, tip, seg, b);
+  if (idx[k]) return idx[k];
+  return {
+    ad: ad, segment_kodu: seg, kaynak_tipi: tip, fuar_tarihi_baslangic: b, fuar_tarihi_bitis: e,
+    t:"W", db:"W", mx:"W", mev:"W", em:"W", sms:"W", kayit:"0", gonder:"", pct:0,
+    guncelleme_ts: null, kaynak_tablo:"—", veri_kaynagi_tipi:"—", kpi:{}, isPlaceholder:true
+  };
+}
+
+/* dönem için özet durum: tamamlandı / kısmen / başlamadı */
+function donemDurum(idx, def, d){
+  var rows = def.kampanya_seg.map(function(seg){ return getRow(idx, def.ad, "Kampanya", seg, d.b, d.e); });
+  var anyReal = rows.some(function(r){ return !r.isPlaceholder; });
+  if (!anyReal) return "none";
+  var allDone = rows.every(function(r){ return STAGE_KEYS.every(function(k){ return r[k]==="D"; }); });
+  if (allDone) return "done";
+  return "mid";
+}
+
+function computeMarketingKPI(idx){
+  var toplam=0, email=0, sms=0, fuarSayisi=0, doneStages=0, totalStages=0;
+  FUAR_REGISTRY.forEach(function(def){
+    def.donemler.forEach(function(d){
+      fuarSayisi++;
+      def.kampanya_seg.forEach(function(seg){
+        var r = getRow(idx, def.ad, "Kampanya", seg, d.b, d.e);
+        var k = parseInt(String(r.kayit).replace(/\./g,""),10) || 0;
+        toplam += k;
+        if (r.em==="D") email += (r.kpi && r.kpi.email_gonder)||0;
+        if (r.sms==="D") sms += (r.kpi && r.kpi.sms_gonder)||0;
+        STAGE_KEYS.forEach(function(sk){ totalStages++; if (r[sk]==="D") doneStages++; });
+      });
+    });
+  });
+  return {
+    aktif_fuar: fuarSayisi, toplam_kisi: toplam, email_hazir: email, sms_hazir: sms,
+    kampanya_tamamlanma: totalStages ? Math.round((doneStages/totalStages)*100)+"%" : "—",
     son_guncelleme: new Date().toLocaleDateString("tr-TR")
   };
-  renderKPI(kpi);
-  renderTable(FUARLAR);
-  renderProgress(FUARLAR);
+}
+
+function computeFuarKPI(idx){
+  var toplamZiyaretci=0, toplamKatilimci=0, sicakLead=0, donusumT=0, donusumN=0, fuarSayisi=0;
+  FUAR_REGISTRY.forEach(function(def){
+    if (!def.kpi) return;
+    def.donemler.forEach(function(d){
+      var kr = getRow(idx, def.ad, "KPI", "Genel", d.b, d.e);
+      if (kr.isPlaceholder || !kr.kpi || Object.keys(kr.kpi).length===0) return;
+      fuarSayisi++;
+      if (typeof kr.kpi.sicak_lead === "number") sicakLead += kr.kpi.sicak_lead;
+      if (typeof kr.kpi.donusum_pct === "number") { donusumT += kr.kpi.donusum_pct; donusumN++; }
+      toplamZiyaretci += kr.kpi.geldi_ziyaretci || 0;
+      toplamKatilimci += kr.kpi.geldi_katilimci || 0;
+    });
+  });
+  return {
+    fuar_sayisi: fuarSayisi, toplam_ziyaretci: toplamZiyaretci, toplam_katilimci: toplamKatilimci,
+    sicak_lead_toplam: sicakLead, ort_donusum: donusumN ? (Math.round((donusumT/donusumN)*10)/10)+"%" : "—"
+  };
+}
+
+function renderKPI(kpi){
+  document.querySelectorAll("[data-kpi]").forEach(function(el){
+    var key = el.getAttribute("data-kpi");
+    if (kpi[key] !== undefined) {
+      var raw = ["son_guncelleme","aktif_fuar","kampanya_tamamlanma"];
+      el.textContent = raw.indexOf(key)===-1 ? fmtNum(kpi[key]) : kpi[key];
+    }
+  });
+  var t = document.getElementById("tarih");
+  if (t && kpi.son_guncelleme) t.textContent = kpi.son_guncelleme;
+}
+
+function renderKPI2(kpi){
+  document.querySelectorAll("[data-kpi2]").forEach(function(el){
+    var key = el.getAttribute("data-kpi2");
+    if (kpi[key] !== undefined) {
+      var raw = ["fuar_sayisi","ort_donusum"];
+      el.textContent = raw.indexOf(key)===-1 ? fmtNum(kpi[key]) : kpi[key];
+    }
+  });
+}
+
+function setMode(mode){
+  document.querySelectorAll(".mode-btn").forEach(function(b){ b.classList.toggle("active", b.dataset.mode===mode); });
+  document.getElementById("statsMarketing").style.display = mode==="marketing" ? "grid" : "none";
+  document.getElementById("statsKpi").style.display = mode==="kpi" ? "grid" : "none";
+}
+
+function renderUpcoming(idx){
+  var list = [];
+  FUAR_REGISTRY.forEach(function(def){
+    def.donemler.forEach(function(d){
+      var gun = daysUntil(d.b);
+      if (gun !== null && gun >= 0) list.push({ ad: def.ad, gun: gun, tarih: donemAralik(d.b,d.e), donem: d });
+    });
+  });
+  list.sort(function(a,b){ return a.gun - b.gun; });
+  var el = document.getElementById("upcoming");
+  el.innerHTML = "";
+  list.slice(0,6).forEach(function(u,i){
+    var div = document.createElement("div");
+    div.className = "up-card" + (i===0 ? " next" : "");
+    if (i===0) div.innerHTML = '<span class="up-badge">Sıradaki</span>';
+    div.innerHTML += '<div class="up-days">'+u.gun+' <small>gün kaldı</small></div><div class="up-name">'+u.ad+'</div><div class="up-date">'+u.tarih+'</div>';
+    div.addEventListener("click", function(){ openFuarDonem(u.ad, u.donem.b); });
+    el.appendChild(div);
+  });
+}
+
+function buildAlerts(idx){
+  var alerts = [];
+  FUAR_REGISTRY.forEach(function(def){
+    def.donemler.forEach(function(d){
+      def.kampanya_seg.forEach(function(seg){
+        var r = getRow(idx, def.ad, "Kampanya", seg, d.b, d.e);
+        if (r.isPlaceholder) return;
+        STAGE_KEYS.forEach(function(k){
+          if (r[k]==="P") {
+            var gun = daysSince(r.guncelleme_ts);
+            if (gun!==null && gun>=STALE_GUN) alerts.push("<b>"+def.ad+" · "+seg+"</b> — "+STAGE_LBL[k]+" aşaması "+gun+" gündür 'devam ediyor', kontrol edilmeli.");
+          }
+        });
+        var gunKal = daysUntil(d.b);
+        if (gunKal!==null && gunKal>=0 && gunKal<=21 && (r.em!=="D" || r.sms!=="D") && !r.isPlaceholder) {
+          alerts.push("<b>"+def.ad+" · "+seg+"</b> — fuara "+gunKal+" gün kaldı, Email/SMS kampanyası hâlâ tamamlanmadı.");
+        }
+      });
+    });
+  });
+  var el = document.getElementById("alerts");
+  el.innerHTML = "";
+  alerts.slice(0,6).forEach(function(a){
+    var div = document.createElement("div");
+    div.className = "alert";
+    div.innerHTML = '<span class="a-dot"></span><span>'+a+'</span>';
+    el.appendChild(div);
+  });
+}
+
+function renderFuarList(idx){
+  var search = document.getElementById("f-search").value.trim().toLowerCase();
+  var wrap = document.getElementById("fuarList");
+  var empty = document.getElementById("empty");
+  wrap.innerHTML = "";
+
+  var defs = FUAR_REGISTRY.filter(function(d){ return !search || d.ad.toLowerCase().indexOf(search)!==-1; });
+  empty.style.display = defs.length ? "none" : "block";
+
+  defs.forEach(function(def){
+    var card = document.createElement("div");
+    card.className = "fuar-card";
+
+    var pillsHtml = def.donemler.map(function(d){
+      var durum = donemDurum(idx, def, d);
+      var dotCls = durum==="done" ? "pdot-done" : durum==="mid" ? "pdot-mid" : "pdot-none";
+      var active = (STATE.openFuar===def.ad && STATE.openDonem[def.ad]===d.b) ? " active" : "";
+      return '<div class="pill'+active+'" data-fuar="'+def.ad+'" data-b="'+d.b+'"><span class="pill-dot '+dotCls+'"></span>'+donemAralik(d.b,d.e)+'</div>';
+    }).join("");
+
+    var head = document.createElement("div");
+    head.className = "fuar-card-head";
+    head.innerHTML = '<div><div class="fuar-name-lg">'+def.ad+'</div>'
+      + '<div class="fuar-sub">'+def.donemler.length+' dönem · Segmentler: '+def.kampanya_seg.join(", ")+(def.kpi?' · KPI takibi var':'')+'</div></div>'
+      + '<div class="donem-pills">'+pillsHtml+'</div>';
+    card.appendChild(head);
+
+    if (STATE.openFuar === def.ad && STATE.openDonem[def.ad]) {
+      var d = def.donemler.filter(function(x){ return x.b === STATE.openDonem[def.ad]; })[0];
+      if (d) card.appendChild(buildDonemPanel(idx, def, d));
+    }
+
+    wrap.appendChild(card);
+  });
+
+  wrap.querySelectorAll(".pill").forEach(function(p){
+    p.addEventListener("click", function(){ openFuarDonem(p.dataset.fuar, p.dataset.b); });
+  });
+}
+
+function openFuarDonem(ad, b){
+  if (STATE.openFuar === ad && STATE.openDonem[ad] === b) {
+    STATE.openFuar = null; // aynı döneme tekrar tıklarsa kapat
+  } else {
+    STATE.openFuar = ad;
+    STATE.openDonem[ad] = b;
+  }
+  renderFuarList(STATE.idx);
+}
+
+function buildDonemPanel(idx, def, d){
+  var panel = document.createElement("div");
+  panel.className = "donem-panel";
+
+  var rows = def.kampanya_seg.map(function(seg){ return getRow(idx, def.ad, "Kampanya", seg, d.b, d.e); });
+  var gun = daysUntil(d.b);
+  var reprocessNote = gun !== null && gun < 0
+    ? "<b>Not:</b> Bu dönem geçmişte kaldı. Aynı fuar tekrar edecekse (bkz. bir sonraki dönem), MX/MEV süreci sıfırdan çalıştırılmalı — zaman geçtiği için bu listedeki email adreslerinin bir kısmı artık geçersiz olabilir."
+    : "<b>Not:</b> Bu dönem henüz tamamlanmadıysa bile kaynak tablo (havuz) önceki dönemle aynı olabilir; ama MX/MEV/Email/SMS durumları bu dönem için sıfırdan takip edilir.";
+
+  var rowsHtml = rows.map(function(r){
+    var g = daysSince(r.guncelleme_ts);
+    var stale = function(k){ return r[k]==="P" && g!==null && g>=STALE_GUN; };
+    return '<tr>'
+      + '<td><span class="seg-tag seg-'+r.segment_kodu+'">'+r.segment_kodu+'</span></td>'
+      + '<td>'+badge(r.t, stale("t"))+'</td>'
+      + '<td>'+badge(r.db, stale("db"))+'</td>'
+      + '<td>'+badge(r.mx, stale("mx"))+'</td>'
+      + '<td>'+badge(r.mev, stale("mev"))+'</td>'
+      + '<td>'+badge(r.em, stale("em"))+'</td>'
+      + '<td>'+badge(r.sms, stale("sms"))+'</td>'
+      + '<td><span class="kayit">'+fmtNum(r.kayit)+'</span></td>'
+      + '</tr>';
+  }).join("");
+
+  var kpiRow = def.kpi ? getRow(idx, def.ad, "KPI", "Genel", d.b, d.e) : null;
+  var kpiHtml = "";
+  if (kpiRow) {
+    if (kpiRow.isPlaceholder || !kpiRow.kpi || Object.keys(kpiRow.kpi).length===0) {
+      kpiHtml = '<div class="kpi-band"><span class="kpi-empty">Bu dönem için KPI verisi henüz yok — fuar gerçekleşip katılım verisi işlendiğinde burada görünecek.</span></div>';
+    } else {
+      var k = kpiRow.kpi;
+      var geldiHtml = '';
+      if (typeof k.geldi_ziyaretci === "number" || typeof k.geldi_katilimci === "number") {
+        geldiHtml = '<div class="kpi-item"><div class="kv">'+fmtNum(k.geldi_ziyaretci||0)+'</div><div class="kl">Gelen Ziyaretçi</div></div>'
+          + '<div class="kpi-item"><div class="kv">'+fmtNum(k.geldi_katilimci||0)+'</div><div class="kl">Gelen Katılımcı</div></div>';
+      } else {
+        geldiHtml = '<div class="kpi-item"><div class="kv">'+(kpiRow.gonder||'—')+'</div><div class="kl">Fuara Geldi</div></div>';
+      }
+      kpiHtml = '<div class="kpi-band">'
+        + '<div class="kpi-item"><div class="kv">'+fmtNum(kpiRow.kayit)+'</div><div class="kl">Toplam Kayıt</div></div>'
+        + geldiHtml
+        + '<div class="kpi-item"><div class="kv">'+(k.donusum_pct!=null?k.donusum_pct+'%':'—')+'</div><div class="kl">Dönüşüm</div></div>'
+        + '<div class="kpi-item"><div class="kv">'+fmtNum(k.sicak_lead||0)+'</div><div class="kl">Sıcak Lead</div></div>'
+        + '</div>';
+    }
+  }
+
+  panel.innerHTML = '<div class="dp-head"><div class="dp-title">'+def.ad+' <span>· '+donemAralik(d.b,d.e)+' dönemi</span></div></div>'
+    + '<table class="mini-table"><thead><tr><th>Segment</th><th>Temizlik</th><th>DB</th><th>MX</th><th>MEV</th><th>Email</th><th>SMS</th><th>Kayıt</th></tr></thead>'
+    + '<tbody>'+rowsHtml+'</tbody></table>'
+    + (kpiHtml ? '<div class="section-title" style="margin-top:4px">KPI — Fuar Geneli</div>'+kpiHtml : '')
+    + '<div class="reprocess-note">'+reprocessNote+'</div>';
+
+  return panel;
+}
+
+function boot(data){
+  STATE.idx = buildIndex(data.fuarlar || []);
+  renderKPI(computeMarketingKPI(STATE.idx));
+  renderKPI2(computeFuarKPI(STATE.idx));
+  renderUpcoming(STATE.idx);
+  buildAlerts(STATE.idx);
+  renderFuarList(STATE.idx);
+  document.getElementById("f-search").addEventListener("input", function(){ renderFuarList(STATE.idx); });
+  document.querySelectorAll(".mode-btn").forEach(function(b){
+    b.addEventListener("click", function(){ setMode(b.dataset.mode); });
+  });
+  setLoading(true);
+}
+
+function showError(msg){ var el=document.getElementById("dataNote"); if(el){ el.style.display="block"; } console.warn(msg); }
+function setLoading(done){ var lb=document.getElementById("lbar"); if(!lb) return; if(done){ lb.style.width="100%"; lb.classList.add("done"); } else { lb.style.width="60%"; } }
+
+setLoading(false);
+fetch("data.json?_="+Date.now())
+  .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+  .then(function(data){ boot(data); })
+  .catch(function(err){
+    console.warn("data.json yüklenemedi, fallback kullanılıyor:", err);
+    showError("data.json okunamadı — gösterilen veriler örnek çıktıdır. Hata: "+err.message);
+    useFallback();
+  });
+
+function useFallback(){
+  var D="D", P="P", W="W";
+  var FUARLAR = [
+    {ad:"AYSAF 2026", segment_kodu:"YİZ", kaynak_tipi:"Kampanya", fuar_tarihi_baslangic:"2026-04-14", fuar_tarihi_bitis:"2026-04-17",
+      t:D, db:D, mx:D, mev:D, em:D, sms:D, kayit:"20636", gonder:"11.138 gönder", guncelleme_ts:"2026-04-15T10:00:00Z",
+      kaynak_tablo:"aysaf_ziyaretci", veri_kaynagi_tipi:"crm", kpi:{email_gonder:11138, sms_gonder:9800}},
+    {ad:"AYSAF 2026", segment_kodu:"YDZ", kaynak_tipi:"Kampanya", fuar_tarihi_baslangic:"2026-04-14", fuar_tarihi_bitis:"2026-04-17",
+      t:D, db:D, mx:D, mev:D, em:D, sms:W, kayit:"4574", gonder:"2.867 gönder", guncelleme_ts:"2026-04-14T10:00:00Z",
+      kaynak_tablo:"aysaf_yurtdisi", veri_kaynagi_tipi:"scraping", kpi:{email_gonder:2867, sms_gonder:0}},
+    {ad:"AYSAF 2026", segment_kodu:"Genel", kaynak_tipi:"KPI", fuar_tarihi_baslangic:"2026-04-14", fuar_tarihi_bitis:"2026-04-17",
+      t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"5172", gonder:"Geldi: 2.188", guncelleme_ts:"2026-04-20T10:00:00Z",
+      kaynak_tablo:"aysaf_2026_fuar_ziyaretci", veri_kaynagi_tipi:"crm",
+      kpi:{donusum_pct:42.3, sicak_lead:377, geldi_ziyaretci:2063, geldi_katilimci:125}},
+    {ad:"Proses Emniyeti Sempozyumu 2026", segment_kodu:"YİZ", kaynak_tipi:"Kampanya", fuar_tarihi_baslangic:"2026-09-15", fuar_tarihi_bitis:"2026-09-16",
+      t:D, db:D, mx:P, mev:W, em:W, sms:W, kayit:"1552", gonder:"MX sürüyor", guncelleme_ts:"2026-08-12T10:00:00Z",
+      kaynak_tablo:"proses_sempozyumu_ziyaretci", veri_kaynagi_tipi:"crm", kpi:{}},
+    {ad:"Proses Emniyeti Sempozyumu 2026", segment_kodu:"YDZ", kaynak_tipi:"Kampanya", fuar_tarihi_baslangic:"2026-09-15", fuar_tarihi_bitis:"2026-09-16",
+      t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"57", gonder:"MX bekleniyor", guncelleme_ts:"2026-08-01T10:00:00Z",
+      kaynak_tablo:"proses_sempozyumu_ziyaretci", veri_kaynagi_tipi:"crm", kpi:{}},
+    {ad:"TURKCOMPOSITE 2026", segment_kodu:"YİK", kaynak_tipi:"Kampanya", fuar_tarihi_baslangic:"2026-10-21", fuar_tarihi_bitis:"2026-10-23",
+      t:D, db:D, mx:D, mev:P, em:W, sms:W, kayit:"1809", gonder:"MEV sürüyor", guncelleme_ts:"2026-08-15T10:00:00Z",
+      kaynak_tablo:"turkcompozite_2026_fuar", veri_kaynagi_tipi:"crm", kpi:{}},
+    {ad:"TURKCOMPOSITE 2026", segment_kodu:"YDK", kaynak_tipi:"Kampanya", fuar_tarihi_baslangic:"2026-10-21", fuar_tarihi_bitis:"2026-10-23",
+      t:D, db:D, mx:D, mev:W, em:W, sms:W, kayit:"358", gonder:"MEV bekleniyor", guncelleme_ts:"2026-08-15T10:00:00Z",
+      kaynak_tablo:"turkcompozite_2026_fuar", veri_kaynagi_tipi:"crm", kpi:{}},
+    {ad:"TURKCOMPOSITE 2026", segment_kodu:"YİZ", kaynak_tipi:"Kampanya", fuar_tarihi_baslangic:"2026-10-21", fuar_tarihi_bitis:"2026-10-23",
+      t:D, db:D, mx:W, mev:W, em:W, sms:W, kayit:"428", gonder:"MX bekleniyor", guncelleme_ts:"2026-08-10T10:00:00Z",
+      kaynak_tablo:"turkcompozite_2026_fuar", veri_kaynagi_tipi:"crm", kpi:{}},
+    {ad:"AYSAD 2026", segment_kodu:"YİK", kaynak_tipi:"Kampanya", fuar_tarihi_baslangic:"2026-04-14", fuar_tarihi_bitis:"2026-04-17",
+      t:D, db:D, mx:D, mev:P, em:W, sms:W, kayit:"481", gonder:"MEV sürüyor", guncelleme_ts:"2026-08-05T10:00:00Z",
+      kaynak_tablo:"aysad_uye", veri_kaynagi_tipi:"excel_manuel", kpi:{}}
+  ];
+  boot({ fuarlar: FUARLAR });
 }
 </script>
 </body>
