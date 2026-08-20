@@ -276,7 +276,7 @@ function computeFuarKPI(groups){
       if (typeof kr.kpi.sicak_lead === "number") sicakLead += kr.kpi.sicak_lead;
       if (typeof kr.kpi.donusum_pct === "number") { donusumT += kr.kpi.donusum_pct; donusumN++; }
       toplamZiyaretci += kr.kpi.geldi_ziyaretci || 0;
-      toplamKatilimci += kr.kpi.geldi_katilimci || 0;
+      toplamKatilimci += (typeof kr.kpi.geldi_katilimci === "number") ? kr.kpi.geldi_katilimci : 0;
     });
   });
   return {
@@ -447,11 +447,43 @@ function buildDonemPanel(g, d){
     ? "<b>Not:</b> Bu dönem geçmişte kaldı. Aynı fuar tekrar edecekse, MX/MEV süreci sıfırdan çalıştırılmalı — zaman geçtiği için bu listedeki email adreslerinin bir kısmı artık geçersiz olabilir."
     : "<b>Not:</b> Kaynak tablo (havuz) önceki dönemle aynı olabilir; ama MX/MEV/Email/SMS durumları bu dönem için sıfırdan takip edilir.";
 
-  var rowsHtml = d.kampanyaRows.length ? d.kampanyaRows.map(function(r){
+  /* Kendi segment satırlarını (hedef_fuar taşımayan, yani bu fuarın kendi
+     verisi olan satırlar) aynı segment_kodu'na göre BİRLEŞTİR — tarihsel
+     olarak aynı segment için birden fazla meta satırı açılmış olabiliyor
+     (örn. "YDK — JEC World" + "YDK — Katılımcı"), bunlar aynı segmenttir.
+     Dış kaynak/besleme satırları (hedef_fuar dolu — örn. SAHA/AUTOMECHANIKA)
+     AYRI ve etiketli kalır, çünkü gerçekten farklı bir veri kaynağı. */
+  function mergeSegmentRows(rows){
+    var own = rows.filter(function(r){ return !r.hedef_fuar; });
+    var sourced = rows.filter(function(r){ return !!r.hedef_fuar; });
+    var bySeg = {};
+    own.forEach(function(r){
+      var seg = r.segment_kodu || "Genel";
+      if (!bySeg[seg]) bySeg[seg] = { segment_kodu: seg, kayit: 0, t:"D",db:"D",mx:"D",mev:"D",em:"D",sms:"D", guncelleme_ts: null, kaynakSayisi: 0 };
+      var acc = bySeg[seg];
+      var k = parseInt(String(r.kayit).replace(/\./g,""),10) || 0;
+      acc.kayit += k;
+      STAGE_KEYS.forEach(function(sk){
+        if (acc[sk] === "D" && r[sk] === "D") { /* ikisi de tamam, D kalır */ }
+        else if (acc.kaynakSayisi === 0 && r[sk] !== undefined) { acc[sk] = r[sk]; }
+        else if (acc[sk] === r[sk]) { /* aynı, değişmez */ }
+        else { acc[sk] = "P"; } // farklı durumlar varsa "kısmen tamamlandı"
+      });
+      if (r.guncelleme_ts && (!acc.guncelleme_ts || r.guncelleme_ts > acc.guncelleme_ts)) acc.guncelleme_ts = r.guncelleme_ts;
+      acc.kaynakSayisi++;
+    });
+    var merged = Object.keys(bySeg).map(function(k){ return bySeg[k]; });
+    return merged.concat(sourced);
+  }
+
+  var displayRows = mergeSegmentRows(d.kampanyaRows);
+
+  var rowsHtml = displayRows.length ? displayRows.map(function(r){
     var gg = daysSince(r.guncelleme_ts);
     var stale = function(k){ return r[k]==="P" && gg!==null && gg>=STALE_GUN; };
     var segCls = /^(YİK|YDK|YİZ|YDZ)$/.test(r.segment_kodu) ? r.segment_kodu : "Genel";
-    var kaynakNote = r.hedef_fuar ? '<div style="font-size:10px;color:var(--dim);margin-top:2px">kaynak: '+r.ad+'</div>' : '';
+    var kaynakNote = r.hedef_fuar ? '<div style="font-size:10px;color:var(--dim);margin-top:2px">kaynak: '+r.ad+'</div>'
+      : (r.kaynakSayisi > 1 ? '<div style="font-size:10px;color:var(--dim);margin-top:2px">'+r.kaynakSayisi+' kayıttan birleştirildi</div>' : '');
     return '<tr>'
       + '<td><span class="seg-tag seg-'+segCls+'">'+(r.segment_kodu||"—")+'</span>'+kaynakNote+'</td>'
       + '<td>'+badge(r.t, stale("t"))+'</td>'
@@ -476,9 +508,14 @@ function buildDonemPanel(g, d){
     } else {
       var k = kr.kpi;
       var geldiHtml = '';
-      if (typeof k.geldi_ziyaretci === "number" || typeof k.geldi_katilimci === "number") {
-        geldiHtml = '<div class="kpi-item"><div class="kv">'+fmtNum(k.geldi_ziyaretci||0)+'</div><div class="kl">Gelen Ziyaretçi</div></div>'
-          + '<div class="kpi-item"><div class="kv">'+fmtNum(k.geldi_katilimci||0)+'</div><div class="kl">Gelen Katılımcı</div></div>';
+      if (typeof k.geldi_ziyaretci === "number") {
+        geldiHtml = '<div class="kpi-item"><div class="kv">'+fmtNum(k.geldi_ziyaretci)+'</div><div class="kl">Gelen Ziyaretçi</div></div>';
+        // Katılımcı verisi bu fuarda ayrıca takip edilmiyorsa (null/undefined),
+        // kartı hiç göstermiyoruz — "0" göstermek yanlışlıkla "kimse gelmedi"
+        // anlamına gelir, oysa gerçek durum "bu veri hiç ölçülmüyor".
+        if (typeof k.geldi_katilimci === "number") {
+          geldiHtml += '<div class="kpi-item"><div class="kv">'+fmtNum(k.geldi_katilimci)+'</div><div class="kl">Gelen Katılımcı</div></div>';
+        }
       } else {
         geldiHtml = '<div class="kpi-item"><div class="kv">'+(kr.gonder||'—')+'</div><div class="kl">Fuara Geldi</div></div>';
       }
