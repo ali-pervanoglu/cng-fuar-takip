@@ -149,7 +149,7 @@ h1{font-size:28px;font-weight:600;letter-spacing:-0.02em;line-height:1.2}
   <div class="stats" id="statsKpi" style="display:none">
     <div class="stat"><div class="stat-label">Fuar Sayısı (KPI ölçülen)</div><div class="stat-val" data-kpi2="fuar_sayisi">—</div><div class="stat-sub">tamamlanan dönemler</div></div>
     <div class="stat"><div class="stat-label">Toplam Ziyaretçi</div><div class="stat-val" data-kpi2="toplam_ziyaretci">—</div><div class="stat-sub">fuara fiilen gelen</div></div>
-    <div class="stat"><div class="stat-label">Toplam Katılımcı</div><div class="stat-val" data-kpi2="toplam_katilimci">—</div><div class="stat-sub">stand/katılımcı olarak gelen</div></div>
+    <div class="stat" id="statKatilimci" style="display:none"><div class="stat-label">Toplam Katılımcı</div><div class="stat-val" data-kpi2="toplam_katilimci">—</div><div class="stat-sub">stand/katılımcı olarak gelen</div></div>
     <div class="stat"><div class="stat-label">Toplam Sıcak Lead</div><div class="stat-val" data-kpi2="sicak_lead_toplam">—</div><div class="stat-sub">tüm fuarlar toplamı</div></div>
     <div class="stat"><div class="stat-label">Ortalama Dönüşüm</div><div class="stat-val" data-kpi2="ort_donusum">—</div><div class="stat-sub">%, geldi/toplam kayıt</div></div>
   </div>
@@ -274,7 +274,7 @@ function computeMarketingKPI(groups){
 }
 
 function computeFuarKPI(groups){
-  var toplamZiyaretci=0, toplamKatilimci=0, sicakLead=0, donusumT=0, donusumN=0, fuarSayisi=0;
+  var toplamZiyaretci=0, toplamKatilimci=0, sicakLead=0, donusumT=0, donusumN=0, fuarSayisi=0, katilimciVarMi=false;
   groups.forEach(function(g){
     g.donemler.forEach(function(d){
       var kr = d.kpiRow;
@@ -283,12 +283,13 @@ function computeFuarKPI(groups){
       if (typeof kr.kpi.sicak_lead === "number") sicakLead += kr.kpi.sicak_lead;
       if (typeof kr.kpi.donusum_pct === "number") { donusumT += kr.kpi.donusum_pct; donusumN++; }
       toplamZiyaretci += kr.kpi.geldi_ziyaretci || 0;
-      toplamKatilimci += (typeof kr.kpi.geldi_katilimci === "number") ? kr.kpi.geldi_katilimci : 0;
+      if (typeof kr.kpi.geldi_katilimci === "number") { toplamKatilimci += kr.kpi.geldi_katilimci; katilimciVarMi = true; }
     });
   });
   return {
     fuar_sayisi: fuarSayisi, toplam_ziyaretci: toplamZiyaretci, toplam_katilimci: toplamKatilimci,
-    sicak_lead_toplam: sicakLead, ort_donusum: donusumN ? (Math.round((donusumT/donusumN)*10)/10)+"%" : "—"
+    sicak_lead_toplam: sicakLead, ort_donusum: donusumN ? (Math.round((donusumT/donusumN)*10)/10)+"%" : "—",
+    katilimci_verisi_var: katilimciVarMi
   };
 }
 
@@ -312,6 +313,10 @@ function renderKPI2(kpi){
       el.textContent = raw.indexOf(key)===-1 ? fmtNum(kpi[key]) : kpi[key];
     }
   });
+  // Hiçbir fuarda katılımcı verisi ölçülmüyorsa kartı hiç gösterme —
+  // "0" göstermek "kimse katılımcı olarak gelmedi" gibi yanlış bir izlenim verir.
+  var katilimciCard = document.getElementById("statKatilimci");
+  if (katilimciCard) katilimciCard.style.display = kpi.katilimci_verisi_var ? "" : "none";
 }
 
 function setMode(mode){
