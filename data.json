@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-08-20T10:45:52.492796+00:00"
+    "uretim_ts": "2026-08-20T10:51:52.826073+00:00"
   },
   "fuarlar": [
     {
@@ -18,9 +18,10 @@
       "kayit": 1273,
       "gonder": "",
       "pct": 67,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "turkcompozite_2024_fuar",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -38,9 +39,10 @@
       "kayit": 16192,
       "gonder": "11.138 gönder",
       "pct": 100,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "aysaf_ziyaretci",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -58,9 +60,10 @@
       "kayit": 4574,
       "gonder": "2.867 gönder",
       "pct": 83,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "aysaf_yurtdisi",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -78,9 +81,10 @@
       "kayit": 475,
       "gonder": "MX + MEV bekleniyor",
       "pct": 33,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "aysad_uye",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -101,6 +105,7 @@
       "guncelleme_ts": "2026-08-20T13:25:52.810231+03:00",
       "kaynak_tablo": "v_aysaf_2026_kpi_ozet",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {
         "donusum_pct": 42.3,
         "sicak_lead": 377,
@@ -126,9 +131,10 @@
       "kayit": 1552,
       "gonder": "",
       "pct": 67,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "proses_sempozyumu_ziyaretci",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -146,9 +152,10 @@
       "kayit": 57,
       "gonder": "",
       "pct": 67,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "proses_sempozyumu_ziyaretci",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -166,9 +173,10 @@
       "kayit": 130,
       "gonder": "MX + MEV bekleniyor",
       "pct": 33,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "turkkompozt_ydp",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -186,9 +194,10 @@
       "kayit": 1633,
       "gonder": "",
       "pct": 67,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "turkcompozite_2026_fuar",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -206,9 +215,10 @@
       "kayit": 278,
       "gonder": "",
       "pct": 67,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "turkcompozite_2026_fuar",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -226,9 +236,10 @@
       "kayit": 40572,
       "gonder": "",
       "pct": 67,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "turkcomposite_ydz",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -246,9 +257,10 @@
       "kayit": 428,
       "gonder": "",
       "pct": 50,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "turkcompozite_2026_fuar",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -266,9 +278,10 @@
       "kayit": 46,
       "gonder": "",
       "pct": 50,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "turkcompozite_2026_fuar",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -286,9 +299,10 @@
       "kayit": 3741,
       "gonder": "",
       "pct": 67,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "saha_automechanika_big5_2026_fuar",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": "TÜRKKOMPOZİT 2026",
       "kpi": {}
     },
     {
@@ -306,9 +320,10 @@
       "kayit": 234,
       "gonder": "MX doğrulandı — 200 GÖNDER, 1 RED (no_mx), 33 email boş",
       "pct": 50,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "puexpo_ydp",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": "PuExpo & Foam Eurasia",
       "kpi": {}
     },
     {
@@ -326,9 +341,10 @@
       "kayit": 2064,
       "gonder": "",
       "pct": 83,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "puexpo_foam_ziyaretci",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -346,9 +362,10 @@
       "kayit": 421,
       "gonder": "",
       "pct": 83,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "puexpo_foam_ziyaretci",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -366,9 +383,10 @@
       "kayit": 41,
       "gonder": "",
       "pct": 83,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "puexpo_foam_ziyaretci",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -386,9 +404,10 @@
       "kayit": 4371,
       "gonder": "",
       "pct": 83,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "puexpo_foam_4lu_fuar",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": "PuExpo & Foam Eurasia",
       "kpi": {}
     },
     {
@@ -406,9 +425,10 @@
       "kayit": 6137,
       "gonder": "",
       "pct": 50,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "chemex_ziyaretci",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -426,9 +446,10 @@
       "kayit": 89,
       "gonder": "",
       "pct": 50,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "chemex_ziyaretci",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -446,9 +467,10 @@
       "kayit": 46283,
       "gonder": "45.276 gönder — gov. domainleri ve sahte emailler temizlendi",
       "pct": 83,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "paintistanbul_ziyaretci",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -466,9 +488,10 @@
       "kayit": 4854,
       "gonder": "4.516 YİZ kaydı — 2.558 kişiye SMS + Email, 1.958 kişiye sadece Email",
       "pct": 100,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "paintistanbul_ziyaretci",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -486,9 +509,10 @@
       "kayit": 283,
       "gonder": "MX + MEV bekleniyor",
       "pct": 33,
-      "guncelleme_ts": "2026-08-20T13:35:52.785999+03:00",
+      "guncelleme_ts": "2026-08-20T13:45:52.298949+03:00",
       "kaynak_tablo": "paintistanbul_ydp",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {}
     },
     {
@@ -509,6 +533,7 @@
       "guncelleme_ts": "2026-08-20T13:25:52.810231+03:00",
       "kaynak_tablo": "v_paintistanbul_2026_kpi_ozet",
       "veri_kaynagi_tipi": null,
+      "hedef_fuar": null,
       "kpi": {
         "donusum_pct": 66.1,
         "sicak_lead": 728,
