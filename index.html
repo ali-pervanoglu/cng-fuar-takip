@@ -139,7 +139,8 @@ h1{font-size:28px;font-weight:600;letter-spacing:-0.02em;line-height:1.2}
 
   <div class="stats" id="statsMarketing">
     <div class="stat"><div class="stat-label">Toplam Fuar</div><div class="stat-val" data-kpi="aktif_fuar">—</div><div class="stat-sub">tüm dönemler dahil</div></div>
-    <div class="stat"><div class="stat-label">Toplam Kişi (DB)</div><div class="stat-val" data-kpi="toplam_kisi">—</div><div class="stat-sub">tüm kampanya listeleri</div></div>
+    <div class="stat"><div class="stat-label">Toplam Kayıt</div><div class="stat-val" data-kpi="toplam_kisi">—</div><div class="stat-sub">tüm kampanya listeleri toplamı</div></div>
+    <div class="stat"><div class="stat-label">Toplam Benzersiz Kişi</div><div class="stat-val" data-kpi="benzersiz_toplam">—</div><div class="stat-sub">Kampanya + organik gelenler (çift sayım yok)</div></div>
     <div class="stat"><div class="stat-label">Email Hazır</div><div class="stat-val" data-kpi="email_hazir">—</div><div class="stat-sub">gönder listesi</div></div>
     <div class="stat"><div class="stat-label">SMS Hazır</div><div class="stat-val" data-kpi="sms_hazir">—</div><div class="stat-sub">TR + Yurt Dışı</div></div>
     <div class="stat"><div class="stat-label">Kampanya Tamamlanma</div><div class="stat-val" data-kpi="kampanya_tamamlanma">—</div><div class="stat-sub">segment ortalaması</div></div>
@@ -182,7 +183,7 @@ var STAGE_LBL  = {t:"Temizlik", db:"DB", mx:"MX", mev:"MEV", em:"Email", sms:"SM
      - kpiRow      : kaynak_tipi='KPI' olan tek satır (varsa)
    ========================================================= */
 
-var STATE = { groups: [], openFuar: null, openDonem: {}, mode: "marketing", panelView: {} };
+var STATE = { groups: [], openKeys: {}, mode: "marketing", panelView: {} };
 
 function fmtNum(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
 function daysSince(iso){ if(!iso) return null; var d=new Date(iso); if(isNaN(d)) return null; return Math.floor((Date.now()-d.getTime())/86400000); }
@@ -246,7 +247,7 @@ function donemDurum(donem){
 }
 
 function computeMarketingKPI(groups){
-  var toplam=0, email=0, sms=0, fuarDonemSayisi=0, doneStages=0, totalStages=0;
+  var toplam=0, email=0, sms=0, fuarDonemSayisi=0, doneStages=0, totalStages=0, organikGeldi=0;
   groups.forEach(function(g){
     g.donemler.forEach(function(d){
       fuarDonemSayisi++;
@@ -257,11 +258,17 @@ function computeMarketingKPI(groups){
         if (r.sms==="D") sms += (r.kpi && r.kpi.sms_gonder)||0;
         STAGE_KEYS.forEach(function(sk){ totalStages++; if (r[sk]==="D") doneStages++; });
       });
+      // KPI verisi varsa: kampanyada hiç olmayıp fuara gelen (organik) kişi
+      // sayısını da ekleyerek çift sayım yapmadan gerçek benzersiz toplamı kur.
+      if (d.kpiRow && d.kpiRow.kpi && typeof d.kpiRow.kpi.organik_geldi === "number") {
+        organikGeldi += d.kpiRow.kpi.organik_geldi;
+      }
     });
   });
   return {
     aktif_fuar: fuarDonemSayisi, toplam_kisi: toplam, email_hazir: email, sms_hazir: sms,
     kampanya_tamamlanma: totalStages ? Math.round((doneStages/totalStages)*100)+"%" : "—",
+    benzersiz_toplam: toplam + organikGeldi,
     son_guncelleme: new Date().toLocaleDateString("tr-TR")
   };
 }
@@ -398,7 +405,8 @@ function renderFuarList(groups){
     var pillsHtml = g.donemler.map(function(d){
       var durum = donemDurum(d);
       var dotCls = durum==="done" ? "pdot-done" : durum==="mid" ? "pdot-mid" : "pdot-none";
-      var active = (STATE.openFuar===g.ad && STATE.openDonem[g.ad]===d.b) ? " active" : "";
+      var pKey = g.ad + "::" + d.b;
+      var active = STATE.openKeys[pKey] ? " active" : "";
       return '<div class="pill'+active+'" data-fuar="'+g.ad.replace(/"/g,"&quot;")+'" data-b="'+d.b+'"><span class="pill-dot '+dotCls+'"></span>'+donemAralik(d.b,d.e)+'</div>';
     }).join("");
 
@@ -413,10 +421,14 @@ function renderFuarList(groups){
       + '<div class="donem-pills">'+pillsHtml+'</div>';
     card.appendChild(head);
 
-    if (STATE.openFuar === g.ad && STATE.openDonem[g.ad]) {
-      var d = g.donemler.filter(function(x){ return x.b === STATE.openDonem[g.ad]; })[0];
-      if (d) card.appendChild(buildDonemPanel(g, d));
-    }
+    // Aynı fuarın birden fazla dönemi açık olabilir; farklı fuarların
+    // panelleri birbirini kapatmaz — hepsi bağımsız şekilde açık kalabilir.
+    g.donemler.forEach(function(d){
+      var pKey = g.ad + "::" + d.b;
+      if (STATE.openKeys[pKey]) {
+        card.appendChild(buildDonemPanel(g, d));
+      }
+    });
 
     wrap.appendChild(card);
   });
@@ -427,11 +439,11 @@ function renderFuarList(groups){
 }
 
 function openFuarDonem(ad, b){
-  if (STATE.openFuar === ad && STATE.openDonem[ad] === b) {
-    STATE.openFuar = null; // aynı döneme tekrar tıklarsa kapat
+  var key = ad + "::" + b;
+  if (STATE.openKeys[key]) {
+    delete STATE.openKeys[key]; // aynı döneme tekrar tıklarsa sadece onu kapat
   } else {
-    STATE.openFuar = ad;
-    STATE.openDonem[ad] = b;
+    STATE.openKeys[key] = true; // diğer açık panellere dokunma
   }
   renderFuarList(STATE.groups);
 }
@@ -519,12 +531,18 @@ function buildDonemPanel(g, d){
       } else {
         geldiHtml = '<div class="kpi-item"><div class="kv">'+(kr.gonder||'—')+'</div><div class="kl">Fuara Geldi</div></div>';
       }
+      // Organik Oran bu fuarda ölçülmüyorsa (null), kartı hiç göstermiyoruz —
+      // "—" göstermek "veri var ama bilinmiyor" izlenimi verir, oysa gerçek
+      // durum "bu metrik bu fuar için hesaplanmıyor".
+      var organikHtml = (k.organik_oran != null)
+        ? '<div class="kpi-item"><div class="kv">%'+k.organik_oran+'</div><div class="kl">Organik Oran</div></div>'
+        : '';
       kpiHtml = '<div class="kpi-band">'
         + '<div class="kpi-item"><div class="kv">'+fmtNum(kr.kayit)+'</div><div class="kl">Toplam Kayıt</div></div>'
         + geldiHtml
         + '<div class="kpi-item"><div class="kv">'+(k.donusum_pct!=null?k.donusum_pct+'%':'—')+'</div><div class="kl">Dönüşüm</div></div>'
         + '<div class="kpi-item"><div class="kv">'+fmtNum(k.sicak_lead||0)+'</div><div class="kl">Sıcak Lead</div></div>'
-        + '<div class="kpi-item"><div class="kv">'+(k.organik_oran!=null?'%'+k.organik_oran:'—')+'</div><div class="kl">Organik Oran</div></div>'
+        + organikHtml
         + '<div class="kpi-item"><div class="kv">'+(k.ab_sinifi_lead!=null?fmtNum(k.ab_sinifi_lead):'—')+'</div><div class="kl">A/B Sınıfı Lead</div></div>'
         + '<div class="kpi-item"><div class="kv">'+(k.cok_gunlu_ziyaretci!=null?fmtNum(k.cok_gunlu_ziyaretci):'—')+'</div><div class="kl">Çok Günlü Ziyaretçi</div></div>'
         + '</div>';
