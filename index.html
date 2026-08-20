@@ -151,7 +151,7 @@ h1{font-size:28px;font-weight:600;letter-spacing:-0.02em;line-height:1.2}
 
   <div class="searchbar"><input class="fsearch" id="f-search" placeholder="Fuar ara…"></div>
 
-  <div class="section-title">Fuarlar — dönem seçmek için altındaki tarihe tıkla</div>
+  <div class="section-title" id="fuarListTitle">Fuarlar — dönem seçmek için altındaki tarihe tıkla</div>
   <div class="fuar-list" id="fuarList"></div>
   <div class="empty-state" id="empty" style="display:none">Aramayla eşleşen fuar bulunamadı.</div>
 
@@ -178,7 +178,7 @@ var STAGE_LBL  = {t:"Temizlik", db:"DB", mx:"MX", mev:"MEV", em:"Email", sms:"SM
      - kpiRow      : kaynak_tipi='KPI' olan tek satır (varsa)
    ========================================================= */
 
-var STATE = { groups: [], openFuar: null, openDonem: {} };
+var STATE = { groups: [], openFuar: null, openDonem: {}, mode: "marketing" };
 
 function fmtNum(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
 function daysSince(iso){ if(!iso) return null; var d=new Date(iso); if(isNaN(d)) return null; return Math.floor((Date.now()-d.getTime())/86400000); }
@@ -301,9 +301,11 @@ function renderKPI2(kpi){
 }
 
 function setMode(mode){
+  STATE.mode = mode;
   document.querySelectorAll(".mode-btn").forEach(function(b){ b.classList.toggle("active", b.dataset.mode===mode); });
   document.getElementById("statsMarketing").style.display = mode==="marketing" ? "grid" : "none";
   document.getElementById("statsKpi").style.display = mode==="kpi" ? "grid" : "none";
+  renderFuarList(STATE.groups);
 }
 
 function renderUpcoming(groups){
@@ -359,9 +361,27 @@ function renderFuarList(groups){
   var search = document.getElementById("f-search").value.trim().toLowerCase();
   var wrap = document.getElementById("fuarList");
   var empty = document.getElementById("empty");
+  var sectionTitle = document.getElementById("fuarListTitle");
   wrap.innerHTML = "";
 
-  var visible = groups.filter(function(g){ return !search || g.ad.toLowerCase().indexOf(search)!==-1; });
+  var visible = groups.filter(function(g){
+    if (search && g.ad.toLowerCase().indexOf(search)===-1) return false;
+    if (STATE.mode === "kpi") {
+      var hasKpi = g.donemler.some(function(d){ return !!d.kpiRow; });
+      if (!hasKpi) return false;
+    }
+    return true;
+  });
+
+  if (sectionTitle) {
+    sectionTitle.textContent = STATE.mode === "kpi"
+      ? "KPI takibi olan fuarlar — dönem seçmek için altındaki tarihe tıkla"
+      : "Fuarlar — dönem seçmek için altındaki tarihe tıkla";
+  }
+
+  empty.textContent = STATE.mode === "kpi" && !search
+    ? "Henüz KPI verisi girilen bir fuar yok."
+    : "Aramayla eşleşen fuar bulunamadı.";
   empty.style.display = visible.length ? "none" : "block";
 
   visible.forEach(function(g){
