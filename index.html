@@ -206,7 +206,10 @@ function buildGroups(realRows){
   var fuarMap = {}; // ad -> { ad, donemMap: { b -> { b, e, kampanyaRows:[], kpiRow:null } } }
 
   realRows.forEach(function(r){
-    var ad = r.ad || "İsimsiz Fuar";
+    // hedef_fuar doluysa (bu satır başka bir fuarı besleyen bir kaynak
+    // listesiyse — ör. SAHA/AUTOMECHANIKA verisi TURKCOMPOSITE'i besliyor),
+    // kendi adı yerine hedef fuarın altında gösterilir.
+    var ad = r.hedef_fuar || r.ad || "İsimsiz Fuar";
     var b  = r.fuar_tarihi_baslangic || "belirsiz";
     if (!fuarMap[ad]) fuarMap[ad] = { ad: ad, donemMap: {} };
     if (!fuarMap[ad].donemMap[b]) fuarMap[ad].donemMap[b] = { b: r.fuar_tarihi_baslangic, e: r.fuar_tarihi_bitis, kampanyaRows: [], kpiRow: null };
@@ -448,8 +451,9 @@ function buildDonemPanel(g, d){
     var gg = daysSince(r.guncelleme_ts);
     var stale = function(k){ return r[k]==="P" && gg!==null && gg>=STALE_GUN; };
     var segCls = /^(YİK|YDK|YİZ|YDZ)$/.test(r.segment_kodu) ? r.segment_kodu : "Genel";
+    var kaynakNote = r.hedef_fuar ? '<div style="font-size:10px;color:var(--dim);margin-top:2px">kaynak: '+r.ad+'</div>' : '';
     return '<tr>'
-      + '<td><span class="seg-tag seg-'+segCls+'">'+(r.segment_kodu||"—")+'</span></td>'
+      + '<td><span class="seg-tag seg-'+segCls+'">'+(r.segment_kodu||"—")+'</span>'+kaynakNote+'</td>'
       + '<td>'+badge(r.t, stale("t"))+'</td>'
       + '<td>'+badge(r.db, stale("db"))+'</td>'
       + '<td>'+badge(r.mx, stale("mx"))+'</td>'
