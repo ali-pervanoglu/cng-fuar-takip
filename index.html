@@ -149,7 +149,7 @@ h1{font-size:28px;font-weight:600;letter-spacing:-0.02em;line-height:1.2;color:#
   <div class="stats" id="statsMarketing">
     <div class="stat"><div class="stat-label">Toplam Fuar</div><div class="stat-val" data-kpi="aktif_fuar">—</div><div class="stat-sub">tüm dönemler dahil</div></div>
     <div class="stat"><div class="stat-label">Toplam Kayıt</div><div class="stat-val" data-kpi="toplam_kisi">—</div><div class="stat-sub">tüm kampanya listeleri toplamı</div></div>
-    <div class="stat"><div class="stat-label">Toplam Benzersiz Kişi</div><div class="stat-val" data-kpi="benzersiz_toplam">—</div><div class="stat-sub">Kampanya + organik gelenler (çift sayım yok)</div></div>
+    <div class="stat"><div class="stat-label">Toplam Benzersiz Kişi</div><div class="stat-val" data-kpi="benzersiz_toplam">—</div><div class="stat-sub">email bazlı gerçek dedup — tüm kampanya tabloları</div></div>
     <div class="stat"><div class="stat-label">Email Hazır</div><div class="stat-val" data-kpi="email_hazir">—</div><div class="stat-sub">gönder listesi</div></div>
     <div class="stat"><div class="stat-label">SMS Hazır</div><div class="stat-val" data-kpi="sms_hazir">—</div><div class="stat-sub">TR + Yurt Dışı</div></div>
     <div class="stat"><div class="stat-label">Kampanya Tamamlanma</div><div class="stat-val" data-kpi="kampanya_tamamlanma">—</div><div class="stat-sub">segment ortalaması</div></div>
@@ -587,7 +587,13 @@ function buildDonemPanel(g, d){
 
 function boot(data){
   STATE.groups = buildGroups(data.fuarlar || []);
-  renderKPI(computeMarketingKPI(STATE.groups));
+  var mkpi = computeMarketingKPI(STATE.groups);
+  // Gerçek benzersiz kişi sayısı artık ETL'de tüm Kampanya tablolarının
+  // email bazlı dedup'ıyla hesaplanıp data.json'a yazılıyor — tahmini
+  // (Kampanya+organik_geldi) hesaptan çok daha güvenilir, o varsa onu kullan.
+  var gercekBenzersiz = data.meta && typeof data.meta.gercek_benzersiz_kisi === "number" ? data.meta.gercek_benzersiz_kisi : null;
+  if (gercekBenzersiz !== null) mkpi.benzersiz_toplam = gercekBenzersiz;
+  renderKPI(mkpi);
   renderKPI2(computeFuarKPI(STATE.groups));
   renderUpcoming(STATE.groups);
   buildAlerts(STATE.groups);
@@ -629,7 +635,7 @@ function useFallback(){
       t:D, db:D, mx:D, mev:P, em:W, sms:W, kayit:"1809", gonder:"MEV sürüyor", guncelleme_ts:"2026-08-15T10:00:00Z",
       kaynak_tablo:"turkcompozite_2026_fuar", veri_kaynagi_tipi:"crm", kpi:{}}
   ];
-  boot({ fuarlar: FUARLAR });
+  boot({ fuarlar: FUARLAR, meta: { gercek_benzersiz_kisi: null } });
 }
 </script>
 </body>
