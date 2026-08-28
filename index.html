@@ -370,7 +370,10 @@ function buildAlerts(groups){
         });
         var gunKal = daysUntil(d.b);
         if (gunKal!==null && gunKal>=0 && gunKal<=21 && (r.em!=="D" || r.sms!=="D")) {
-          alerts.push("<b>"+g.ad+" · "+r.segment_kodu+"</b> — fuara "+gunKal+" gün kaldı, Email/SMS kampanyası hâlâ tamamlanmadı.");
+          var eksik = [];
+          if (r.em !== "D") eksik.push("Email");
+          if (r.sms !== "D") eksik.push("SMS");
+          alerts.push("<b>"+g.ad+" · "+r.segment_kodu+"</b> — fuara "+gunKal+" gün kaldı, "+eksik.join("/")+" kampanyası hâlâ tamamlanmadı.");
         }
       });
     });
