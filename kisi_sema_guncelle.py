@@ -27,7 +27,7 @@ from psycopg2.extras import execute_values
 import kisi_tekillestir as K
 from kisi_master_doldur import baglan
 
-KURALLAR = ("birincil", "telefon+isim", "R-a", "R-b", "R-c", "R-d")
+KURALLAR = ("birincil", "telefon+isim", "R-a", "R-b", "R-c", "R-d", "elle")
 
 
 def genel_kutu_mu(email):
