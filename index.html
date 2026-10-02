@@ -149,7 +149,7 @@ h1{font-size:28px;font-weight:600;letter-spacing:-0.02em;line-height:1.2;color:#
   <div class="stats" id="statsMarketing">
     <div class="stat"><div class="stat-label">Toplam Fuar</div><div class="stat-val" data-kpi="aktif_fuar">—</div><div class="stat-sub">tüm dönemler dahil</div></div>
     <div class="stat"><div class="stat-label">Toplam Kayıt</div><div class="stat-val" data-kpi="toplam_kisi">—</div><div class="stat-sub">tüm kampanya listeleri toplamı</div></div>
-    <div class="stat"><div class="stat-label">Toplam Benzersiz Kişi</div><div class="stat-val" data-kpi="benzersiz_toplam">—</div><div class="stat-sub">kişi bazlı dedup (e-posta + isim + telefon) — tüm kampanya tabloları</div></div>
+    <div class="stat"><div class="stat-label">Toplam Benzersiz Kişi</div><div class="stat-val" data-kpi="benzersiz_toplam">—</div><div class="stat-sub" id="benzersizSub">kişi bazlı dedup (e-posta + isim + telefon) — tüm kampanya tabloları</div></div>
     <div class="stat"><div class="stat-label">Email Hazır</div><div class="stat-val" data-kpi="email_hazir">—</div><div class="stat-sub">gönder listesi</div></div>
     <div class="stat"><div class="stat-label">SMS Hazır</div><div class="stat-val" data-kpi="sms_hazir">—</div><div class="stat-sub">TR + Yurt Dışı</div></div>
     <div class="stat"><div class="stat-label">Kampanya Tamamlanma</div><div class="stat-val" data-kpi="kampanya_tamamlanma">—</div><div class="stat-sub">segment ortalaması</div></div>
@@ -597,6 +597,15 @@ function boot(data){
   var gercekBenzersiz = data.meta && typeof data.meta.gercek_benzersiz_kisi === "number" ? data.meta.gercek_benzersiz_kisi : null;
   if (gercekBenzersiz !== null) mkpi.benzersiz_toplam = gercekBenzersiz;
   renderKPI(mkpi);
+  // Kişi tablosu (kisi_master, tüm kaynaklar): gerçek kişi ile isimsiz şirket kutuları (info@ vb.) ayrı gösterilir.
+  var kt = data.meta && data.meta.kisi_tablosu;
+  var sub = document.getElementById("benzersizSub");
+  if (kt && typeof kt.kisi === "number" && sub) {
+    var fmt = function(n){ return n.toLocaleString("tr-TR"); };
+    var tarih = kt.guncelleme ? new Date(kt.guncelleme).toLocaleDateString("tr-TR") : "—";
+    sub.textContent = "kampanya kapsamı, kişi bazlı dedup · Kişi tablosu (tüm kaynaklar): " + fmt(kt.kisi) +
+      " kişi + " + fmt(kt.genel_kutu) + " şirket kutusu (" + tarih + ")";
+  }
   renderKPI2(computeFuarKPI(STATE.groups));
   renderUpcoming(STATE.groups);
   buildAlerts(STATE.groups);

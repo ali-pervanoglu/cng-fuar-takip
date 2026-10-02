@@ -261,7 +261,23 @@ def compute_unique_person_count_email(conn) -> int | None:
 # Adım 3: data.json payload'ı (fuar/dönem/segment yapısı)
 # ---------------------------------------------------------------------------
 
-def build_json_payload(rows: list[dict], gercek_benzersiz_kisi: int | None = None) -> dict:
+def kisi_tablosu_ozet(conn) -> dict | None:
+    """kisi_master özeti: kişi / şirket kutusu (isimsiz genel kutu) sayısı ve son güncelleme. Tablo yoksa None."""
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""SELECT count(*) FILTER (WHERE kayit_tipi = 'kisi'),
+                                  count(*) FILTER (WHERE kayit_tipi = 'genel_kutu'),
+                                  max(guncelleme_ts) FROM kisi_master""")
+            kisi, genel, ts = cur.fetchone()
+        return {"kisi": kisi, "genel_kutu": genel, "guncelleme": ts.isoformat() if ts else None}
+    except Exception as e:  # noqa: BLE001 - dashboard bu yüzden durmamalı
+        log.warning(f"kisi_tablosu_ozet okunamadı: {e}")
+        conn.rollback()
+        return None
+
+
+def build_json_payload(rows: list[dict], gercek_benzersiz_kisi: int | None = None,
+                       kisi_tablosu: dict | None = None) -> dict:
     fuarlar = []
     for r in rows:
         kaynak_tipi = r["kaynak_tipi"] or "Kampanya"
@@ -301,6 +317,7 @@ def build_json_payload(rows: list[dict], gercek_benzersiz_kisi: int | None = Non
         "meta"   : {
             "uretim_ts": datetime.now(timezone.utc).isoformat(),
             "gercek_benzersiz_kisi": gercek_benzersiz_kisi,
+            "kisi_tablosu": kisi_tablosu,
         },
         "fuarlar": fuarlar,
     }
@@ -424,7 +441,7 @@ def main() -> None:
 
         gercek_benzersiz = compute_unique_person_count(conn)
 
-        payload = build_json_payload(rows, gercek_benzersiz)
+        payload = build_json_payload(rows, gercek_benzersiz, kisi_tablosu_ozet(conn))
         changed = write_json(payload, DATA_JSON_PATH, dry_run=args.dry_run)
 
         if changed:
