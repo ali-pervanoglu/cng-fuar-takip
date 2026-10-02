@@ -1,10 +1,24 @@
 # CNG Expo — Pipeline Güncelleme Rehberi
 # Hazırlayan: Data & CRM Operations — ali.pervanoglu@cngexpo.com
-# Versiyon: 1.0 · Nisan 2026
+# Versiyon: 3.0 · Ekim 2026 (02.10.2026'da güncel mimariye göre yenilendi)
 # ============================================================
 # Bu dosyayı referans olarak kullan.
 # Her adımı sırayla yap, bir sonrakine geçmeden önce kontrol et.
+#
+# ÖNEMLİ: Tüm pipeline tabloları cng_expo DB'sindedir.
+# .env dosyasında DB_NAME=cng_expo olmalıdır.
 # ============================================================
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+GÜNLÜK İŞ AKIŞI (KISA ÖZET)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. DBeaver'da SQL UPDATE çalıştır (karar sende)
+2. En geç 10 dakika bekle: görev CNG_Fuar_Pipeline_ETL otomatik çalışır
+3. Dashboard güncellendi ✓
+
+Başka hiçbir şey yapmana gerek yok. guncelle.bat yalnız ACİL / elle yayın içindir.
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -48,51 +62,25 @@ Fuar kodları:
     WHERE fuar_kod = 'aysad_2026_uye'
   );
 
-✅ Kontrol: Kaç satır güncellendi? "1 row affected" yazmalı.
+✅ Kontrol: "1 row affected" yazmalı.
 
 
-ADIM 2 — CMD'de ETL çalıştır
+ADIM 2 — Bekle (otomatik) ya da elle tetikle
 ──────────────────────────────────
-Windows tuşu → "cmd" yaz → Enter
+Klasör: C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi\
+Dosya : guncelle.bat
 
-Klasöre git:
-  cd "C:\Users\ali.pervanoglu\Downloads\Fuar Pipeline ETL Projesi"
+Çift tıkla → siyah ekran açılır → otomatik çalışır:
+  [1/2] ETL çalıştırılır    → data.json + index.html güncellenir
+  [2/2] GitHub push yapılır → dashboard canlıya alınır
 
-ETL'i çalıştır:
-  python etl_pipeline.py --no-count
+Son satırda şunu görmelisin:
+  TAMAMLANDI! Dashboard guncellendi.
 
-✅ Kontrol: Son satırda şunu görmelisin:
-  INFO  data.json yazıldı → ... (X byte)
-  INFO  index.html yazıldı → ...
-  INFO  ETL başarıyla tamamlandı
+✅ Kontrol: https://ali-pervanoglu.github.io/cng-fuar-takip/
+   Ctrl+F5 ile yenile, değişiklik görünüyor mu?
 
-❌ "index.html bulunamadı" yazarsa:
-  copy index_v2.html index.html
-  python etl_pipeline.py --no-count
-
-
-ADIM 3 — GitHub'a yükle
-──────────────────────────────────
-1. https://github.com/ali-pervanoglu/cng-fuar-takip adresine git
-2. "Add file" → "Upload files" tıkla
-3. Klasördeki "data.json" dosyasını sürükle-bırak
-4. "Commit changes" butonuna bas
-
-✅ Kontrol: Repo'da data.json'ın "just now" veya "X minutes ago" yazmalı.
-
-
-ADIM 4 — Dashboard'u kontrol et
-──────────────────────────────────
-Tarayıcıda aç:
-  https://ali-pervanoglu.github.io/cng-fuar-takip/
-
-Sayfayı yenile (Ctrl+F5 — cache temizleyerek yenile)
-
-✅ Kontrol: Güncellenen aşama yeşil yanıyor mu?
-   Tamamlanma yüzdesi değişti mi?
-
-⏱ Not: GitHub Pages bazen 1-2 dakika gecikebilir.
-   Hemen görünmezse 1-2 dakika bekle, tekrar yenile.
+⏱ Not: GitHub Pages 1-2 dakika gecikebilir.
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -114,9 +102,8 @@ ADIM 1 — DBeaver'da yeni fuar kaydı oluştur
   SELECT * FROM v_pipeline_ozet;
   → Yeni satır görünmeli, tüm aşamalar W.
 
-
-ADIM 2–4: Senaryo A ile aynı
-(ETL çalıştır → GitHub'a yükle → dashboard kontrol)
+ADIM 2 — Bekle (otomatik) ya da elle tetikle
+(Senaryo A ile aynı: en geç 10 dk)
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -134,7 +121,7 @@ SENARYO C: Birden fazla aşama aynı anda tamamlandı
     WHERE fuar_kod = 'paintist_2026_ydz'
   );
 
-Sonra Senaryo A Adım 2–4.
+Sonra en geç 10 dakika bekle.
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -161,34 +148,64 @@ HATA ÇÖZÜM REHBERİ
 
 HATA: "DB bağlantı hatası"
   → .env dosyasını aç (Notepad ile)
-  → DB_HOST, DB_USER, DB_PASSWORD doğru mu?
+  → DB_HOST=localhost, DB_NAME=cng_expo, DB_USER=postgres doğru mu?
   → PostgreSQL servisi çalışıyor mu?
 
 HATA: "index.html bulunamadı"
   → CMD'de şunu çalıştır:
     copy index_v2.html index.html
-  → ETL'i tekrar çalıştır
+  → guncelle.bat'ı tekrar çalıştır
 
-HATA: "FUARLAR array bulunamadı"
-  → index.html bozulmuş olabilir
-  → copy index_v2.html index.html yapıp yeniden çalıştır
+HATA: "GitHub push başarısız / 403"
+  → GitHub Personal Access Token süresi dolmuş olabilir
+  → Yeni token oluştur (github.com → Settings → Developer settings)
+  → CMD'de token'ı güncelle:
+    git remote set-url origin https://ali-pervanoglu:YENI_TOKEN@github.com/ali-pervanoglu/cng-fuar-takip.git
 
 Dashboard güncellenmiyor:
   → Ctrl+F5 ile cache temizleyerek yenile
   → 1-2 dk bekle (GitHub Pages gecikmesi)
-  → data.json'ın GitHub'a doğru yüklendiğini teyit et
 
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OTOMATİK ZAMANLAMA — WINDOWS GÖREV ZAMANLAYICI
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-BU SÜREÇ OTOMATİK HALİNE GELEBİLİR Mİ?
+
+Görev adı : CNG_Fuar_Pipeline_ETL
+Zamanlama : Her 10 dakikada bir (tam mod: sayılar + KPI + benzersiz kişi)
+Komut     : python etl_pipeline.py   (tam yol: anaconda3\python.exe)
+
+Her çalışmada:
+  → v_pipeline_ozet okunur (34 kart), sayılar ve KPI'lar güncellenir
+  → data.json yazılır (içerik değişmediyse yazılmaz / commit atılmaz)
+  → Değişiklik varsa GitHub'a push edilir, Pages birkaç dakikada yayınlar
+
+Tek manuel adım: DBeaver'da SQL UPDATE (karar senin). Gerisi otomatik.
+
+Kontrol:
+  Get-ScheduledTask -TaskName "CNG_Fuar_Pipeline_ETL" | Get-ScheduledTaskInfo
+  logs\etl_YYYYMMDD.log  (son satırlar: "ETL başarıyla tamamlandı")
+
+ESKİ GÖREV: "CNG Pipeline Guncelle" (her gün 09:30, guncelle.bat, --no-count)
+  Nisan 2026'dan kalmadır; 10 dakikalık görev varken gereksizdir ve
+  kayıt sayılarını yenilemeden (--no-count) yayınlayabilir. Kapatılması önerilir.
+
+
+━━━
+DOSYA YAPISI
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Şu an 3 manuel adım var:
-  1. SQL UPDATE (DBeaver)       → her zaman manuel kalmalı (karar senin)
-  2. ETL çalıştır (CMD)         → Windows Task Scheduler ile otomatik yapılabilir
-  3. GitHub'a yükle             → GitHub Actions ile otomatik yapılabilir
-
-Yani ileride yapılabilecek iyileştirme:
-  SQL UPDATE yaptıktan sonra ETL + GitHub push otomatik çalışır.
-  Sen sadece DBeaver'da D yazarsın, 2 dakika sonra dashboard güncellenir.
-  Bu bir sonraki aşama olarak planlanabilir.
+Fuar Pipeline ETL Projesi/
+├── guncelle.bat          Elle hızlı yayın (--no-count; rutin değil)
+├── etl_pipeline.py       Ana ETL scripti (her 10 dk otomatik)
+├── .env                  DB bağlantı bilgileri (GIT'e eklenmez!)
+├── .gitignore            Git dışında tutulan dosyalar
+├── index.html            GitHub Pages dashboard
+├── index_v2.html         Şablon dosya
+├── data.json             ETL çıktısı
+├── requirements.txt      Python bağımlılıkları
+├── logs/
+│   └── etl_YYYYMMDD.log  Günlük ETL kayıtları
+├── README.md             GitHub vitrini
+├── surecler.md           Süreç dokümantasyonu
+└── guncelleme_rehberi.txt  Bu dosya

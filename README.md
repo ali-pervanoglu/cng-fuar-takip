@@ -9,10 +9,10 @@
 A live dashboard tracking multi-stage data pipelines for B2B trade fair campaign operations.
 
 ### What it does
-- Tracks 10 active campaigns across ETL stages
-- Covers 86K+ contact records
+- Tracks 34 pipeline cards (fairs × periods × segments) across six ETL stages
+- Covers 150K+ unique contacts (computed live as `meta.gercek_benzersiz_kisi`)
 - Monitors pipeline progress from data cleaning to campaign-ready output
-- Auto-refreshes daily via scheduled ETL script
+- Auto-refreshes every 10 minutes via a scheduled ETL script (pushes only when data changed)
 - Deployed on GitHub Pages
 
 ### Tech Stack
@@ -30,10 +30,10 @@ Built for a live production environment. Source data and internal pipeline detai
 B2B fuar kampanya operasyonları için çok aşamalı veri pipeline'larını izleyen canlı bir dashboard.
 
 ### Ne yapar?
-- 10 aktif kampanyayı ETL aşamalarında takip eder
-- 86.000+ kişi kaydını kapsar
+- 34 pipeline kartını (fuar × dönem × segment) altı ETL aşamasında takip eder
+- 150.000+ benzersiz kişiyi kapsar (canlı hesaplanır: `meta.gercek_benzersiz_kisi`)
 - Veri temizlemeden kampanyaya hazır çıktıya kadar tüm süreci izler
-- ETL scripti ile günlük otomatik güncellenir
+- ETL scripti ile her 10 dakikada otomatik güncellenir (yalnız veri değiştiyse push eder)
 - GitHub Pages üzerinde yayınlanmaktadır
 
 ### Teknolojiler
