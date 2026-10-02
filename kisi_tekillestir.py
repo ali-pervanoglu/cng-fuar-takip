@@ -178,6 +178,32 @@ def _isim_ifadesi(cols):
     return "NULL"
 
 
+# Kampanya listesi dışında kalan ama kişi boyutuna girmesi gereken kaynaklar (02.10 kapsam genişletme).
+# isim/firma: SQL ifadesi · tel: telefon kolonları · filtre: dışlanacak satırlar (demo/sahte).
+EK_KAYNAK = {
+    "paintistanbul_2026_fuar_ziyaretci": dict(isim="COALESCE(NULLIF(trim(ad_soyad), ''), concat_ws(' ', ad, soyad))", firma="firma", tel=["telefon"]),
+    "crm_cari": dict(isim="NULL", firma="firma", tel=[]),
+    "aysaf_email_kampanya": dict(isim="NULL", firma="NULL", tel=[]),
+    "paintistanbul_davetiye_kargo": dict(isim="isim", firma="firma_adi", tel=["telefon", "gsm"]),
+    "osb_telemarketing_master": dict(isim="isim", firma="firma", tel=["telefon"]),
+    "powderdosing_lead": dict(isim="yetkili_kisi", firma="firma_adi", tel=[]),
+    "poliyuretan_yiz_aysad": dict(isim="NULL", firma="firma_adi", tel=["telefon"],
+                                  filtre="NOT (kaynak = 'OSB_PAZARI' AND telefon = '+90 312 000 00 00')"),
+    "paintistanbul_yiz": dict(isim="isim", firma="sirket", tel=["telefon", "telefon2"]),
+    "aysaf_yik": dict(isim="ilgili_kisi", firma="firma_adi", tel=["telefon"]),
+    "kartvizitler": dict(isim="isim", firma="sirket", tel=["telefon", "telefon2"]),
+}
+FIRMA_ADAYLARI = ("firma", "sirket", "firma_adi")
+
+
+def tablo_alanlari(cols, tablo):
+    """Tablonun isim/firma ifadesi, telefon kolonları ve (varsa) dışlama filtresi."""
+    if tablo in EK_KAYNAK:
+        return dict(EK_KAYNAK[tablo])
+    return dict(isim=_isim_ifadesi(cols), firma=next((c for c in FIRMA_ADAYLARI if c in cols), "NULL"),
+                tel=[c for c in TEL_KOLONLARI if c in cols])
+
+
 def kampanya_tablolari(conn):
     with conn.cursor() as cur:
         cur.execute("""SELECT DISTINCT kaynak_tablo FROM pipeline_fuar_meta
@@ -197,10 +223,10 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
     satir = 0
     with conn.cursor() as cur:
         for t in tablolar:
-            cols = _kolonlar(cur, t)
-            tel_cols = [c for c in TEL_KOLONLARI if c in cols]
-            sel = ["lower(trim(email))", _isim_ifadesi(cols)] + (tel_cols or ["NULL"])
-            cur.execute(f"SELECT {', '.join(sel)} FROM {t} WHERE email IS NOT NULL AND trim(email) <> ''")
+            al = tablo_alanlari(_kolonlar(cur, t), t)
+            sel = ["lower(trim(email))", al["isim"]] + (al["tel"] or ["NULL"])
+            kosul = "email IS NOT NULL AND trim(email) <> ''" + (f" AND {al['filtre']}" if al.get("filtre") else "")
+            cur.execute(f"SELECT {', '.join(sel)} FROM {t} WHERE {kosul}")
             for row in cur.fetchall():
                 satir += 1
                 em, isim = row[0], norm_isim(row[1])
