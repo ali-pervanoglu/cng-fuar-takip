@@ -289,7 +289,8 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
         uf.union(ra, rb)
         dom[uf.find(ra)] = da | db
         return True
-    for (isim, _tel), mails in isim_tel.items():             # kural 2: aynı isim + aynı telefon
+    for (isim, _tel), mails in sorted(isim_tel.items()):     # kural 2: aynı isim + aynı telefon (sıralı: tekrarlanabilir)
+        mails = sorted(mails)
         if len(mails) > maks_eposta:                          # bir kişinin bu kadar e-postası olmaz: toplu kayıt
             toplu_grup += 1
             toplu_mail += len(mails)
@@ -311,13 +312,13 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
     # İkinci geçiş: telefon kanıtı olmayan, aynı isimli kümeler (kural kodları kanit_var'da)
     kural_say = {"R-a": 0, "R-b": 0, "R-c": 0, "R-d": 0}
     ornekler = []
-    for isim, mails in isim_mail.items():
+    for isim, mails in sorted(isim_mail.items()):
         kum = {}
-        for m in mails:
+        for m in sorted(mails):
             kum.setdefault(uf.find(m), []).append(m)
         if len(kum) < 2 or len(kum) > maks_eposta:
             continue
-        keys = list(kum)
+        keys = sorted(kum)
         for i in range(len(keys)):
             for j in range(i + 1, len(keys)):
                 ki, kj = keys[i], keys[j]
@@ -329,8 +330,8 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
                     continue
                 kural = None
                 ea = eb = None
-                for a in kum[ki]:
-                    for b in kum[kj]:
+                for a in sorted(kum[ki]):
+                    for b in sorted(kum[kj]):
                         kural = kanit_var(a, b, isim)
                         if kural:
                             ea, eb = a, b
