@@ -83,7 +83,7 @@ def hesapla(conn):
 
     def puan(em, inorm):
         sinif = K.eposta_sinifi(em, inorm)
-        serbest = em.split("@")[-1] in K.SERBEST_ALAN
+        serbest = K.serbest_mi(em.split("@")[-1])
         return (tuple(-x for x in ({"ad": 2, "genel": 1, "baska": 0}[sinif] * 2 + (0 if serbest else 1),
                                    sum(tablo_say[em].values()))), em)
 

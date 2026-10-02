@@ -76,7 +76,7 @@ def kisileri_hazirla(conn):
 
     def puan(em, isim_norm):
         sinif = K.eposta_sinifi(em, isim_norm)
-        serbest = em.split("@")[-1] in K.SERBEST_ALAN
+        serbest = K.serbest_mi(em.split("@")[-1])
         return ({"ad": 2, "genel": 1, "baska": 0}[sinif] * 2 + (0 if serbest else 1), sum(tablolar[em].values()))
 
     kisiler = []

@@ -71,18 +71,33 @@ def genel_mi(ham):
 
 def eposta_sinifi(mail, isim_norm):
     """E-postanın baş kısmına göre: 'ad' (isimle uyumlu), 'genel' (info@, sales@ ...), 'baska' (başka biri gibi).
-    Kullanıcı kuralı (02.10): aynı isim+telefonla kayıtlı ama baş kısmı farklı kişiye ait adresler farklı kişidir
-    (toplu/hızlı kayıt); kişinin kendi adresi + şirketin genel kutusu aynı kişidir."""
-    yerel = norm_isim(mail.split("@")[0].replace(".", " ").replace("_", " ").replace("-", " "))
+    'ad': isimden bir sözcük (>=3 harf) adreste geçer VE kalan harfler isme aittir (baş harf, diğer ad sözcükleri
+    ya da küçük yazım farkı). Ör. 'rkaya'/'ikose'/'zeynepserpileryilmaz' = ad; ferhat dutkun için
+    'serhatdutkun' = baska (soyad var ama başında başka bir ad). Kullanıcı kuralı (02.10): aynı isim+telefonla
+    kayıtlı ama baş kısmı farklı kişiye ait adresler farklı kişidir; kişinin kendi adresi + şirketin genel kutusu
+    aynı kişidir."""
     ham = re.sub(r"[^a-z]", "", mail.split("@")[0].lower())
     if not ham:
         return "baska"
-    belirtec = [t for t in (isim_norm or "").split() if len(t) >= 3]
-    if any(t in ham for t in belirtec):
-        return "ad"
+    sozcukler = (isim_norm or "").split()
+    for t in sorted((x for x in sozcukler if len(x) >= 3), key=len, reverse=True):
+        k = ham.find(t)
+        if k < 0:
+            continue
+        kalan = ham[:k] + ham[k + len(t):]
+        digerleri = [x for x in sozcukler if x != t]
+        # kalan harfler isme ait mi? (baş harf, diğer sözcükler; yazım hatası ilk harfi değiştirmez)
+        uyumlu = (len(kalan) <= 2 or kalan == "".join(digerleri)
+                  or any((x[0] == kalan[0] and _mesafe(kalan, x, 2) <= 2) or x.startswith(kalan) or kalan in x
+                         for x in sozcukler))
+        # İlk ad eşleşiyorsa fazladan bir ad (orta ad) kabul edilir; SOYAD eşleşip başında/sonunda başka ad
+        # varsa (serhatdutkun / ferhat dutkun, timintugay / güleser timin) o adres başka bir kişiye aittir.
+        if uyumlu or t != sozcukler[-1]:
+            return "ad"
     if genel_mi(ham):
         return "genel"
     return "baska"
+
 
 
 SERBEST_ALAN = {"gmail.com", "hotmail.com", "outlook.com", "yahoo.com", "icloud.com", "yandex.com", "live.com",
@@ -96,6 +111,16 @@ def _etiket(alan):
     if len(p) >= 3 and p[-2] in ("com", "net", "org", "co", "gov", "edu", "biz", "info"):
         return p[-3]
     return p[-2] if len(p) >= 2 else alan
+
+SERBEST_ETIKET = {"gmail", "googlemail", "hotmail", "outlook", "live", "msn", "yahoo", "ymail", "icloud", "me", "mac",
+                  "yandex", "mynet", "gmx", "web", "mail", "protonmail", "proton", "aol", "qq", "163", "126", "sina",
+                  "inbox", "bk", "list", "rambler", "t-online", "libero", "virgilio", "free", "orange", "wanadoo",
+                  "sfr", "laposte", "tiscali", "ttmail", "superonline", "turk", "e-kolay", "hotmail"}
+
+
+def serbest_mi(alan):
+    """Serbest posta sağlayıcısı mı? Uzantıdan bağımsız: hotmail.com / hotmail.com.tr / hotmail.fr / outlook.com.tr ..."""
+    return alan in SERBEST_ALAN or _etiket(alan) in SERBEST_ETIKET
 
 
 def _mesafe(a, b, sinir=2):
@@ -116,7 +141,10 @@ def _alan_benzer(a1, a2):
     if a1 == a2:
         return True
     e1, e2 = _etiket(a1), _etiket(a2)
-    return e1 == e2 or (len(e1) >= 6 and len(e2) >= 6 and _mesafe(e1, e2) <= 2)
+    if e1 == e2 or (len(e1) >= 6 and len(e2) >= 6 and _mesafe(e1, e2) <= 2):
+        return True
+    kisa, uzun = sorted((e1, e2), key=len)
+    return len(kisa) >= 5 and uzun.startswith(kisa)       # alt şirket: flokser -> flokserkimya
 
 
 def _yerel(mail):
@@ -126,7 +154,7 @@ def _yerel(mail):
 def kanit_var(m1, m2, isim):
     """İki küme arasında 'aynı kişi' kanıtı (telefon çelişkisi dışarıda denetlenir). Kural kodu veya None."""
     a1, a2 = m1.split("@")[-1], m2.split("@")[-1]
-    f1, f2 = a1 in SERBEST_ALAN, a2 in SERBEST_ALAN
+    f1, f2 = serbest_mi(a1), serbest_mi(a2)
     c1, c2 = eposta_sinifi(m1, isim), eposta_sinifi(m2, isim)
     y1, y2 = _yerel(m1), _yerel(m2)
     # R-a: aynı alan adı, adresler isimle uyumlu / genel kutu (kişinin adresi + şirketin genel kutusu)
@@ -243,6 +271,24 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
     toplu_grup = toplu_mail = 0
     uyumsuz_grup = ayri_mail = 0
     kenarlar = []
+    # Kullanıcı ilkesi (02.10): farklı kurumsal alan adı = farklı kişi. Bir bileşen, birbiriyle ilgisiz iki
+    # kurumsal alan adı içeremez (serbest posta iki kurumsal kişiyi köprü gibi bağlayamaz).
+    dom = {}
+    for e in list(uf.p):
+        d = e.split("@")[-1]
+        dom[uf.find(e)] = set() if serbest_mi(d) else {d}
+    engel = {"telefon+isim": 0, "ikinci_gecis": 0}
+
+    def birles(a, b):
+        ra, rb = uf.find(a), uf.find(b)
+        if ra == rb:
+            return True
+        da, db = dom.get(ra, set()), dom.get(rb, set())
+        if any(not _alan_benzer(x, y) for x in da for y in db):
+            return False
+        uf.union(ra, rb)
+        dom[uf.find(ra)] = da | db
+        return True
     for (isim, _tel), mails in isim_tel.items():             # kural 2: aynı isim + aynı telefon
         if len(mails) > maks_eposta:                          # bir kişinin bu kadar e-postası olmaz: toplu kayıt
             toplu_grup += 1
@@ -257,8 +303,10 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
             ayri_mail += len(baska)
         if ad:                                                # kişinin kendi adresleri + genel kutular tek kişi
             for m in ad[1:] + genel:
-                uf.union(ad[0], m)
-                kenarlar.append((ad[0], m, "telefon+isim"))
+                if birles(ad[0], m):
+                    kenarlar.append((ad[0], m, "telefon+isim"))
+                else:
+                    engel["telefon+isim"] += 1
     kisi_birinci = len({uf.find(x) for x in list(uf.p)})
     # İkinci geçiş: telefon kanıtı olmayan, aynı isimli kümeler (kural kodları kanit_var'da)
     kural_say = {"R-a": 0, "R-b": 0, "R-c": 0, "R-d": 0}
@@ -289,8 +337,9 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
                             break
                     if kural:
                         break
-                if kural:
-                    uf.union(ki, kj)
+                if kural and not birles(ki, kj):
+                    engel["ikinci_gecis"] += 1
+                elif kural:
                     kenarlar.append((ea, eb, kural))
                     kural_say[kural] += 1
                     if len(ornekler) < 5000:
@@ -315,7 +364,7 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
         "ayni_alan_adi": ayni_alan,
         "toplu_grup": toplu_grup, "toplu_mail": toplu_mail,
         "uyumsuz_grup": uyumsuz_grup, "ayri_mail": ayri_mail,
-        "birinci_gecis_kisi": kisi_birinci, "kural_say": kural_say, "ornekler": ornekler, "uf": uf, "kenarlar": kenarlar,
+        "birinci_gecis_kisi": kisi_birinci, "kural_say": kural_say, "ornekler": ornekler, "uf": uf, "kenarlar": kenarlar, "engel": engel,
         "tablo": len(tablolar), "satir": satir,
         "email_tekil": email_tekil, "kisi": kisi,
         "birlesen": email_tekil - kisi, "belirsiz": belirsiz,
@@ -338,6 +387,7 @@ def main():
     print(f"Belirsiz (aynı isim, telefon kanıtı yok, birleştirilmedi): {n(r['belirsiz'])}")
     print(f"Toplu/kurumsal kayıt (>{MAKS_EPOSTA} e-posta, birleştirilmedi): {n(r['toplu_grup'])} grup, {n(r['toplu_mail'])} e-posta")
     print(f"Adres isimle uyumsuz (başka kişi gibi, ayrı bırakıldı): {n(r['uyumsuz_grup'])} grup, {n(r['ayri_mail'])} e-posta")
+    print(f"İlgisiz kurumsal alan adı nedeniyle engellenen birleşme: {r['engel']}")
     print(f"Telefon kuralıyla kişi: {n(r['birinci_gecis_kisi'])} | ikinci geçiş birleştirmeleri: {r['kural_say']}")
     print(f"Birleşen kümeler: 2 e-postalı {n(r['kume_boyut_2'])}, 3+ e-postalı {n(r['kume_boyut_3_ustu'])}, "
           f"en büyük küme {r['en_buyuk_kume']} e-posta, aynı alan adlı {n(r['ayni_alan_adi'])}")
