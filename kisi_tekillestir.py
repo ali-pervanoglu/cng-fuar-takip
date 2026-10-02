@@ -25,6 +25,7 @@ import psycopg2
 
 IDENT = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 TEL_KOLONLARI = ("telefon", "gsm", "telefon2")
+R_D_AKTIF = False   # R-d: isimle ilgisiz serbest posta (tahmin); kullanıcı kararıyla kapatılabilir
 MAKS_EPOSTA = 5   # aynı (isim+telefon) için en fazla bu kadar e-posta tek kişi sayılır; fazlası toplu/kurumsal kayıttır
 YER_TUTUCU = {"nan", "none", "null", "n/a", "na", "bilinmiyor", "yok", "-", ""}
 
@@ -79,6 +80,65 @@ def eposta_sinifi(mail, isim_norm):
     return "baska"
 
 
+SERBEST_ALAN = {"gmail.com", "hotmail.com", "outlook.com", "yahoo.com", "icloud.com", "yandex.com", "live.com",
+                "msn.com", "hotmail.com.tr", "yahoo.com.tr", "yandex.com.tr", "mynet.com", "icloud.com.tr",
+                "gmx.com", "protonmail.com", "me.com", "ymail.com"}
+
+
+def _etiket(alan):
+    """Alan adının şirket kısmı: 'maratonsport.com.tr' -> 'maratonsport'."""
+    p = alan.split(".")
+    if len(p) >= 3 and p[-2] in ("com", "net", "org", "co", "gov", "edu", "biz", "info"):
+        return p[-3]
+    return p[-2] if len(p) >= 2 else alan
+
+
+def _mesafe(a, b, sinir=2):
+    """Levenshtein (erken çıkışlı); fark `sinir`ten büyükse sinir+1 döner."""
+    if abs(len(a) - len(b)) > sinir:
+        return sinir + 1
+    onceki = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        simdiki = [i]
+        for j, cb in enumerate(b, 1):
+            simdiki.append(min(onceki[j] + 1, simdiki[j - 1] + 1, onceki[j - 1] + (ca != cb)))
+        onceki = simdiki
+    return onceki[-1]
+
+
+def _alan_benzer(a1, a2):
+    """Aynı alan adı ya da yazım hatası kadar yakın (maratonsport / marotonsport)."""
+    if a1 == a2:
+        return True
+    e1, e2 = _etiket(a1), _etiket(a2)
+    return e1 == e2 or (len(e1) >= 6 and len(e2) >= 6 and _mesafe(e1, e2) <= 2)
+
+
+def _yerel(mail):
+    return re.sub(r"[^a-z]", "", mail.split("@")[0].lower())
+
+
+def kanit_var(m1, m2, isim):
+    """İki küme arasında 'aynı kişi' kanıtı (telefon çelişkisi dışarıda denetlenir). Kural kodu veya None."""
+    a1, a2 = m1.split("@")[-1], m2.split("@")[-1]
+    f1, f2 = a1 in SERBEST_ALAN, a2 in SERBEST_ALAN
+    c1, c2 = eposta_sinifi(m1, isim), eposta_sinifi(m2, isim)
+    y1, y2 = _yerel(m1), _yerel(m2)
+    # R-a: aynı alan adı, adresler isimle uyumlu / genel kutu (kişinin adresi + şirketin genel kutusu)
+    if a1 == a2 and {c1, c2} <= {"ad", "genel"} and not (f1 and c1 == c2):
+        return "R-a"
+    # R-b: aynı yerel kısım + aynı/yakın alan adı (yazım hatası) ya da biri serbest posta
+    if len(y1) >= 4 and y1 == y2 and (_alan_benzer(a1, a2) or f1 or f2):
+        return "R-b"
+    # R-c: kurumsal adres isimle uyumlu + diğeri kişinin isimle uyumlu serbest postası (osman.yilmaz@x + osman144y@gmail)
+    if (f1 != f2) and ((c1 == "ad" and c2 == "ad")):
+        return "R-c"
+    # R-d: kurumsal adres isimle uyumlu + diğeri isimle İLGİSİZ serbest posta (abdullah@x + asmen32@gmail) — tahmin
+    if R_D_AKTIF and (f1 != f2) and (c1 == "ad" and not f1 or c2 == "ad" and not f2):
+        return "R-d"
+    return None
+
+
 class _UF:
     def __init__(self):
         self.p = {}
@@ -128,6 +188,7 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
     isim_tel = {}
     isim_mail = {}
     mail_tel = set()
+    mail_tels = {}
     satir = 0
     with conn.cursor() as cur:
         for t in tablolar:
@@ -142,6 +203,7 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
                 tels = {x for x in (norm_tel(v) for v in row[2:]) if x}
                 if tels:
                     mail_tel.add(em)
+                    mail_tels.setdefault(em, set()).update(tels)
                 if isim and len(isim.split()) >= 2:
                     isim_mail.setdefault(isim, set()).add(em)
                     for tl in tels:
@@ -164,6 +226,39 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
         if ad:                                                # kişinin kendi adresleri + genel kutular tek kişi
             for m in ad[1:] + genel:
                 uf.union(ad[0], m)
+    kisi_birinci = len({uf.find(x) for x in list(uf.p)})
+    # İkinci geçiş: telefon kanıtı olmayan, aynı isimli kümeler (kural kodları kanit_var'da)
+    kural_say = {"R-a": 0, "R-b": 0, "R-c": 0, "R-d": 0}
+    ornekler = []
+    for isim, mails in isim_mail.items():
+        kum = {}
+        for m in mails:
+            kum.setdefault(uf.find(m), []).append(m)
+        if len(kum) < 2 or len(kum) > maks_eposta:
+            continue
+        keys = list(kum)
+        for i in range(len(keys)):
+            for j in range(i + 1, len(keys)):
+                ki, kj = keys[i], keys[j]
+                if uf.find(ki) == uf.find(kj):
+                    continue
+                ti = set().union(*[mail_tels.get(m, set()) for m in kum[ki]])
+                tj = set().union(*[mail_tels.get(m, set()) for m in kum[kj]])
+                if ti and tj and not (ti & tj):               # iki tarafta da telefon var ve farklı -> farklı kişi
+                    continue
+                kural = None
+                for a in kum[ki]:
+                    for b in kum[kj]:
+                        kural = kanit_var(a, b, isim)
+                        if kural:
+                            break
+                    if kural:
+                        break
+                if kural:
+                    uf.union(ki, kj)
+                    kural_say[kural] += 1
+                    if len(ornekler) < 5000:
+                        ornekler.append((kural, isim, sorted(kum[ki]), sorted(kum[kj])))
     kisi = len({uf.find(x) for x in list(uf.p)})
     # belirsiz: aynı isim, farklı kişi kümeleri, kümelerden en az biri telefonsuz -> kanıt yok
     belirsiz = 0
@@ -184,6 +279,7 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
         "ayni_alan_adi": ayni_alan,
         "toplu_grup": toplu_grup, "toplu_mail": toplu_mail,
         "uyumsuz_grup": uyumsuz_grup, "ayri_mail": ayri_mail,
+        "birinci_gecis_kisi": kisi_birinci, "kural_say": kural_say, "ornekler": ornekler,
         "tablo": len(tablolar), "satir": satir,
         "email_tekil": email_tekil, "kisi": kisi,
         "birlesen": email_tekil - kisi, "belirsiz": belirsiz,
@@ -206,6 +302,7 @@ def main():
     print(f"Belirsiz (aynı isim, telefon kanıtı yok, birleştirilmedi): {n(r['belirsiz'])}")
     print(f"Toplu/kurumsal kayıt (>{MAKS_EPOSTA} e-posta, birleştirilmedi): {n(r['toplu_grup'])} grup, {n(r['toplu_mail'])} e-posta")
     print(f"Adres isimle uyumsuz (başka kişi gibi, ayrı bırakıldı): {n(r['uyumsuz_grup'])} grup, {n(r['ayri_mail'])} e-posta")
+    print(f"Telefon kuralıyla kişi: {n(r['birinci_gecis_kisi'])} | ikinci geçiş birleştirmeleri: {r['kural_say']}")
     print(f"Birleşen kümeler: 2 e-postalı {n(r['kume_boyut_2'])}, 3+ e-postalı {n(r['kume_boyut_3_ustu'])}, "
           f"en büyük küme {r['en_buyuk_kume']} e-posta, aynı alan adlı {n(r['ayni_alan_adi'])}")
 
