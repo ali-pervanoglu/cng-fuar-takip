@@ -209,6 +209,23 @@ def enrich_kpi_rows(conn, rows: list[dict]) -> list[dict]:
 # ---------------------------------------------------------------------------
 
 def compute_unique_person_count(conn) -> int | None:
+    """Kişi bazlı benzersiz sayı (kisi_tekillestir.py kuralı); modül hata verirse e-posta bazlı sayıma düşer."""
+    try:
+        from kisi_tekillestir import benzersiz_kisi_say
+        r = benzersiz_kisi_say(conn)
+        log.info(
+            f"compute_unique_person_count: {r['tablo']} tablo, e-posta bazlı {r['email_tekil']:,} -> "
+            f"kişi bazlı {r['kisi']:,} (birleşen {r['birlesen']:,}, toplu kayıt {r['toplu_grup']:,} grup, "
+            f"belirsiz {r['belirsiz']:,})".replace(",", ".")
+        )
+        return r["kisi"]
+    except Exception as e:  # noqa: BLE001 - dashboard sayısı yüzünden ETL durmamalı
+        log.warning(f"kisi_tekillestir başarısız ({e}); e-posta bazlı sayıma dönülüyor")
+        conn.rollback()
+        return compute_unique_person_count_email(conn)
+
+
+def compute_unique_person_count_email(conn) -> int | None:
     with conn.cursor() as cur:
         cur.execute("""
             SELECT DISTINCT kaynak_tablo
