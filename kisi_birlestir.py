@@ -3,7 +3,7 @@ Kullanıcının ONAYLADIĞI kişi çiftlerini birleştirir (kisi_id -> küçük 
 
   Eski kişinin e-postaları kalan kişiye taşınır; eski kişinin 'birincil' e-postası 'elle' kuralıyla işaretlenir.
   Kalan kişinin boş isim/firma alanı eskisinden doldurulur; kayit_tipi 'kisi' olan kazanır.
-  temas tablosundaki kisi_id (varsa) taşınır.
+  temas ve portal_eslesme tablolarındaki kisi_id (varsa) taşınır (yoksa FK silmeyi engeller).
 
 Varsayılan çiftler (kullanıcı onayı 02.10.2026, kisi_cakisma_38_inceleme.xlsx incelemesi):
   155597 + 155631   Zeynep Serpil Eryılmaz (icloud + gmail)
@@ -62,6 +62,7 @@ def main():
     cur.execute("ALTER TABLE kisi_kimlik ADD CONSTRAINT kisi_kimlik_baglanma_chk CHECK (baglanma_kurali IN %s)", (KURALLAR,))
     for kalan, silinen in plan:
         cur.execute("UPDATE temas SET kisi_id = %s WHERE kisi_id = %s", (kalan, silinen))
+        cur.execute("UPDATE portal_eslesme SET kisi_id = %s WHERE kisi_id = %s", (kalan, silinen))   # FK: silinen kişiye bağlı portal eşleşmeleri
         cur.execute("UPDATE kisi_kimlik SET kisi_id = %s, "
                     "baglanma_kurali = CASE WHEN baglanma_kurali = 'birincil' THEN 'elle' ELSE baglanma_kurali END "
                     "WHERE kisi_id = %s", (kalan, silinen))
