@@ -171,6 +171,39 @@ def kanit_var(m1, m2, isim):
         return "R-d"
     return None
 
+FIRMA_GENEL = {"sanayi", "ticaret", "limited", "sirketi", "anonim", "kimya", "kimyasal", "kimyasallari", "boya", "makina",
+               "makine", "plastik", "insaat", "tekstil", "gida", "yapi", "group", "grup", "holding", "company",
+               "trading", "industry", "industrial", "chemical", "chemicals", "paint", "paints", "coating", "coatings",
+               "corporation", "international", "turkey", "turkiye", "sirket", "pazarlama", "dis", "ihracat", "ithalat",
+               "ambalaj", "otomotiv", "elektrik", "mühendislik", "muhendislik", "danismanlik", "hizmetleri", "urunleri",
+               "teknoloji", "teknolojileri", "yatirim", "gmbh", "ltd", "sti", "inc", "llc", "ooo"}
+
+
+def firma_tokenleri(firma):
+    """Firma adından AYIRT EDİCİ sözcükler (genel kelimeler ve ek ortakları hariç)."""
+    f = norm_isim_serbest(firma)
+    return {t for t in f.split() if len(t) >= 4 and t not in FIRMA_GENEL}
+
+
+def norm_isim_serbest(s):
+    if not s:
+        return ""
+    s = str(s).replace("İ", "i").replace("I", "ı").lower().replace("ı", "i")
+    s = unicodedata.normalize("NFKD", s)
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r"[^a-z0-9]+", " ", s).strip()
+
+
+def firma_alan_iliskili(token, alan):
+    """Firma sözcüğü alan adının şirket kısmıyla ilişkili mi? (flokser ~ flokserkimya, moravia ~ moravia)."""
+    e = _etiket(alan)
+    return token == e or e.startswith(token) or (len(e) >= 4 and token.startswith(e)) or (len(token) >= 5 and token in e)
+
+
+def firma_celisiyor(tokenler, alanlar):
+    """Bir tarafın firması var, diğer tarafın kurumsal alan adları var ve hiçbiri ilişkili değil -> çelişki."""
+    return bool(tokenler) and bool(alanlar) and not any(firma_alan_iliskili(t, a) for t in tokenler for a in alanlar)
+
 
 class _UF:
     def __init__(self):
@@ -248,18 +281,22 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
     isim_mail = {}
     mail_tel = set()
     mail_tels = {}
+    mail_firma_tok = {}
     satir = 0
     with conn.cursor() as cur:
         for t in tablolar:
             al = tablo_alanlari(_kolonlar(cur, t), t)
-            sel = ["lower(trim(email))", al["isim"]] + (al["tel"] or ["NULL"])
+            sel = ["lower(trim(email))", al["isim"], al["firma"]] + (al["tel"] or ["NULL"])
             kosul = "email IS NOT NULL AND trim(email) <> ''" + (f" AND {al['filtre']}" if al.get("filtre") else "")
             cur.execute(f"SELECT {', '.join(sel)} FROM {t} WHERE {kosul}")
             for row in cur.fetchall():
                 satir += 1
                 em, isim = row[0], norm_isim(row[1])
                 uf.find(em)                                   # kural 1: aynı e-posta = aynı düğüm
-                tels = {x for x in (norm_tel(v) for v in row[2:]) if x}
+                ft = firma_tokenleri(row[2])
+                if ft:
+                    mail_firma_tok.setdefault(em, set()).update(ft)
+                tels = {x for x in (norm_tel(v) for v in row[3:]) if x}
                 if tels:
                     mail_tel.add(em)
                     mail_tels.setdefault(em, set()).update(tels)
@@ -277,17 +314,26 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
     for e in list(uf.p):
         d = e.split("@")[-1]
         dom[uf.find(e)] = set() if serbest_mi(d) else {d}
-    engel = {"telefon+isim": 0, "ikinci_gecis": 0}
+    firm = {uf.find(e): set(mail_firma_tok.get(e, ())) for e in list(uf.p)}
+    engel = {"telefon+isim": 0, "ikinci_gecis": 0, "firma_celiskisi": 0}
 
-    def birles(a, b):
+    def birles(a, b, firma_kontrol=False):
         ra, rb = uf.find(a), uf.find(b)
         if ra == rb:
             return True
         da, db = dom.get(ra, set()), dom.get(rb, set())
         if any(not _alan_benzer(x, y) for x in da for y in db):
             return False
+        fa, fb = firm.get(ra, set()), firm.get(rb, set())
+        # Kullanıcı ilkesi: firma çelişirse farklı kişi — YALNIZ en zayıf kanıtta (R-c: kurumsal + serbest posta, telefon yok).
+        # Güçlü kanıtlı (R-a/R-b/telefon) aynı-kişi örneklerinde firma adı alan adıyla tutmayabilir (IZOTUP ~ izobir).
+        if firma_kontrol and (firma_celisiyor(fa, db) or firma_celisiyor(fb, da)):
+            engel["firma_celiskisi"] += 1
+            return False
         uf.union(ra, rb)
-        dom[uf.find(ra)] = da | db
+        kok = uf.find(ra)
+        dom[kok] = da | db
+        firm[kok] = fa | fb
         return True
     for (isim, _tel), mails in sorted(isim_tel.items()):     # kural 2: aynı isim + aynı telefon (sıralı: tekrarlanabilir)
         mails = sorted(mails)
@@ -338,7 +384,7 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
                             break
                     if kural:
                         break
-                if kural and not birles(ki, kj):
+                if kural and not birles(ki, kj, firma_kontrol=(kural == "R-c")):
                     engel["ikinci_gecis"] += 1
                 elif kural:
                     kenarlar.append((ea, eb, kural))
