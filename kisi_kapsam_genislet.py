@@ -19,6 +19,8 @@ Parola: PGPASSWORD (ya da DB_PASSWORD).
 """
 import argparse
 import collections
+import datetime
+import pathlib
 import sys
 
 from psycopg2.extras import execute_values
@@ -26,6 +28,21 @@ from psycopg2.extras import execute_values
 import kisi_tekillestir as K
 from kisi_master_doldur import baglan, firma_norm, temiz_ad
 from kisi_sema_guncelle import genel_kutu_mu
+
+
+LOG_DIZIN = pathlib.Path(__file__).parent / "logs"
+
+
+def yaz(*a):
+    """Ekrana ve logs/kisi_guncelle_YYYYMMDD.log dosyasına yazar (gece/otomatik çalışmada iz kalsın)."""
+    mesaj = " ".join(str(x) for x in a)
+    print(mesaj)
+    try:
+        LOG_DIZIN.mkdir(exist_ok=True)
+        with open(LOG_DIZIN / f"kisi_guncelle_{datetime.date.today():%Y%m%d}.log", "a", encoding="utf-8") as f:
+            f.write(f"{datetime.datetime.now():%H:%M:%S}  {mesaj}\n")
+    except OSError:
+        pass
 
 
 def topla(conn, tablolar):
@@ -147,23 +164,24 @@ def main():
     ap.add_argument("--hesapla", action="store_true", help="salt okunur: yalnız hesapla")
     ap.add_argument("--uygula", action="store_true", help="COMMIT et (varsayılan: ROLLBACK'li dry-run)")
     args = ap.parse_args()
+    yaz("═══ kisi_kapsam_genislet", "HESAPLA" if args.hesapla else ("UYGULA" if args.uygula else "DRY-RUN"), "═══")
     conn = baglan()
     if args.hesapla:
         conn.set_session(readonly=True)
     rap, yeni_kisi, ekleme, doldur, cakisma, bolunen = hesapla(conn)
     n = lambda x: f"{x:,}".replace(",", ".")
-    print(f"Kaynak: {rap['tablo']} tablo | e-posta {n(rap['email'])} (kimlikte olmayan: {n(rap['yeni_email'])}) | motor kişi sayısı {n(rap['kisi_motor'])}")
-    print(f"YENİ kişi: {n(rap['yeni_kisi'])} ({n(rap['yeni_kisi_email'])} e-posta; bunlardan genel_kutu {n(rap['yeni_genel'])})")
-    print(f"MEVCUT kişiye eklenen: {n(rap['ekleme_kisi'])} kişi / {n(rap['ekleme_email'])} yeni e-posta")
-    print(f"ÇAKIŞMA (>=2 mevcut kişi, dokunulmadı): {n(rap['cakisma'])} bileşen / {n(rap['cakisma_yeni_email'])} yeni e-posta atlandı")
-    print(f"Bölünen mevcut kişi (bilgi; değiştirilmez): {n(rap['bolunen'])}")
-    print(f"Boş isim/firma doldurulacak mevcut kişi: {n(rap['doldur'])} (genel_kutu -> kisi: {n(rap['doldur_tip'])})")
+    yaz(f"Kaynak: {rap['tablo']} tablo | e-posta {n(rap['email'])} (kimlikte olmayan: {n(rap['yeni_email'])}) | motor kişi sayısı {n(rap['kisi_motor'])}")
+    yaz(f"YENİ kişi: {n(rap['yeni_kisi'])} ({n(rap['yeni_kisi_email'])} e-posta; bunlardan genel_kutu {n(rap['yeni_genel'])})")
+    yaz(f"MEVCUT kişiye eklenen: {n(rap['ekleme_kisi'])} kişi / {n(rap['ekleme_email'])} yeni e-posta")
+    yaz(f"ÇAKIŞMA (>=2 mevcut kişi, dokunulmadı): {n(rap['cakisma'])} bileşen / {n(rap['cakisma_yeni_email'])} yeni e-posta atlandı")
+    yaz(f"Bölünen mevcut kişi (bilgi; değiştirilmez): {n(rap['bolunen'])}")
+    yaz(f"Boş isim/firma doldurulacak mevcut kişi: {n(rap['doldur'])} (genel_kutu -> kisi: {n(rap['doldur_tip'])})")
     beklenen = rap["yeni_kisi_email"] + rap["ekleme_email"] + rap["cakisma_yeni_email"]
-    print(f"Kontrol: yerleşen+atlanan yeni e-posta {n(beklenen)} = kimlikte olmayan {n(rap['yeni_email'])} -> {'OK' if beklenen == rap['yeni_email'] else 'UYUŞMUYOR'}")
+    yaz(f"Kontrol: yerleşen+atlanan yeni e-posta {n(beklenen)} = kimlikte olmayan {n(rap['yeni_email'])} -> {'OK' if beklenen == rap['yeni_email'] else 'UYUŞMUYOR'}")
     if beklenen != rap["yeni_email"]:
         sys.exit("DURDU: sayılar tutmuyor. Yazılmadı.")
     if args.hesapla:
-        print("Salt okunur hesap tamam; DB'ye yazılmadı.")
+        yaz("Salt okunur hesap tamam; DB'ye yazılmadı.")
         return
 
     with conn.cursor() as cur:
@@ -183,19 +201,19 @@ def main():
                            [(kid, i, f, firma_norm(f), t) for kid, i, f, t in doldur], page_size=5000)
         cur.execute("SELECT (SELECT count(*) FROM kisi_master), (SELECT count(*) FROM kisi_kimlik), "
                     "(SELECT count(DISTINCT deger) FROM kisi_kimlik WHERE tip='email')")
-        print("Yazıldı (transaction içinde): kisi_master=%s, kisi_kimlik=%s, tekil e-posta=%s" % cur.fetchone())
+        yaz("Yazıldı (transaction içinde): kisi_master=%s, kisi_kimlik=%s, tekil e-posta=%s" % cur.fetchone())
         cur.execute("SELECT kayit_tipi, count(*) FROM kisi_master GROUP BY 1 ORDER BY 1")
-        print("kayit_tipi:", cur.fetchall())
+        yaz("kayit_tipi:", cur.fetchall())
         cur.execute("SELECT count(*) FROM (SELECT kisi_id FROM kisi_kimlik GROUP BY 1 HAVING count(*) FILTER "
                     "(WHERE baglanma_kurali = 'birincil') <> 1) x")
-        print("tam 1 birincil olmayan kişi (0 olmalı):", cur.fetchone()[0])
+        yaz("tam 1 birincil olmayan kişi (0 olmalı):", cur.fetchone()[0])
         if args.uygula:
             cur.execute("SELECT setval('kisi_master_kisi_id_seq', (SELECT max(kisi_id) FROM kisi_master))")
             conn.commit()
-            print("COMMIT edildi.")
+            yaz("COMMIT edildi.")
         else:
             conn.rollback()
-            print("DRY-RUN: ROLLBACK yapıldı, kalıcı değişiklik yok.")
+            yaz("DRY-RUN: ROLLBACK yapıldı, kalıcı değişiklik yok.")
 
 
 if __name__ == "__main__":

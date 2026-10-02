@@ -269,7 +269,14 @@ def kampanya_tablolari(conn):
     with conn.cursor() as cur:
         cur.execute("""SELECT DISTINCT kaynak_tablo FROM pipeline_fuar_meta
                        WHERE aktif = true AND kaynak_tipi = 'Kampanya' AND kaynak_tablo IS NOT NULL""")
-        return sorted(t for (t,) in cur.fetchall() if IDENT.match(t))
+        adaylar = sorted(t for (t,) in cur.fetchall() if IDENT.match(t))
+        uygun = []
+        for t in adaylar:               # e-posta kolonu olmayan/yeni tablo tüm işi durdurmasın
+            if "email" in _kolonlar(cur, t):
+                uygun.append(t)
+            else:
+                print(f"UYARI: {t} tablosunda 'email' kolonu yok, kişi tekilleştirmeden atlandı", file=sys.stderr)
+        return uygun
 
 
 def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):

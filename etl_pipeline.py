@@ -267,7 +267,7 @@ def kisi_tablosu_ozet(conn) -> dict | None:
         with conn.cursor() as cur:
             cur.execute("""SELECT count(*) FILTER (WHERE kayit_tipi = 'kisi'),
                                   count(*) FILTER (WHERE kayit_tipi = 'genel_kutu'),
-                                  max(guncelleme_ts) FROM kisi_master""")
+                                  greatest(max(guncelleme_ts), max(olusturma)) FROM kisi_master""")
             kisi, genel, ts = cur.fetchone()
         return {"kisi": kisi, "genel_kutu": genel, "guncelleme": ts.isoformat() if ts else None}
     except Exception as e:  # noqa: BLE001 - dashboard bu yüzden durmamalı
