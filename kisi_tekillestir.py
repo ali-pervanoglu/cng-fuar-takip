@@ -57,6 +57,28 @@ def norm_tel(s):
     return d
 
 
+GENEL_KUTU = ("info", "sales", "satis", "muhasebe", "contact", "iletisim", "admin", "office", "ofis",
+              "export", "import", "mail", "destek", "support", "hello", "bilgi", "marketing", "pazarlama",
+              "satinalma", "purchase", "procurement", "hr", "genel", "finans", "accounting", "reception",
+              "sekreter", "yonetim", "order", "siparis", "firma", "company")
+
+
+def eposta_sinifi(mail, isim_norm):
+    """E-postanın baş kısmına göre: 'ad' (isimle uyumlu), 'genel' (info@, sales@ ...), 'baska' (başka biri gibi).
+    Kullanıcı kuralı (02.10): aynı isim+telefonla kayıtlı ama baş kısmı farklı kişiye ait adresler farklı kişidir
+    (toplu/hızlı kayıt); kişinin kendi adresi + şirketin genel kutusu aynı kişidir."""
+    yerel = norm_isim(mail.split("@")[0].replace(".", " ").replace("_", " ").replace("-", " "))
+    ham = re.sub(r"[^a-z]", "", mail.split("@")[0].lower())
+    if not ham:
+        return "baska"
+    belirtec = [t for t in (isim_norm or "").split() if len(t) >= 3]
+    if any(t in ham for t in belirtec):
+        return "ad"
+    if any(ham == g or ham.startswith(g) for g in GENEL_KUTU):
+        return "genel"
+    return "baska"
+
+
 class _UF:
     def __init__(self):
         self.p = {}
@@ -126,15 +148,22 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
                         isim_tel.setdefault((isim, tl), set()).add(em)
     email_tekil = len(uf.p)
     toplu_grup = toplu_mail = 0
-    for mails in isim_tel.values():                           # kural 2: aynı isim + aynı telefon
+    uyumsuz_grup = ayri_mail = 0
+    for (isim, _tel), mails in isim_tel.items():             # kural 2: aynı isim + aynı telefon
         if len(mails) > maks_eposta:                          # bir kişinin bu kadar e-postası olmaz: toplu kayıt
             toplu_grup += 1
             toplu_mail += len(mails)
             continue
-        it = iter(mails)
-        ilk = next(it)
-        for m in it:
-            uf.union(ilk, m)
+        sinif = {m: eposta_sinifi(m, isim) for m in mails}
+        ad = [m for m in mails if sinif[m] == "ad"]
+        genel = [m for m in mails if sinif[m] == "genel"]
+        baska = [m for m in mails if sinif[m] == "baska"]
+        if baska and len(mails) > 1:                          # başka biri gibi görünen adres ayrı kişidir
+            uyumsuz_grup += 1
+            ayri_mail += len(baska)
+        if ad:                                                # kişinin kendi adresleri + genel kutular tek kişi
+            for m in ad[1:] + genel:
+                uf.union(ad[0], m)
     kisi = len({uf.find(x) for x in list(uf.p)})
     # belirsiz: aynı isim, farklı kişi kümeleri, kümelerden en az biri telefonsuz -> kanıt yok
     belirsiz = 0
@@ -154,6 +183,7 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
         "en_buyuk_kume": max(len(ms) for ms in boyut.values()),
         "ayni_alan_adi": ayni_alan,
         "toplu_grup": toplu_grup, "toplu_mail": toplu_mail,
+        "uyumsuz_grup": uyumsuz_grup, "ayri_mail": ayri_mail,
         "tablo": len(tablolar), "satir": satir,
         "email_tekil": email_tekil, "kisi": kisi,
         "birlesen": email_tekil - kisi, "belirsiz": belirsiz,
@@ -175,6 +205,7 @@ def main():
     print(f"Birleşen (2. e-posta çıkarıldı):  {n(r['birlesen'])}")
     print(f"Belirsiz (aynı isim, telefon kanıtı yok, birleştirilmedi): {n(r['belirsiz'])}")
     print(f"Toplu/kurumsal kayıt (>{MAKS_EPOSTA} e-posta, birleştirilmedi): {n(r['toplu_grup'])} grup, {n(r['toplu_mail'])} e-posta")
+    print(f"Adres isimle uyumsuz (başka kişi gibi, ayrı bırakıldı): {n(r['uyumsuz_grup'])} grup, {n(r['ayri_mail'])} e-posta")
     print(f"Birleşen kümeler: 2 e-postalı {n(r['kume_boyut_2'])}, 3+ e-postalı {n(r['kume_boyut_3_ustu'])}, "
           f"en büyük küme {r['en_buyuk_kume']} e-posta, aynı alan adlı {n(r['ayni_alan_adi'])}")
 
