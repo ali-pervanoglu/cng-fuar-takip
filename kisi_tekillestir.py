@@ -125,7 +125,7 @@ def kanit_var(m1, m2, isim):
     c1, c2 = eposta_sinifi(m1, isim), eposta_sinifi(m2, isim)
     y1, y2 = _yerel(m1), _yerel(m2)
     # R-a: aynı alan adı, adresler isimle uyumlu / genel kutu (kişinin adresi + şirketin genel kutusu)
-    if a1 == a2 and {c1, c2} <= {"ad", "genel"} and not (f1 and c1 == c2):
+    if (a1 == a2 or (not f1 and not f2 and _alan_benzer(a1, a2))) and {c1, c2} <= {"ad", "genel"} and not (f1 and c1 == c2):
         return "R-a"
     # R-b: aynı yerel kısım + aynı/yakın alan adı (yazım hatası) ya da biri serbest posta
     if len(y1) >= 4 and y1 == y2 and (_alan_benzer(a1, a2) or f1 or f2):
@@ -279,7 +279,7 @@ def benzersiz_kisi_say(conn, tablolar=None, maks_eposta=MAKS_EPOSTA):
         "ayni_alan_adi": ayni_alan,
         "toplu_grup": toplu_grup, "toplu_mail": toplu_mail,
         "uyumsuz_grup": uyumsuz_grup, "ayri_mail": ayri_mail,
-        "birinci_gecis_kisi": kisi_birinci, "kural_say": kural_say, "ornekler": ornekler,
+        "birinci_gecis_kisi": kisi_birinci, "kural_say": kural_say, "ornekler": ornekler, "uf": uf,
         "tablo": len(tablolar), "satir": satir,
         "email_tekil": email_tekil, "kisi": kisi,
         "birlesen": email_tekil - kisi, "belirsiz": belirsiz,
