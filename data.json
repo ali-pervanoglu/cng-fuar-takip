@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-10-13T13:29:24.571508+00:00",
+    "uretim_ts": "2026-10-13T13:35:55.626405+00:00",
     "gercek_benzersiz_kisi": 157935,
     "kisi_tablosu": {
       "kisi": 150966,
@@ -766,7 +766,7 @@
       }
     },
     {
-      "ad": "PHCI EURASIA",
+      "ad": "SEPAWA CONGRESS",
       "segment_kodu": "YDK",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2027-11-10",
