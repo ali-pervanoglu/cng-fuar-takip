@@ -1,7 +1,7 @@
 {
   "meta": {
-    "uretim_ts": "2026-11-26T06:50:03.067724+00:00",
-    "gercek_benzersiz_kisi": 184181,
+    "uretim_ts": "2026-11-26T06:56:04.617629+00:00",
+    "gercek_benzersiz_kisi": 184714,
     "kisi_tablosu": {
       "kisi": 183510,
       "genel_kutu": 14252,
@@ -921,7 +921,7 @@
       "mev": "W",
       "em": "W",
       "sms": "W",
-      "kayit": 3,
+      "kayit": 61,
       "gonder": "",
       "pct": 50,
       "guncelleme_ts": "2026-11-26T09:49:49.358634+03:00",
