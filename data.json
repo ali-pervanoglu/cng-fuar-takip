@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-11-27T07:59:42.546730+00:00",
+    "uretim_ts": "2026-11-27T08:00:39.042596+00:00",
     "gercek_benzersiz_kisi": 188547,
     "kisi_tablosu": {
       "kisi": 184068,
@@ -184,7 +184,7 @@
       }
     },
     {
-      "ad": "PAINTISTANBUL",
+      "ad": "PAINTİSTANBUL",
       "segment_kodu": "YDK",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2026-06-17",
@@ -718,7 +718,7 @@
       }
     },
     {
-      "ad": "PAINTISTANBUL",
+      "ad": "PAINTİSTANBUL",
       "segment_kodu": "YİZ",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2026-11-11",
@@ -790,7 +790,7 @@
       }
     },
     {
-      "ad": "PAINTISTANBUL",
+      "ad": "PAINTİSTANBUL",
       "segment_kodu": "YDZ",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2026-11-11",
@@ -814,7 +814,7 @@
       }
     },
     {
-      "ad": "PAINTISTANBUL 2026 FUAR ZİYARETÇİSİ (YİZ+YDZ)",
+      "ad": "PAINTİSTANBUL 2026 FUAR ZİYARETÇİSİ (YİZ+YDZ)",
       "segment_kodu": "Genel",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2027-06-02",
@@ -831,7 +831,7 @@
       "guncelleme_ts": "2026-11-27T10:55:53.172990+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTISTANBUL KONGRESİ",
+      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 4363,
         "sms_gonder": 0
@@ -855,7 +855,7 @@
       "guncelleme_ts": "2026-11-27T10:55:53.172990+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTISTANBUL KONGRESİ",
+      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 1835,
         "sms_gonder": 0
@@ -879,7 +879,7 @@
       "guncelleme_ts": "2026-11-27T10:55:53.172990+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTISTANBUL KONGRESİ",
+      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 1233,
         "sms_gonder": 0
@@ -903,14 +903,14 @@
       "guncelleme_ts": "2026-11-27T10:55:53.172990+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTISTANBUL KONGRESİ",
+      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 765,
         "sms_gonder": 0
       }
     },
     {
-      "ad": "PAINTISTANBUL ZİYARETÇİ HAVUZU (YİZ+YDZ)",
+      "ad": "PAINTİSTANBUL ZİYARETÇİ HAVUZU (YİZ+YDZ)",
       "segment_kodu": "Genel",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2027-06-02",
@@ -927,7 +927,7 @@
       "guncelleme_ts": "2026-11-27T10:55:53.172990+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTISTANBUL KONGRESİ",
+      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 513,
         "sms_gonder": 0
@@ -951,7 +951,7 @@
       "guncelleme_ts": "2026-11-27T10:55:53.172990+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTISTANBUL KONGRESİ",
+      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 8,
         "sms_gonder": 0
@@ -1150,7 +1150,7 @@
       }
     },
     {
-      "ad": "PAINTISTANBUL",
+      "ad": "PAINTİSTANBUL",
       "segment_kodu": "YDK",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2028-03-01",
