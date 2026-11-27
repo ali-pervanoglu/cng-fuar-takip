@@ -1,6 +1,6 @@
 {
   "meta": {
-    "uretim_ts": "2026-11-27T08:16:12.454030+00:00",
+    "uretim_ts": "2026-11-27T08:16:35.584341+00:00",
     "gercek_benzersiz_kisi": 188547,
     "kisi_tablosu": {
       "kisi": 184068,
@@ -136,7 +136,7 @@
       }
     },
     {
-      "ad": "PAİNTİSTANBUL",
+      "ad": "PAINT İSTANBUL",
       "segment_kodu": "YDZ",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2026-06-17",
@@ -160,7 +160,7 @@
       }
     },
     {
-      "ad": "PAİNTİSTANBUL",
+      "ad": "PAINT İSTANBUL",
       "segment_kodu": "YİZ",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2026-06-17",
@@ -184,7 +184,7 @@
       }
     },
     {
-      "ad": "PAINTİSTANBUL",
+      "ad": "PAINT İSTANBUL",
       "segment_kodu": "YDK",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2026-06-17",
@@ -208,7 +208,7 @@
       }
     },
     {
-      "ad": "PAİNTİSTANBUL",
+      "ad": "PAINT İSTANBUL",
       "segment_kodu": "Genel",
       "kaynak_tipi": "KPI",
       "fuar_tarihi_baslangic": "2026-06-17",
@@ -718,7 +718,7 @@
       }
     },
     {
-      "ad": "PAINTİSTANBUL",
+      "ad": "PAINT İSTANBUL",
       "segment_kodu": "YİZ",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2026-11-11",
@@ -790,7 +790,7 @@
       }
     },
     {
-      "ad": "PAINTİSTANBUL",
+      "ad": "PAINT İSTANBUL",
       "segment_kodu": "YDZ",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2026-11-11",
@@ -814,7 +814,7 @@
       }
     },
     {
-      "ad": "PAINTİSTANBUL 2026 FUAR ZİYARETÇİSİ (YİZ+YDZ)",
+      "ad": "PAINT İSTANBUL 2026 FUAR ZİYARETÇİSİ (YİZ+YDZ)",
       "segment_kodu": "Genel",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2027-06-02",
@@ -831,7 +831,7 @@
       "guncelleme_ts": "2026-11-27T11:15:53.154432+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
+      "hedef_fuar": "PAINT İSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 4363,
         "sms_gonder": 0
@@ -855,7 +855,7 @@
       "guncelleme_ts": "2026-11-27T11:15:53.154432+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
+      "hedef_fuar": "PAINT İSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 1835,
         "sms_gonder": 0
@@ -879,7 +879,7 @@
       "guncelleme_ts": "2026-11-27T11:15:53.154432+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
+      "hedef_fuar": "PAINT İSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 1233,
         "sms_gonder": 0
@@ -903,14 +903,14 @@
       "guncelleme_ts": "2026-11-27T11:15:53.154432+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
+      "hedef_fuar": "PAINT İSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 765,
         "sms_gonder": 0
       }
     },
     {
-      "ad": "PAINTİSTANBUL ZİYARETÇİ HAVUZU (YİZ+YDZ)",
+      "ad": "PAINT İSTANBUL ZİYARETÇİ HAVUZU (YİZ+YDZ)",
       "segment_kodu": "Genel",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2027-06-02",
@@ -927,7 +927,7 @@
       "guncelleme_ts": "2026-11-27T11:15:53.154432+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
+      "hedef_fuar": "PAINT İSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 513,
         "sms_gonder": 0
@@ -951,7 +951,7 @@
       "guncelleme_ts": "2026-11-27T11:15:53.154432+03:00",
       "kaynak_tablo": "paintistanbul_2027_havuz",
       "veri_kaynagi_tipi": null,
-      "hedef_fuar": "PAINTİSTANBUL KONGRESİ",
+      "hedef_fuar": "PAINT İSTANBUL KONGRESİ",
       "kpi": {
         "email_gonder": 8,
         "sms_gonder": 0
@@ -1102,7 +1102,7 @@
       }
     },
     {
-      "ad": "PAİNTİSTANBUL",
+      "ad": "PAINT İSTANBUL",
       "segment_kodu": "YDZ",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2028-03-01",
@@ -1126,7 +1126,7 @@
       }
     },
     {
-      "ad": "PAİNTİSTANBUL",
+      "ad": "PAINT İSTANBUL",
       "segment_kodu": "YİZ",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2028-03-01",
@@ -1150,7 +1150,7 @@
       }
     },
     {
-      "ad": "PAINTİSTANBUL",
+      "ad": "PAINT İSTANBUL",
       "segment_kodu": "YDK",
       "kaynak_tipi": "Kampanya",
       "fuar_tarihi_baslangic": "2028-03-01",
